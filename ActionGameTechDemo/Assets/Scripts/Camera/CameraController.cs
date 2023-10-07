@@ -12,8 +12,6 @@ public class CameraController : MonoBehaviour
     private LayerMask _ignoreLayers;
     private Vector3 _camFollowVelocity = Vector3.zero;
 
-    public static CameraController instance;
-
     public float LookSpeed;
     public float FollowSpeed;
     public float PivotSpeed;
@@ -31,7 +29,6 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
         _defaultPosition = CameraTransform.localPosition.z;
         _ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
     }

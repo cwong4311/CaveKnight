@@ -39,7 +39,7 @@ public class PlayerInputHandler : MonoBehaviour
             _inputActions = new PlayerControls();
         }
 
-        _cameraController = CameraController.instance;
+        _cameraController = FindObjectOfType<CameraController>();
     }
 
     public void Start()
