@@ -13,9 +13,9 @@ public class PlayerController : MonoBehaviour
     public bool IsSprinting;
 
     private Transform _cameraGO;
-    private PlayerInputHandler _inputHandler;
     private Vector3 _moveDirection;
 
+    private PlayerInputHandler _inputHandler;
     private PlayerAnimationHandler _animator;
 
     // Start is called before the first frame update
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         float delta = Time.deltaTime;
 
+        _inputHandler.IsInteracting = _animator.Anim.GetBool("IsInteracting");
         _inputHandler.ParseInput(delta);
         IsSprinting = _inputHandler.IsSprinting;
 
