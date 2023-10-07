@@ -265,7 +265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9990483
+      value: 0.99813485
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}
       propertyPath: m_LocalRotation.x
@@ -273,7 +273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.043619405
+      value: 0.06104851
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}
       propertyPath: m_LocalRotation.z
@@ -285,7 +285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1437,6 +1437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eed80e59f0e7a744b8643380835218a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputHandler: {fileID: 1961188755}
+  _playerController: {fileID: 1961188754}
 --- !u!1 &1895657864
 GameObject:
   m_ObjectHideFlags: 0
@@ -1644,6 +1646,7 @@ GameObject:
   - component: {fileID: 1961188756}
   - component: {fileID: 1961188755}
   - component: {fileID: 1961188754}
+  - component: {fileID: 1961188758}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -1679,6 +1682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c457e3f010fda4b90fb59af81fef60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RB: {fileID: 0}
   MovementSpeed: 5
   RotationSpeed: 10
 --- !u!114 &1961188755
@@ -1698,6 +1702,8 @@ MonoBehaviour:
   FinalMovementAmount: 0
   MouseX: 0
   MouseY: 0
+  IsRolling: 0
+  IsInteracting: 0
 --- !u!54 &1961188756
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1728,3 +1734,15 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1961188758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961188752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f90c898885d03f47ab4ca898581637b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

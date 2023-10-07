@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class PlayerAnimationHandler : MonoBehaviour
 {
+    public Animator Anim => _animator;
+    public PlayerInputHandler _inputHandler;
+    public PlayerController _playerController;
+
     private Animator _animator;
     private int _verticalHash;
     private int _horizontalHash;
 
+    private Vector3 _velocityDuringAnimation;
+
     public void Initialise()
     {
         _animator = GetComponent<Animator>();
+
         _verticalHash = Animator.StringToHash("Vertical");
         _horizontalHash = Animator.StringToHash("Horizontal");
     }
@@ -37,5 +44,38 @@ public class PlayerAnimationHandler : MonoBehaviour
             _ => 0f
         };
         _animator.SetFloat(_horizontalHash, clampHorizontal, 0.1f, Time.deltaTime);
+    }
+
+    public void PlayAnimation(string targetAnimation, bool isInteracting)
+    {
+        _animator.applyRootMotion = isInteracting;
+        _animator.SetBool("IsInteracting", isInteracting);
+        _animator.CrossFade(targetAnimation, 0.2f);
+
+        _velocityDuringAnimation = Vector3.zero;
+    }
+
+    private void OnAnimatorMove()
+    {
+        if (_inputHandler.IsInteracting == false) return;
+
+        float delta = Time.deltaTime;
+        _playerController.RB.drag = 0;
+
+        Vector3 deltaPosition = Anim.deltaPosition;
+        deltaPosition.y = 0;
+        var velocity = deltaPosition / delta;
+        _playerController.RB.velocity = (velocity + _velocityDuringAnimation);
+    }
+
+    public void ApplyVelocityDuringAnimation(float velocity)
+    {
+        if (_inputHandler.IsInteracting == false) return;
+
+        var _moveDirection = transform.forward.normalized * velocity;
+        _moveDirection.y = 0f;
+
+        // Gets applied during OnAnimatorMove
+        _velocityDuringAnimation = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
     }
 }

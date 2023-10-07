@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody _rb;
+    public Rigidbody RB;
     private GameObject _baseCam;
 
     public float MovementSpeed = 5;
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _rb = GetComponent<Rigidbody>();
+        RB = GetComponent<Rigidbody>();
         _inputHandler = GetComponent<PlayerInputHandler>();
         _cameraGO = Camera.main.transform;
 
@@ -33,7 +33,16 @@ public class PlayerController : MonoBehaviour
     public void Update()
     {
         float delta = Time.deltaTime;
+
         _inputHandler.ParseInput(delta);
+
+        UpdateMovement(delta);
+        UpdateRotation(delta);
+        UpdateRollAndSprint(delta);
+    }
+
+    private void UpdateMovement(float delta)
+    {
         _moveDirection = ((_cameraGO.forward * _inputHandler.VerticalMove)
             + (_cameraGO.right * _inputHandler.HorizontalMove))
             .normalized;
@@ -41,10 +50,9 @@ public class PlayerController : MonoBehaviour
         _moveDirection *= MovementSpeed;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
-        _rb.velocity = projectedVelocity;
+        RB.velocity = projectedVelocity;
 
         _animator.UpdateAnimation(0f, _inputHandler.FinalMovementAmount);
-        UpdateRotation(delta);
     }
 
     private void UpdateRotation(float delta)
@@ -61,5 +69,30 @@ public class PlayerController : MonoBehaviour
         Quaternion rotateVector = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * delta);
 
         transform.rotation = rotateVector;
+    }
+
+    private void UpdateRollAndSprint(float delta)
+    {
+        if (_inputHandler.IsInteracting) return;
+
+        if (_inputHandler.IsRolling)
+        {
+            _moveDirection = ((_cameraGO.forward * _inputHandler.VerticalMove)
+                + (_cameraGO.right * _inputHandler.HorizontalMove));
+            _moveDirection.y = 0;
+
+            if (_inputHandler.FinalMovementAmount > 0)
+            {
+                transform.rotation = Quaternion.LookRotation(_moveDirection);
+                _animator.PlayAnimation("DodgeRoll", true);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(_cameraGO.position - transform.position);
+                _animator.PlayAnimation("DodgeRoll", true);
+            }
+
+            _inputHandler.IsRolling = false;
+        }
     }
 }

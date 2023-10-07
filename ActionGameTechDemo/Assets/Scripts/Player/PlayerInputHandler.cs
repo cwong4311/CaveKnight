@@ -11,6 +11,9 @@ public class PlayerInputHandler : MonoBehaviour
     public float MouseX;
     public float MouseY;
 
+    public bool IsRolling;
+    public bool IsInteracting;
+
     private PlayerControls _inputActions;
     private CameraController _cameraController;
 
@@ -31,12 +34,14 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _inputActions.Player.Movement.performed += OnPlayerMovement;
         _inputActions.Player.Camera.performed += OnCameraMovement;
+        _inputActions.Player.Roll.started += OnRollStarted;
     }
 
     public void OnEnable()
     {
         _inputActions.Player.Movement.Enable();
         _inputActions.Player.Camera.Enable();
+        _inputActions.Player.Roll.Enable();
     }
 
     public void OnDisable()
@@ -67,16 +72,29 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void ParseInput(float delta)
     {
-        GetMovement(delta);
+        GetPlayerMovement(delta);
+        GetCameraMovement(delta);
     }
 
-    public void GetMovement(float delta)
+    public void GetPlayerMovement(float delta)
     {
+        if (IsInteracting) return;
+
         HorizontalMove = _movementInput.x;
         VerticalMove = _movementInput.y;
         FinalMovementAmount = Mathf.Clamp01(Mathf.Abs(HorizontalMove) + Mathf.Abs(VerticalMove));
+    }
 
+    public void GetCameraMovement(float delta)
+    {
         MouseX = _cameraInput.x;
         MouseY = _cameraInput.y;
+    }
+
+    public void OnRollStarted(InputAction.CallbackContext context)
+    {
+        if (IsInteracting) return;
+
+        IsRolling = true;
     }
 }
