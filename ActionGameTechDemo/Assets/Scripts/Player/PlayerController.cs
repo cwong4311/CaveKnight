@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
         UpdateMovement(delta);
         UpdateRotation(delta);
         UpdateRollAndSprint(delta);
+        UpdateAttack(delta);
     }
 
     private void UpdateMovement(float delta)
@@ -52,7 +53,7 @@ public class PlayerController : MonoBehaviour
             .normalized;
         _moveDirection.y = 0f;
         
-        float speed = IsSprinting ? SprintSpeed : MovementSpeed;
+        float speed = (IsSprinting && _inputHandler.FinalMovementAmount > 0.5f) ? SprintSpeed : MovementSpeed;
         _moveDirection *= speed;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
@@ -99,6 +100,30 @@ public class PlayerController : MonoBehaviour
             }
 
             _inputHandler.IsRolling = false;
+        }
+    }
+
+    private void UpdateAttack(float delta)
+    {
+        if (_inputHandler.IsInteracting) return;
+
+        if (_inputHandler.IsHeavyAttacking)
+        {
+            _animator.PlayAnimation("HeavyAttack", true);
+            _inputHandler.IsHeavyAttacking = false;
+        }
+        else if (_inputHandler.IsLightAttacking)
+        {
+            var attackStep = _inputHandler.LightComboStep;
+            var attackName = attackStep switch
+            {
+                0 => "LightAttack1",
+                1 => "LightAttack2",
+                _ => "LightAttack1"
+            };
+
+            _animator.PlayAnimation(attackName, true);
+            _inputHandler.IsLightAttacking = false;
         }
     }
 }

@@ -1669,8 +1669,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RB: {fileID: 0}
-  MovementSpeed: 5
+  MovementSpeed: 3
+  SprintSpeed: 5
   RotationSpeed: 10
+  IsSprinting: 0
 --- !u!114 &1961188755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1689,7 +1691,13 @@ MonoBehaviour:
   MouseX: 0
   MouseY: 0
   IsRolling: 0
+  IsSprinting: 0
   IsInteracting: 0
+  IsLightAttacking: 0
+  IsHeavyAttacking: 0
+  IsBlocking: 0
+  IsParrying: 0
+  LightComboStep: 0
 --- !u!54 &1961188756
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1729,6 +1737,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1961188752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f90c898885d03f47ab4ca898581637b, type: 3}
+  m_Script: {fileID: 11500000, guid: afe3f9cd1f09dd541aea270886037ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

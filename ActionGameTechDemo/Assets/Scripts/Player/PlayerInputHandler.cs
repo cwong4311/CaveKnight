@@ -13,14 +13,24 @@ public class PlayerInputHandler : MonoBehaviour
 
     public bool IsRolling;
     public bool IsSprinting;
-    public float RollInputTimer;
     public bool IsInteracting;
+
+    public bool IsLightAttacking;
+    public bool IsHeavyAttacking;
+    public bool IsBlocking;
+    public bool IsParrying;
+    public int LightComboStep = -1;
 
     private PlayerControls _inputActions;
     private CameraController _cameraController;
 
     private Vector2 _movementInput;
     private Vector2 _cameraInput;
+
+    private float _timeSinceLastRoll;
+    private float _timeSinceLastAttackInput;
+    private float _timeSinceLastAttackFinish;
+    private float _timeSinceLastBlock;
 
     public void Awake()
     {
@@ -35,9 +45,44 @@ public class PlayerInputHandler : MonoBehaviour
     public void Start()
     {
         _inputActions.Player.Movement.performed += OnPlayerMovement;
+
         _inputActions.Player.Camera.performed += OnCameraMovement;
+
         _inputActions.Player.Roll.started += OnShiftDown;
         _inputActions.Player.Roll.canceled += OnShiftUp;
+
+        _inputActions.Player.Attack.started += OnAttackButtonDown;
+        _inputActions.Player.Attack.canceled += OnAttackButtonUp;
+
+        _inputActions.Player.Block.started += OnBlockButtonDown;
+        _inputActions.Player.Block.canceled += OnBlockButtonUp;
+    }
+
+    public void Update()
+    {
+        if (IsInteracting)
+        {
+            _timeSinceLastAttackInput = 0f;
+            IsRolling = false;
+            IsLightAttacking = false;
+            IsHeavyAttacking = false;
+            IsParrying = false;
+        }
+        else
+        {
+            if (_timeSinceLastAttackInput > 0.05f)
+            {
+                var buttonReleaseDelay = Time.time - _timeSinceLastAttackInput;
+                if (buttonReleaseDelay > 0.4f)
+                {
+                    IsHeavyAttacking = true;
+                    LightComboStep = -1;
+
+                    _timeSinceLastAttackInput = 0f;
+                    _timeSinceLastAttackFinish = Time.time;
+                }
+            }
+        }
     }
 
     public void OnEnable()
@@ -45,6 +90,8 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Player.Movement.Enable();
         _inputActions.Player.Camera.Enable();
         _inputActions.Player.Roll.Enable();
+        _inputActions.Player.Attack.Enable();
+        _inputActions.Player.Block.Enable();
     }
 
     public void OnDisable()
@@ -99,24 +146,67 @@ public class PlayerInputHandler : MonoBehaviour
         if (IsInteracting)
         {
             IsSprinting = true;
-            RollInputTimer = 0f;
+            _timeSinceLastRoll = 0f;
         }
         else
         {
             IsSprinting = true;
             IsRolling = false;
-            RollInputTimer = Time.time;
+            _timeSinceLastRoll = Time.time;
         }
     }
 
     public void OnShiftUp(InputAction.CallbackContext context)
     {
-        if (Time.time - RollInputTimer < 0.5f && RollInputTimer > 0.01f)
+        if (Time.time - _timeSinceLastRoll < 0.3f && _timeSinceLastRoll > 0.01f)
         {
             IsRolling = true;
         }
 
         IsSprinting = false;
-        RollInputTimer = 0f;
+        _timeSinceLastRoll = 0f;
+    }
+
+    public void OnAttackButtonDown(InputAction.CallbackContext context)
+    {
+        if (IsInteracting) return;
+
+        _timeSinceLastAttackInput = Time.time;
+    }
+
+    public void OnAttackButtonUp(InputAction.CallbackContext context)
+    {
+        if (IsInteracting) return;
+
+        if (Time.time - _timeSinceLastAttackFinish > 1.5f)
+        {
+            LightComboStep = -1;
+        }
+
+        if (_timeSinceLastAttackInput > 0.05f)
+        {
+            var buttonReleaseDelay = Time.time - _timeSinceLastAttackInput;
+            if (buttonReleaseDelay > 0.35f)
+            {
+                IsHeavyAttacking = true;
+                LightComboStep = -1;
+            }
+            else if (buttonReleaseDelay <= 0.35f)
+            {
+                LightComboStep = (LightComboStep + 1) % 2;
+                IsLightAttacking = true;
+            }
+        }
+
+        _timeSinceLastAttackInput = 0f;
+        _timeSinceLastAttackFinish = Time.time;
+    }
+
+    public void OnBlockButtonDown(InputAction.CallbackContext context)
+    {
+    }
+
+    public void OnBlockButtonUp(InputAction.CallbackContext context)
+    {
     }
 }
