@@ -12,6 +12,7 @@ public class PlayerInputHandler : MonoBehaviour
     public float MouseY;
 
     private PlayerControls _inputActions;
+    private CameraController _cameraController;
 
     private Vector2 _movementInput;
     private Vector2 _cameraInput;
@@ -22,6 +23,8 @@ public class PlayerInputHandler : MonoBehaviour
         {
             _inputActions = new PlayerControls();
         }
+
+        _cameraController = CameraController.instance;
     }
 
     public void Start()
@@ -39,6 +42,17 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnDisable()
     {
         _inputActions.Disable();
+    }
+
+    private void FixedUpdate()
+    {
+        var delta = Time.fixedDeltaTime;
+
+        if (_cameraController != null)
+        {
+            _cameraController.FollowTarget(delta);
+            _cameraController.HandleCameraRotation(delta, MouseX, MouseY);
+        }
     }
 
     private void OnPlayerMovement(InputAction.CallbackContext context)

@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         _moveDirection = ((_cameraGO.forward * _inputHandler.VerticalMove)
             + (_cameraGO.right * _inputHandler.HorizontalMove))
             .normalized;
-
+        _moveDirection.y = 0f;
         _moveDirection *= MovementSpeed;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
