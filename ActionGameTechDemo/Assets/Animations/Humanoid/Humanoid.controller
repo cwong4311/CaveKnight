@@ -25,9 +25,17 @@ BlendTree:
     m_DirectBlendParameter: Horizontal
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 7c31d763a4fdce4438b5cc48ae514ab1, type: 3}
+    m_Motion: {fileID: -203655887218126122, guid: 65bc5a49fe729ce4280cca58a4da1609, type: 3}
     m_Threshold: 0
     m_Position: {x: 1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Horizontal
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -203655887218126122, guid: 7c31d763a4fdce4438b5cc48ae514ab1, type: 3}
+    m_Threshold: 0
+    m_Position: {x: 2, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Horizontal
@@ -180,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29940c88e8d2c4644b0e0de00bd4101c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VelocityApplied: 20
+  VelocityApplied: 5
 --- !u!1107 &6471776239563242450
 AnimatorStateMachine:
   serializedVersion: 6

@@ -7,8 +7,10 @@ public class PlayerController : MonoBehaviour
     public Rigidbody RB;
     private GameObject _baseCam;
 
-    public float MovementSpeed = 5;
-    public float RotationSpeed = 10;
+    public float MovementSpeed = 5f;
+    public float SprintSpeed = 8f;
+    public float RotationSpeed = 10f;
+    public bool IsSprinting;
 
     private Transform _cameraGO;
     private PlayerInputHandler _inputHandler;
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour
         float delta = Time.deltaTime;
 
         _inputHandler.ParseInput(delta);
+        IsSprinting = _inputHandler.IsSprinting;
 
         UpdateMovement(delta);
         UpdateRotation(delta);
@@ -47,12 +50,14 @@ public class PlayerController : MonoBehaviour
             + (_cameraGO.right * _inputHandler.HorizontalMove))
             .normalized;
         _moveDirection.y = 0f;
-        _moveDirection *= MovementSpeed;
+        
+        float speed = IsSprinting ? SprintSpeed : MovementSpeed;
+        _moveDirection *= speed;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
         RB.velocity = projectedVelocity;
 
-        _animator.UpdateAnimation(0f, _inputHandler.FinalMovementAmount);
+        _animator.UpdateAnimation(0f, _inputHandler.FinalMovementAmount, IsSprinting);
     }
 
     private void UpdateRotation(float delta)

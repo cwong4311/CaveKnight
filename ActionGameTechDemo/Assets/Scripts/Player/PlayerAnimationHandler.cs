@@ -22,7 +22,7 @@ public class PlayerAnimationHandler : MonoBehaviour
         _horizontalHash = Animator.StringToHash("Horizontal");
     }
 
-    public void UpdateAnimation(float vertical, float horizontal)
+    public void UpdateAnimation(float vertical, float horizontal, bool isSprinting)
     {
         float clampVertical = vertical switch
         {
@@ -32,9 +32,7 @@ public class PlayerAnimationHandler : MonoBehaviour
             < 0f => -0.5f,
             _ => 0f
         };
-        _animator.SetFloat(_verticalHash, clampVertical, 0.1f, Time.deltaTime);
-
-
+        
         float clampHorizontal = horizontal switch
         {
             > 0.55f => 1f,
@@ -43,6 +41,25 @@ public class PlayerAnimationHandler : MonoBehaviour
             < 0f => -0.5f,
             _ => 0f
         };
+
+        if (isSprinting)
+        {
+            clampVertical = clampVertical switch
+            {
+                > 0 => 2f,
+                < 0 => -2f,
+                _ => 0f
+            };
+
+            clampHorizontal = clampHorizontal switch
+            {
+                > 0 => 2f,
+                < 0 => -2f,
+                _ => 0f
+            };
+        }
+
+        _animator.SetFloat(_verticalHash, clampVertical, 0.1f, Time.deltaTime);
         _animator.SetFloat(_horizontalHash, clampHorizontal, 0.1f, Time.deltaTime);
     }
 

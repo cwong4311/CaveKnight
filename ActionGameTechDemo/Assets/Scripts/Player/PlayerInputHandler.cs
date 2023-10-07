@@ -12,6 +12,8 @@ public class PlayerInputHandler : MonoBehaviour
     public float MouseY;
 
     public bool IsRolling;
+    public bool IsSprinting;
+    public float RollInputTimer;
     public bool IsInteracting;
 
     private PlayerControls _inputActions;
@@ -34,7 +36,8 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _inputActions.Player.Movement.performed += OnPlayerMovement;
         _inputActions.Player.Camera.performed += OnCameraMovement;
-        _inputActions.Player.Roll.started += OnRollStarted;
+        _inputActions.Player.Roll.started += OnShiftDown;
+        _inputActions.Player.Roll.canceled += OnShiftUp;
     }
 
     public void OnEnable()
@@ -91,10 +94,29 @@ public class PlayerInputHandler : MonoBehaviour
         MouseY = _cameraInput.y;
     }
 
-    public void OnRollStarted(InputAction.CallbackContext context)
+    public void OnShiftDown(InputAction.CallbackContext context)
     {
-        if (IsInteracting) return;
+        if (IsInteracting)
+        {
+            IsSprinting = true;
+            RollInputTimer = 0f;
+        }
+        else
+        {
+            IsSprinting = true;
+            IsRolling = false;
+            RollInputTimer = Time.time;
+        }
+    }
 
-        IsRolling = true;
+    public void OnShiftUp(InputAction.CallbackContext context)
+    {
+        if (Time.time - RollInputTimer < 0.5f && RollInputTimer > 0.01f)
+        {
+            IsRolling = true;
+        }
+
+        IsSprinting = false;
+        RollInputTimer = 0f;
     }
 }
