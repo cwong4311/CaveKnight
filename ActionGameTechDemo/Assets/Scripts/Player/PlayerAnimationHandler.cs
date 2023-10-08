@@ -13,6 +13,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     private int _horizontalHash;
 
     private Vector3 _velocityDuringAnimation;
+    private Vector3 _lastMoveDirection;
 
     public void Initialise()
     {
@@ -89,6 +90,17 @@ public class PlayerAnimationHandler : MonoBehaviour
     {
         if (_inputHandler.IsInteracting == false) return;
 
+        var _moveDirection = _lastMoveDirection.normalized * velocity;
+        _moveDirection.y = 0f;
+
+        // Gets applied during OnAnimatorMove
+        _velocityDuringAnimation = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
+    }
+
+    public void ApplyForwardVelocityDuringAnimation(float velocity)
+    {
+        if (_inputHandler.IsInteracting == false) return;
+
         var _moveDirection = transform.forward.normalized * velocity;
         _moveDirection.y = 0f;
 
@@ -99,5 +111,10 @@ public class PlayerAnimationHandler : MonoBehaviour
     public void StopApplyingVelocityDuringAnimation()
     {
         _velocityDuringAnimation = Vector3.zero;
+    }
+
+    public void UpdateMovementDirection(Vector3 direction)
+    {
+        _lastMoveDirection = direction;
     }
 }

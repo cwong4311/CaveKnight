@@ -21,6 +21,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool IsParrying;
     public int LightComboStep = -1;
 
+    public bool LockedOn;
+
     private PlayerControls _inputActions;
     private CameraController _cameraController;
 
@@ -56,6 +58,8 @@ public class PlayerInputHandler : MonoBehaviour
 
         _inputActions.Player.Block.started += OnBlockButtonDown;
         _inputActions.Player.Block.canceled += OnBlockButtonUp;
+
+        _inputActions.Player.Lockon.performed += OnLockon;
     }
 
     public void Update()
@@ -92,6 +96,7 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Player.Roll.Enable();
         _inputActions.Player.Attack.Enable();
         _inputActions.Player.Block.Enable();
+        _inputActions.Player.Lockon.Enable();
     }
 
     public void OnDisable()
@@ -208,5 +213,22 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnBlockButtonUp(InputAction.CallbackContext context)
     {
+    }
+
+    public void OnLockon(InputAction.CallbackContext context)
+    {
+        if (!LockedOn)
+        {
+            LockedOn = _cameraController.HandleLockon();
+        }
+        else
+        {
+            var canCycle = _cameraController.CycleLockon();
+            if (canCycle == false)
+            {
+                _cameraController.ClearLockon();
+                LockedOn = false;
+            }
+        }
     }
 }
