@@ -10,6 +10,7 @@ public struct EnemyCommands
     public float attackDamage;
 }
 
+// TO DO: Refactor this
 public class EnemyController : CharacterManager
 {
     public EnemyCommands[] EnemyCommands;

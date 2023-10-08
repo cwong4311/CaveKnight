@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class AI_State : StateMachineBehaviour
 {
+    // TO DO: Refactor to actual StateMachine (code)
     public string[] UsableCommands;
 
     protected EnemyController _enemyController;

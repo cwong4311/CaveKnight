@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public float MaxHealth = 1000;
-    public float CurrentHealth = 1000;
+    public float MaxHealth = 300;
+    public float CurrentHealth = 300;
 
     public bool IsInvulnerable;
 
