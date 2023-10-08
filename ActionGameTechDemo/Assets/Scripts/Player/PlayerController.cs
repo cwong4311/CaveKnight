@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInputHandler _inputHandler;
     private PlayerAnimationHandler _animator;
+    private PlayerWeapon _weapon;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,12 @@ public class PlayerController : MonoBehaviour
         if (_animator != null)
         {
             _animator.Initialise();
+        }
+
+        _weapon = GetComponentInChildren<PlayerWeapon>();
+        if (_weapon != null)
+        {
+            _weapon.Initialise();
         }
     }
 
@@ -109,20 +116,12 @@ public class PlayerController : MonoBehaviour
 
         if (_inputHandler.IsHeavyAttacking)
         {
-            _animator.PlayAnimation("HeavyAttack", true);
+            _weapon.HeavyAttack();
             _inputHandler.IsHeavyAttacking = false;
         }
         else if (_inputHandler.IsLightAttacking)
         {
-            var attackStep = _inputHandler.LightComboStep;
-            var attackName = attackStep switch
-            {
-                0 => "LightAttack1",
-                1 => "LightAttack2",
-                _ => "LightAttack1"
-            };
-
-            _animator.PlayAnimation(attackName, true);
+            _weapon.LightAttack(_inputHandler.LightComboStep);
             _inputHandler.IsLightAttacking = false;
         }
     }

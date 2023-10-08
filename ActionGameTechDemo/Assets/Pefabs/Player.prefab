@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2936346402218268967}
   - component: {fileID: 2936346402218268964}
+  - component: {fileID: 4915329462744785262}
   m_Layer: 10
   m_Name: SwordCollider
   m_TagString: Untagged
@@ -40,11 +41,23 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2936346402218268966}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.10352539, y: 0.10007602, z: 1.0600231}
-  m_Center: {x: 0.049714588, y: -0.008105831, z: 0.31197283}
+  m_Size: {x: 0.22760698, y: 0.10007602, z: 1.1552489}
+  m_Center: {x: 0.046925124, y: -0.008105796, z: 0.35958454}
+--- !u!114 &4915329462744785262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2936346402218268966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e5ebc7b708240489d103ca9907ea7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2936346402416061502
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,10 +71,9 @@ GameObject:
   - component: {fileID: 2936346402416061498}
   - component: {fileID: 2936346402416061501}
   - component: {fileID: 2936346402416061500}
-  - component: {fileID: 2936346402416061496}
   m_Layer: 10
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,18 +166,6 @@ MonoBehaviour:
   SprintSpeed: 5
   RotationSpeed: 10
   IsSprinting: 0
---- !u!114 &2936346402416061496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2936346402416061502}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afe3f9cd1f09dd541aea270886037ddc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2936346401532131860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -561,6 +561,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1770194634283608285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2629704912083912517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe3f9cd1f09dd541aea270886037ddc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LightDamage1: 20
+  LightDamage2: 30
+  HeavyDamage: 80
+  _weaponHolder: {fileID: 4915329462744785262}
 --- !u!114 &2936346402585720261
 MonoBehaviour:
   m_ObjectHideFlags: 0
