@@ -56,6 +56,10 @@ MonoBehaviour:
   CameraSphereRadius: 0.2
   CameraCollisionOffset: 0.2
   MinCollisionOffset: 0.2
+  maxLockonDistance: 30
+  closestLockonTarget: {fileID: 0}
+  currentLockonTarget: {fileID: 0}
+  lockonIndex: 0
 --- !u!1 &4710325273890305560
 GameObject:
   m_ObjectHideFlags: 0

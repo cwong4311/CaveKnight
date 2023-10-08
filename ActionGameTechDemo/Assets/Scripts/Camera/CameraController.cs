@@ -54,8 +54,6 @@ public class CameraController : MonoBehaviour
     {
         if (currentLockonTarget != null)
         {
-            float velocity = 0;
-
             Vector3 dir = (currentLockonTarget.position - transform.position).normalized;
             dir.y = 0;
 
