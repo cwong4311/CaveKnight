@@ -18,11 +18,24 @@ public class ApplyForwardVelocityDuringAnimation : StateMachineBehaviour
         ApplyVelocity();
     }
 
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        StopApplyVelocity();
+    }
+
     private void ApplyVelocity()
     {
         if (_playerAnimator != null)
         {
             _playerAnimator.ApplyVelocityDuringAnimation(VelocityApplied);
+        }
+    }
+
+    private void StopApplyVelocity()
+    {
+        if (_playerAnimator != null)
+        {
+            _playerAnimator.StopApplyingVelocityDuringAnimation();
         }
     }
 }

@@ -95,4 +95,9 @@ public class PlayerAnimationHandler : MonoBehaviour
         // Gets applied during OnAnimatorMove
         _velocityDuringAnimation = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
     }
+
+    public void StopApplyingVelocityDuringAnimation()
+    {
+        _velocityDuringAnimation = Vector3.zero;
+    }
 }
