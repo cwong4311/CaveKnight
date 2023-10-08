@@ -80,6 +80,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleCursor"",
+                    ""type"": ""Button"",
+                    ""id"": ""01922c23-13cc-4bcc-8912-9f5b10659ae5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -203,6 +212,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Lockon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb9e88f4-e777-4005-9fe1-76ddf36fe572"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleCursor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -217,6 +237,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
         m_Player_Lockon = m_Player.FindAction("Lockon", throwIfNotFound: true);
+        m_Player_ToggleCursor = m_Player.FindAction("ToggleCursor", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -284,6 +305,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Block;
     private readonly InputAction m_Player_Lockon;
+    private readonly InputAction m_Player_ToggleCursor;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -294,6 +316,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputAction @Lockon => m_Wrapper.m_Player_Lockon;
+        public InputAction @ToggleCursor => m_Wrapper.m_Player_ToggleCursor;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -321,6 +344,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lockon.started += instance.OnLockon;
             @Lockon.performed += instance.OnLockon;
             @Lockon.canceled += instance.OnLockon;
+            @ToggleCursor.started += instance.OnToggleCursor;
+            @ToggleCursor.performed += instance.OnToggleCursor;
+            @ToggleCursor.canceled += instance.OnToggleCursor;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -343,6 +369,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lockon.started -= instance.OnLockon;
             @Lockon.performed -= instance.OnLockon;
             @Lockon.canceled -= instance.OnLockon;
+            @ToggleCursor.started -= instance.OnToggleCursor;
+            @ToggleCursor.performed -= instance.OnToggleCursor;
+            @ToggleCursor.canceled -= instance.OnToggleCursor;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -368,5 +397,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
         void OnLockon(InputAction.CallbackContext context);
+        void OnToggleCursor(InputAction.CallbackContext context);
     }
 }

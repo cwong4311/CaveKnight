@@ -34,6 +34,8 @@ public class PlayerInputHandler : MonoBehaviour
     private float _timeSinceLastAttackFinish;
     private float _timeSinceLastBlock;
 
+    private bool _cursorLocked;
+
     public void Awake()
     {
         if (_inputActions == null)
@@ -42,6 +44,10 @@ public class PlayerInputHandler : MonoBehaviour
         }
 
         _cameraController = FindObjectOfType<CameraController>();
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        _cursorLocked = true;
     }
 
     public void Start()
@@ -60,6 +66,8 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Player.Block.canceled += OnBlockButtonUp;
 
         _inputActions.Player.Lockon.performed += OnLockon;
+
+        _inputActions.Player.ToggleCursor.performed += OnEscapeToggle;
     }
 
     public void Update()
@@ -97,6 +105,7 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Player.Attack.Enable();
         _inputActions.Player.Block.Enable();
         _inputActions.Player.Lockon.Enable();
+        _inputActions.Player.ToggleCursor.Enable();
     }
 
     public void OnDisable()
@@ -229,6 +238,23 @@ public class PlayerInputHandler : MonoBehaviour
                 _cameraController.ClearLockon();
                 LockedOn = false;
             }
+        }
+    }
+    public void OnEscapeToggle(InputAction.CallbackContext context)
+    {
+        if (_cursorLocked)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+            _cursorLocked = false;
+        }
+        else
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            _cursorLocked = true;
         }
     }
 }
