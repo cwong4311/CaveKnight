@@ -27,6 +27,12 @@ public class CameraController : MonoBehaviour
     public float CameraCollisionOffset = 0.2f;
     public float MinCollisionOffset = 0.2f;
 
+    public float maxLockonDistance = 30f;
+    private List<CharacterManager> lockonTargets = new List<CharacterManager>();
+    public Transform closestLockonTarget;
+    public Transform currentLockonTarget;
+    public int lockonIndex;
+
     private void Awake()
     {
         _defaultPosition = CameraTransform.localPosition.z;
@@ -46,12 +52,29 @@ public class CameraController : MonoBehaviour
 
     public void HandleCameraRotation(float delta, float mouseX, float mouseY)
     {
-        _lookAngle += (mouseX * LookSpeed) / delta;
-        _pivotAngle -= (mouseY * PivotSpeed) / delta;
-        _pivotAngle = Mathf.Clamp(_pivotAngle, MinPivot, MaxPivot);
+        if (currentLockonTarget != null)
+        {
+            float velocity = 0;
 
-        transform.rotation = Quaternion.Euler(Vector3.up * _lookAngle);
-        PivotTransform.localRotation = Quaternion.Euler(Vector3.right * _pivotAngle);
+            Vector3 dir = (currentLockonTarget.position - transform.position).normalized;
+            dir.y = 0;
+
+            transform.rotation = Quaternion.LookRotation(dir);
+
+            dir = (currentLockonTarget.position - PivotTransform.position).normalized;
+            var eulerAngles = Quaternion.LookRotation(dir).eulerAngles;
+            eulerAngles.y = 0;
+            PivotTransform.localEulerAngles = eulerAngles;
+        }
+        else
+        {
+            _lookAngle += (mouseX * LookSpeed) / delta;
+            _pivotAngle -= (mouseY * PivotSpeed) / delta;
+            _pivotAngle = Mathf.Clamp(_pivotAngle, MinPivot, MaxPivot);
+
+            transform.rotation = Quaternion.Euler(Vector3.up * _lookAngle);
+            PivotTransform.localRotation = Quaternion.Euler(Vector3.right * _pivotAngle);
+        }
     }
 
     private void HandleCameraCollision(float delta)
@@ -72,5 +95,75 @@ public class CameraController : MonoBehaviour
 
         _camPosition.z = Mathf.Lerp(CameraTransform.localPosition.z, _targetPosition, delta / 0.2f);
         CameraTransform.localPosition = _camPosition;
+    }
+
+    public bool HandleLockon()
+    {
+        float shortestDistance = Mathf.Infinity;
+
+        Collider[] colliders = Physics.OverlapSphere(TargetTransform.position, 50);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            var character = colliders[i].GetComponent<CharacterManager>();
+            if (character != null)
+            {
+                Vector3 lockonDir = character.transform.position - TargetTransform.position;
+                float distFromTarget = Vector3.Distance(TargetTransform.position, character.transform.position);
+
+                float viewAngle = Vector3.Angle(lockonDir, CameraTransform.forward);
+                if (character.transform.root != TargetTransform.transform.root
+                    && viewAngle > -50 && viewAngle < 50
+                    && distFromTarget <= maxLockonDistance)
+                {
+                    lockonTargets.Add(character);
+                }
+            }
+        }
+
+        for (int k = 0; k < lockonTargets.Count; k++)
+        {
+            float distFromTarget = Vector3.Distance(TargetTransform.position, lockonTargets[k].transform.position);
+
+            if (distFromTarget < shortestDistance)
+            {
+                shortestDistance = distFromTarget;
+                closestLockonTarget = lockonTargets[k].transform;
+                lockonIndex = k;
+            }
+        }
+
+        if (closestLockonTarget != null)
+        {
+            currentLockonTarget = closestLockonTarget;
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Cycles the lockon in order. If no more left to cycle, returns false
+    /// </summary>
+    /// <returns></returns>
+    public bool CycleLockon()
+    {
+        if (lockonTargets == null || lockonTargets.Count <= 0) return false;
+
+        lockonIndex = (lockonIndex + 1) % lockonTargets.Count;
+        currentLockonTarget = lockonTargets[lockonIndex].transform;
+        if (currentLockonTarget == closestLockonTarget)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void ClearLockon()
+    {
+        lockonTargets.Clear();
+        currentLockonTarget = null;
+        closestLockonTarget = null;
+        lockonIndex = 0;
     }
 }
