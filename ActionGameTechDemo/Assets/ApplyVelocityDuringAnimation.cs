@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ApplyForwardVelocityDuringAnimation : StateMachineBehaviour
+public class ApplyVelocityDuringAnimation : StateMachineBehaviour
 {
     public float VelocityApplied;
     private PlayerAnimationHandler _playerAnimator;

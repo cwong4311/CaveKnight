@@ -101,7 +101,7 @@ public class CameraController : MonoBehaviour
     {
         float shortestDistance = Mathf.Infinity;
 
-        Collider[] colliders = Physics.OverlapSphere(TargetTransform.position, 50);
+        Collider[] colliders = Physics.OverlapSphere(TargetTransform.position, 30);
         for (int i = 0; i < colliders.Length; i++)
         {
             var character = colliders[i].GetComponent<CharacterManager>();

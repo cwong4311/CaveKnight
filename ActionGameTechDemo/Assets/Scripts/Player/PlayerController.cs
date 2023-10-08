@@ -5,12 +5,14 @@ using UnityEngine;
 public class PlayerController : CharacterManager
 {
     public Rigidbody RB;
+    public CameraController CameraController;
     private GameObject _baseCam;
 
     public float MovementSpeed = 5f;
     public float SprintSpeed = 8f;
     public float RotationSpeed = 10f;
     public bool IsSprinting;
+    public bool IsRolling;
 
     private Transform _cameraGO;
     private Vector3 _moveDirection;
@@ -24,7 +26,6 @@ public class PlayerController : CharacterManager
     {
         RB = GetComponent<Rigidbody>();
         _inputHandler = GetComponent<PlayerInputHandler>();
-        _cameraGO = Camera.main.transform;
 
         _animator = GetComponentInChildren<PlayerAnimationHandler>();
         if (_animator != null)
@@ -37,6 +38,9 @@ public class PlayerController : CharacterManager
         {
             _weapon.Initialise();
         }
+
+        _cameraGO = Camera.main.transform;
+        CameraController = FindObjectOfType<CameraController>();
     }
 
     public void Update()
@@ -46,6 +50,11 @@ public class PlayerController : CharacterManager
         _inputHandler.IsInteracting = _animator.Anim.GetBool("IsInteracting");
         _inputHandler.ParseInput(delta);
         IsSprinting = _inputHandler.IsSprinting;
+
+        if (_inputHandler.IsInteracting == false && IsRolling)
+        {
+            IsRolling = false;
+        }
 
         UpdateMovement(delta);
         UpdateRotation(delta);
@@ -66,23 +75,61 @@ public class PlayerController : CharacterManager
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
         RB.velocity = projectedVelocity;
 
-        _animator.UpdateAnimation(0f, _inputHandler.FinalMovementAmount, IsSprinting);
+        if (_inputHandler.LockedOn && !IsSprinting)
+        {
+            _animator.UpdateAnimation(_inputHandler.VerticalMove, _inputHandler.HorizontalMove, false);
+        }
+        else
+        {
+            _animator.UpdateAnimation(_inputHandler.FinalMovementAmount, 0f, IsSprinting);
+        }
     }
 
     private void UpdateRotation(float delta)
     {
-        Vector3 targetDir = ((_cameraGO.forward * _inputHandler.VerticalMove)
-            + (_cameraGO.right * _inputHandler.HorizontalMove))
-            .normalized;
-        targetDir.y = 0;
+        if (_inputHandler.LockedOn)
+        {
+            if (IsSprinting || IsRolling)
+            {
+                Vector3 targetDir = ((CameraController.CameraTransform.forward * _inputHandler.VerticalMove)
+                   + (CameraController.CameraTransform.right * _inputHandler.HorizontalMove))
+                   .normalized;
+                targetDir.y = 0;
 
-        if (targetDir == Vector3.zero)
-            targetDir = transform.forward;
+                if (targetDir == Vector3.zero)
+                    targetDir = transform.forward;
 
-        Quaternion targetRotation = Quaternion.LookRotation(targetDir);
-        Quaternion rotateVector = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * delta);
+                Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+                Quaternion rotateVector = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * delta);
 
-        transform.rotation = rotateVector;
+                transform.rotation = rotateVector;
+            }
+            else
+            {
+                Vector3 rotationDir = (CameraController.currentLockonTarget.position - transform.position).normalized;
+                rotationDir.y = 0;
+
+                Quaternion targetRotation = Quaternion.LookRotation(rotationDir);
+                Quaternion rotateVector = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * delta);
+
+                transform.rotation = rotateVector;
+            }
+        }
+        else
+        {
+            Vector3 targetDir = ((_cameraGO.forward * _inputHandler.VerticalMove)
+                + (_cameraGO.right * _inputHandler.HorizontalMove))
+                .normalized;
+            targetDir.y = 0;
+
+            if (targetDir == Vector3.zero)
+                targetDir = transform.forward;
+
+            Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+            Quaternion rotateVector = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * delta);
+
+            transform.rotation = rotateVector;
+        }
     }
 
     private void UpdateRollAndSprint(float delta)
@@ -97,15 +144,20 @@ public class PlayerController : CharacterManager
 
             if (_inputHandler.FinalMovementAmount > 0)
             {
+                _animator.UpdateMovementDirection(_moveDirection);
                 transform.rotation = Quaternion.LookRotation(_moveDirection);
                 _animator.PlayAnimation("DodgeRoll", true);
             }
             else
             {
+                var backwards = (_cameraGO.forward * -1);
+                backwards.y = 0;
+                _animator.UpdateMovementDirection(backwards);
                 transform.rotation = Quaternion.LookRotation(_cameraGO.position - transform.position);
                 _animator.PlayAnimation("DodgeRoll", true);
             }
 
+            IsRolling = true;
             _inputHandler.IsRolling = false;
         }
     }
