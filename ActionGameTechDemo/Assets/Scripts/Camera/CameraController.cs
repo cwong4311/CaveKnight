@@ -115,7 +115,21 @@ public class CameraController : MonoBehaviour
                     && viewAngle > -50 && viewAngle < 50
                     && distFromTarget <= maxLockonDistance)
                 {
-                    lockonTargets.Add(character);
+                    bool hasCollision = false;
+                    RaycastHit[] hits = Physics.RaycastAll(TargetTransform.transform.position, lockonDir, distFromTarget);
+                    if (hits != null)
+                    {
+                        foreach (var hit in hits)
+                        {
+                            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Environment"))
+                            {
+                                hasCollision = true;
+                            }
+                        }
+                    }
+
+                    if (!hasCollision)
+                        lockonTargets.Add(character);
                 }
             }
         }
