@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public float MaxHealth = 1000;
-    public float CurrentHealth = 1000;
+    public float MaxHealth = 10000;
+    public float CurrentHealth = 10000;
 
     public bool IsInvulnerable;
     private EnemyController _controller;
+
+    [SerializeField]
+    private HealthBar _healthBar;
 
     public void OnEnable()
     {
         CurrentHealth = MaxHealth;
         _controller = GetComponent<EnemyController>();
+
+        _healthBar.SetMaxHealth((int)MaxHealth);
     }
 
     public void TakeDamage(float damage)
@@ -26,6 +31,7 @@ public class EnemyHealth : MonoBehaviour
             Die();
         }
 
+        _healthBar.SetHealth((int)CurrentHealth);
         _controller.GetHit();
     }
 
