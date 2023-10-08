@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class AttackState : AI_State
 {
+    public float DelayBeforeAttackActive;
+    public float Damage;
+    public bool IsBite;
+
+    private float _timeSinceEntering;
     private Quaternion _targetRotationToPlayer;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -11,6 +16,7 @@ public class AttackState : AI_State
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         GetRotationToTarget();
+        _timeSinceEntering = 0f;
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -18,6 +24,18 @@ public class AttackState : AI_State
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         RotateToPlayer();
+        _timeSinceEntering += Time.deltaTime;
+        if (_timeSinceEntering >= DelayBeforeAttackActive)
+        {
+            ActiveAttack();
+        }
+    }
+
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        base.OnStateExit(animator, stateInfo, layerIndex);
+
+        DeactiveAttack();
     }
 
     private void GetRotationToTarget()
@@ -39,5 +57,23 @@ public class AttackState : AI_State
         }
 
         return false;
+    }
+
+    private void ActiveAttack()
+    {
+        if (IsBite)
+        {
+            _enemyController.Bite.ActivateWeapon(Damage);
+        }
+        else
+        {
+            _enemyController.Tail.ActivateWeapon(Damage);
+        }
+    }
+
+    private void DeactiveAttack()
+    {
+        _enemyController.Bite.DeactivateWeapon();
+        _enemyController.Tail.DeactivateWeapon();
     }
 }

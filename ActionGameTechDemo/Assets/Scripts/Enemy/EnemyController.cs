@@ -16,6 +16,9 @@ public class EnemyController : CharacterManager
     public float PlayerDetectionRange;
     public Transform TargetTransform;
     public Rigidbody RB;
+    public WeaponDamager Bite;
+    public WeaponDamager Tail;
+    public EnemyFireball Fireball;
 
     public float MaxDistance = 50;
     public float MinDistance = 5f;
@@ -29,6 +32,8 @@ public class EnemyController : CharacterManager
 
     public string LastPerformedAction = null;
     public string CurrentAction;
+
+    private bool _hitArmour;
 
     public void Awake()
     {
@@ -63,6 +68,7 @@ public class EnemyController : CharacterManager
         LastPerformedAction = CurrentAction;
         CurrentAction = targetAnimation;
 
+        _hitArmour = false;
         _enemyAnimator.CrossFade(targetAnimation, 0.2f);
     }
 
@@ -70,6 +76,20 @@ public class EnemyController : CharacterManager
     {
         LastPerformedAction = CurrentAction;
         CurrentAction = stateName;
+    }
+
+    public void SpawnFireball(Vector3 destination)
+    {
+        Fireball.SpawnFireball(destination);
+    }
+
+    public void GetHit()
+    {
+        if (CurrentAction == "Idle" && !_hitArmour)
+        {
+            _enemyAnimator.CrossFade("Get Hit", 0.2f);
+            _hitArmour = true;
+        }
     }
 
     public void OnDrawGizmos()
