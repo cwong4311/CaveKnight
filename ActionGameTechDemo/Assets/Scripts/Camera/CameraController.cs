@@ -141,7 +141,7 @@ public class CameraController : MonoBehaviour
             if (distFromTarget < shortestDistance)
             {
                 shortestDistance = distFromTarget;
-                closestLockonTarget = lockonTargets[k].transform;
+                closestLockonTarget = lockonTargets[k].LockOnTransform ?? lockonTargets[k].transform;
                 lockonIndex = k;
             }
         }
@@ -164,7 +164,7 @@ public class CameraController : MonoBehaviour
         if (lockonTargets == null || lockonTargets.Count <= 0) return false;
 
         lockonIndex = (lockonIndex + 1) % lockonTargets.Count;
-        currentLockonTarget = lockonTargets[lockonIndex].transform;
+        currentLockonTarget = lockonTargets[lockonIndex].LockOnTransform ?? lockonTargets[lockonIndex].transform;
         if (currentLockonTarget == closestLockonTarget)
         {
             return false;
