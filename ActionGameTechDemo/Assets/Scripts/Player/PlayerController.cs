@@ -20,6 +20,7 @@ public class PlayerController : CharacterManager
     private PlayerInputHandler _inputHandler;
     private PlayerAnimationHandler _animator;
     private PlayerWeapon _weapon;
+    private PlayerHealth _health;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,8 @@ public class PlayerController : CharacterManager
         {
             _weapon.Initialise();
         }
+
+        _health = GetComponent<PlayerHealth>();
 
         _cameraGO = Camera.main.transform;
         CameraController = FindObjectOfType<CameraController>();
@@ -157,6 +160,7 @@ public class PlayerController : CharacterManager
                 _animator.PlayAnimation("DodgeRoll", true);
             }
 
+            _health.SetTemporaryInvuln(1f);
             IsRolling = true;
             _inputHandler.IsRolling = false;
         }
@@ -176,5 +180,11 @@ public class PlayerController : CharacterManager
             _weapon.LightAttack(_inputHandler.LightComboStep);
             _inputHandler.IsLightAttacking = false;
         }
+    }
+
+    public void GetHit()
+    {
+        _animator.PlayAnimation("Hit", true);
+        _weapon.DeactivateWeapon();
     }
 }

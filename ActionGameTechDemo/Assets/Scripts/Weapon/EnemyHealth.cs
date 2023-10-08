@@ -8,10 +8,12 @@ public class EnemyHealth : MonoBehaviour
     public float CurrentHealth = 1000;
 
     public bool IsInvulnerable;
+    private EnemyController _controller;
 
     public void OnEnable()
     {
         CurrentHealth = MaxHealth;
+        _controller = GetComponent<EnemyController>();
     }
 
     public void TakeDamage(float damage)
@@ -23,6 +25,8 @@ public class EnemyHealth : MonoBehaviour
         {
             Die();
         }
+
+        _controller.GetHit();
     }
 
     public void Die()

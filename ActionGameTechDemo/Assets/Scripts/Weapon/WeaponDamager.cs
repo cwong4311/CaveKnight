@@ -20,6 +20,7 @@ public class WeaponDamager : MonoBehaviour
         _damageCollider.enabled = false;
     }
 
+    // TO DO: Damage Once
     public void OnTriggerEnter(Collider collision)
     {
         if (IsDamageable(collision) && _damageDealt > 0.01f)
