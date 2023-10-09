@@ -79,9 +79,9 @@ public class EnemyController : CharacterManager
         CurrentAction = stateName;
     }
 
-    public void SpawnFireball(Vector3 destination)
+    public void SpawnFireball(Transform target)
     {
-        Fireball.SpawnFireball(destination);
+        Fireball.SpawnFireball(target);
     }
 
     public void GetHit()

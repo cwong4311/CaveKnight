@@ -49,6 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lifetime: 5
   Speed: 10
+  Tracking: 3
+  Damage: 40
+  ExplosionPF: {fileID: 100000, guid: ca4d53a6dc2e2c8479a25f0df43c51ed, type: 3}
 --- !u!54 &-2600937849772316574
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -73,7 +76,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100002}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.689028
