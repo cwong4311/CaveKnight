@@ -15,6 +15,9 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerController _controller;
 
+    [SerializeField]
+    private HealthBar _healthBar;
+
     public void Awake()
     {
         _controller = GetComponent<PlayerController>();
@@ -23,6 +26,7 @@ public class PlayerHealth : MonoBehaviour
     public void OnEnable()
     {
         CurrentHealth = MaxHealth;
+        _healthBar.SetMaxHealth((int)MaxHealth);
     }
 
     public void Update()
@@ -42,12 +46,12 @@ public class PlayerHealth : MonoBehaviour
         if (IsInvulnerable) return;
 
         CurrentHealth -= damage;
-        if (CurrentHealth <= 0)
+        if (CurrentHealth <= 0.01f)
         {
             Die();
-            return;
         }
 
+        _healthBar.SetHealth((int)CurrentHealth);
         _controller.GetHit();
     }
 
