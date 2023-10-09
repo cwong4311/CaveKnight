@@ -121,7 +121,7 @@ public class CameraController : MonoBehaviour
                         {
                             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Environment"))
                             {
-                                hasCollision = true;
+                                //hasCollision = true;
                             }
                         }
                     }

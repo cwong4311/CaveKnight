@@ -31,6 +31,6 @@ public class FireballState : AI_State
 
     private void ShootFireball()
     {
-        _enemyController.SpawnFireball(_enemyController.TargetTransform.position);
+        _enemyController.SpawnFireball(_enemyController.TargetTransform);
     }
 }

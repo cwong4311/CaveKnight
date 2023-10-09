@@ -28,6 +28,6 @@ public class DodgeState : AI_State
 
     private void DodgeBackwards()
     {
-        _enemyController.RB.velocity = -1 * _transform.forward * _enemyController.ChaseSpeed * 1.5f;
+        _enemyController.RB.velocity = -1 * _transform.forward * _enemyController.ChaseSpeed * 2.5f;
     }
 }

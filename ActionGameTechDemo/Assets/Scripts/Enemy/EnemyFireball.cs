@@ -8,10 +8,11 @@ public class EnemyFireball: MonoBehaviour
     public Transform FireballLocation;
     public GameObject FireballPF;
 
-    public void SpawnFireball(Vector3 target)
+    public void SpawnFireball(Transform target)
     {
         var fireballGO = Instantiate(FireballPF, FireballLocation.position, Quaternion.identity);
-        var fireballDir = (target - FireballLocation.forward).normalized;
+        fireballGO.GetComponent<Projectile>().SetTarget(target);
+        var fireballDir = (target.position - FireballLocation.forward).normalized;
 
         fireballGO.transform.forward = FireballLocation.forward;
     }
