@@ -70,6 +70,22 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Player.ToggleCursor.performed += OnEscapeToggle;
     }
 
+    public void OnEnable()
+    {
+        _inputActions.Player.Movement.Enable();
+        _inputActions.Player.Camera.Enable();
+        _inputActions.Player.Roll.Enable();
+        _inputActions.Player.Attack.Enable();
+        _inputActions.Player.Block.Enable();
+        _inputActions.Player.Lockon.Enable();
+        _inputActions.Player.ToggleCursor.Enable();
+    }
+
+    public void OnDisable()
+    {
+        _inputActions.Disable();
+    }
+
     public void Update()
     {
         if (IsInteracting)
@@ -95,22 +111,6 @@ public class PlayerInputHandler : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void OnEnable()
-    {
-        _inputActions.Player.Movement.Enable();
-        _inputActions.Player.Camera.Enable();
-        _inputActions.Player.Roll.Enable();
-        _inputActions.Player.Attack.Enable();
-        _inputActions.Player.Block.Enable();
-        _inputActions.Player.Lockon.Enable();
-        _inputActions.Player.ToggleCursor.Enable();
-    }
-
-    public void OnDisable()
-    {
-        _inputActions.Disable();
     }
 
     private void FixedUpdate()
