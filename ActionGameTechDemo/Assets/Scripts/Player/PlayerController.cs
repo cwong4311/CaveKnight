@@ -13,6 +13,7 @@ public class PlayerController : CharacterManager
     public float RotationSpeed = 10f;
     public bool IsSprinting;
     public bool IsRolling;
+    public bool IsPerformingAction;
 
     private Transform _cameraGO;
     private Vector3 _moveDirection;
@@ -51,6 +52,8 @@ public class PlayerController : CharacterManager
         float delta = Time.deltaTime;
 
         _inputHandler.IsInteracting = _animator.Anim.GetBool("IsInteracting");
+        IsPerformingAction = !_animator.Anim.GetBool("CanMove");
+
         _inputHandler.ParseInput(delta);
         IsSprinting = _inputHandler.IsSprinting;
 
@@ -67,6 +70,8 @@ public class PlayerController : CharacterManager
 
     private void UpdateMovement(float delta)
     {
+        if (IsPerformingAction) return;
+
         _moveDirection = ((_cameraGO.forward * _inputHandler.VerticalMove)
             + (_cameraGO.right * _inputHandler.HorizontalMove))
             .normalized;
@@ -92,6 +97,7 @@ public class PlayerController : CharacterManager
     {
         if (_inputHandler.LockedOn)
         {
+            // While locked on, special rotation behaviour while running and rolling
             if (IsSprinting || IsRolling)
             {
                 Vector3 targetDir = ((CameraController.CameraTransform.forward * _inputHandler.VerticalMove)
@@ -107,7 +113,8 @@ public class PlayerController : CharacterManager
 
                 transform.rotation = rotateVector;
             }
-            else
+            // Otherwise, only update character rotation if NOT performing any action
+            else if (!IsPerformingAction)
             {
                 Vector3 rotationDir = (CameraController.currentLockonTarget.position - transform.position).normalized;
                 rotationDir.y = 0;
@@ -120,6 +127,9 @@ public class PlayerController : CharacterManager
         }
         else
         {
+            // If performing any action other than rolling, don't allow character rotation
+            if (IsPerformingAction && !IsRolling) return;
+
             Vector3 targetDir = ((_cameraGO.forward * _inputHandler.VerticalMove)
                 + (_cameraGO.right * _inputHandler.HorizontalMove))
                 .normalized;
