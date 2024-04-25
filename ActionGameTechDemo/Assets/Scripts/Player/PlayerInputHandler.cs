@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -100,14 +98,26 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (_timeSinceLastAttackInput > 0.05f)
             {
-                var buttonReleaseDelay = Time.time - _timeSinceLastAttackInput;
-                if (buttonReleaseDelay > 0.2f)
+                var buttonHeldTime = Time.time - _timeSinceLastAttackInput;
+                if (buttonHeldTime > 0.2f)
                 {
                     IsHeavyAttacking = true;
                     LightComboStep = -1;
 
                     _timeSinceLastAttackInput = 0f;
                     _timeSinceLastAttackFinish = Time.time;
+                }
+            }
+
+            if (_timeSinceLastBlock > 0.03f)
+            {
+                var buttonHeldTime = Time.time - _timeSinceLastBlock;
+                if (buttonHeldTime > 0.2f)
+                {
+                    IsBlocking = true;
+                    IsParrying = false;
+
+                    _timeSinceLastBlock = 0f;
                 }
             }
         }
@@ -207,7 +217,7 @@ public class PlayerInputHandler : MonoBehaviour
             }
             else if (buttonReleaseDelay <= 0.35f)
             {
-                LightComboStep = (LightComboStep + 1) % 2;
+                LightComboStep = (LightComboStep + 1) % 3;
                 IsLightAttacking = true;
             }
         }
@@ -218,10 +228,26 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnBlockButtonDown(InputAction.CallbackContext context)
     {
+        if (IsInteracting) return;
+
+        _timeSinceLastBlock = Time.time;
     }
 
     public void OnBlockButtonUp(InputAction.CallbackContext context)
     {
+        if (IsInteracting) return;
+
+        if (_timeSinceLastBlock > 0.03f)
+        {
+            var buttonReleaseDelay = Time.time - _timeSinceLastBlock;
+            if (buttonReleaseDelay <= 0.2f)
+            {
+                IsBlocking = false;
+                IsParrying = true;
+            }
+        }
+
+        _timeSinceLastBlock = 0f;
     }
 
     public void OnLockon(InputAction.CallbackContext context)

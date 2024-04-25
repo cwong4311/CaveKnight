@@ -171,6 +171,7 @@ MonoBehaviour:
   RotationSpeed: 10
   IsSprinting: 0
   IsRolling: 0
+  IsPerformingAction: 0
 --- !u!114 &6524170927432354695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,7 +596,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightDamage1: 20
-  LightDamage2: 30
+  LightDamage2: 25
+  LightDamage3: 30
   HeavyDamage: 80
   _weaponHolder: {fileID: 4915329462744785262}
 --- !u!114 &2936346402585720261

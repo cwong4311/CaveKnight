@@ -6,6 +6,7 @@ public class PlayerWeapon : MonoBehaviour
 {
     public float LightDamage1;
     public float LightDamage2;
+    public float LightDamage3;
     public float HeavyDamage;
 
     public WeaponDamager _weaponHolder;
@@ -39,6 +40,10 @@ public class PlayerWeapon : MonoBehaviour
             case 1:
                 _currentAttackName = "LightAttack2";
                 _currentAttackDamage = LightDamage2;
+                break;
+            case 2:
+                _currentAttackName = "LightAttack3";
+                _currentAttackDamage = LightDamage3;
                 break;
         }
 

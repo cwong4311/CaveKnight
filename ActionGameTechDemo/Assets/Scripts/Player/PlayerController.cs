@@ -190,6 +190,12 @@ public class PlayerController : CharacterManager
             _weapon.LightAttack(_inputHandler.LightComboStep);
             _inputHandler.IsLightAttacking = false;
         }
+        else if (_inputHandler.IsParrying)
+        {
+            _animator.PlayAnimation("Parry", true);
+            _health.SetTemporaryInvuln(1f);
+            _inputHandler.IsParrying = false;
+        }
     }
 
     public void GetHit()
