@@ -101,7 +101,7 @@ public class PlayerInputHandler : MonoBehaviour
             if (_timeSinceLastAttackInput > 0.05f)
             {
                 var buttonReleaseDelay = Time.time - _timeSinceLastAttackInput;
-                if (buttonReleaseDelay > 0.4f)
+                if (buttonReleaseDelay > 0.2f)
                 {
                     IsHeavyAttacking = true;
                     LightComboStep = -1;
@@ -172,7 +172,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnShiftUp(InputAction.CallbackContext context)
     {
-        if (Time.time - _timeSinceLastRoll < 0.3f && _timeSinceLastRoll > 0.01f)
+        if (Time.time - _timeSinceLastRoll < 0.133f && _timeSinceLastRoll > 0.01f)
         {
             IsRolling = true;
         }
