@@ -14,6 +14,8 @@ public class PlayerController : CharacterManager
     public bool IsSprinting;
     public bool IsRolling;
     public bool IsPerformingAction;
+    public bool IsBlocking;
+    public float BlockingMovementSpeed = 4f;
 
     private Transform _cameraGO;
     private Vector3 _moveDirection;
@@ -57,6 +59,10 @@ public class PlayerController : CharacterManager
         _inputHandler.ParseInput(delta);
         IsSprinting = _inputHandler.IsSprinting;
 
+        // Don't allow running while blocking
+        IsBlocking = _inputHandler.IsBlocking;
+        if (IsBlocking) IsSprinting = false;
+
         if (_inputHandler.IsInteracting == false && IsRolling)
         {
             IsRolling = false;
@@ -78,6 +84,7 @@ public class PlayerController : CharacterManager
         _moveDirection.y = 0f;
         
         float speed = (IsSprinting && _inputHandler.FinalMovementAmount > 0.5f) ? SprintSpeed : MovementSpeed;
+        speed = (IsBlocking) ? BlockingMovementSpeed : speed;
         _moveDirection *= speed;
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(_moveDirection, Vector3.zero);
@@ -91,6 +98,8 @@ public class PlayerController : CharacterManager
         {
             _animator.UpdateAnimation(_inputHandler.FinalMovementAmount, 0f, IsSprinting);
         }
+
+        _animator.ToggleBlocking(IsBlocking);
     }
 
     private void UpdateRotation(float delta)
@@ -193,7 +202,7 @@ public class PlayerController : CharacterManager
         else if (_inputHandler.IsParrying)
         {
             _animator.PlayAnimation("Parry", true);
-            _health.SetTemporaryInvuln(1f);
+            _health.SetParryState(0.3f);
             _inputHandler.IsParrying = false;
         }
     }

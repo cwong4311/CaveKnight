@@ -116,8 +116,6 @@ public class PlayerInputHandler : MonoBehaviour
                 {
                     IsBlocking = true;
                     IsParrying = false;
-
-                    _timeSinceLastBlock = 0f;
                 }
             }
         }
@@ -182,7 +180,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnShiftUp(InputAction.CallbackContext context)
     {
-        if (Time.time - _timeSinceLastRoll < 0.133f && _timeSinceLastRoll > 0.01f)
+        if (Time.time - _timeSinceLastRoll < 0.2f && _timeSinceLastRoll > 0.01f)
         {
             IsRolling = true;
         }
@@ -244,6 +242,11 @@ public class PlayerInputHandler : MonoBehaviour
             {
                 IsBlocking = false;
                 IsParrying = true;
+            }
+            else
+            {
+                IsBlocking = false;
+                IsParrying = false;
             }
         }
 

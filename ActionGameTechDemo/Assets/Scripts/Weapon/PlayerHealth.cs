@@ -8,10 +8,15 @@ public class PlayerHealth : MonoBehaviour
     public float CurrentHealth = 300;
 
     public bool IsInvulnerable;
+    public bool IsBlocking;
 
     private float _timeSinceTempInvuln;
     private float _tempInvulnDuration;
     private bool _isTempInvuln;
+
+    public bool IsParrying;
+    private float _timeSinceParry;
+    private float _tempParryDuration;
 
     private PlayerController _controller;
 
@@ -39,11 +44,22 @@ public class PlayerHealth : MonoBehaviour
                 IsInvulnerable = false;
             }
         }
+
+        if (IsParrying)
+        {
+            if (Time.time - _timeSinceParry >= _tempParryDuration)
+            {
+                IsParrying = false;
+            }
+        }
+
+        IsBlocking = _controller.IsBlocking;
     }
 
     public void TakeDamage(float damage)
     {
         if (IsInvulnerable) return;
+        if (IsBlocking) damage *= 0.4f;
 
         CurrentHealth -= damage;
         if (CurrentHealth <= 0.01f)
@@ -67,5 +83,14 @@ public class PlayerHealth : MonoBehaviour
         _isTempInvuln = true;
         _timeSinceTempInvuln = Time.time;
         _tempInvulnDuration = duration;
+    }
+
+    public void SetParryState(float duration)
+    {
+        SetTemporaryInvuln(duration);
+
+        IsParrying = true;
+        _timeSinceParry = Time.time;
+        _tempParryDuration = duration;
     }
 }

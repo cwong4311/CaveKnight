@@ -73,6 +73,11 @@ public class PlayerAnimationHandler : MonoBehaviour
         _velocityDuringAnimation = Vector3.zero;
     }
 
+    public void ToggleBlocking(bool isBlocking)
+    {
+        _animator.SetBool("IsBlocking", isBlocking);
+    }
+
     private void OnAnimatorMove()
     {
         if (_inputHandler.IsInteracting == false) return;
