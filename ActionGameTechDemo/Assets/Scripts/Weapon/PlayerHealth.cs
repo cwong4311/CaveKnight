@@ -59,21 +59,20 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (IsInvulnerable) return;
-        if (IsBlocking) damage *= 0.4f;
+        if (IsBlocking) damage *= 0.3f;
 
         CurrentHealth -= damage;
+        _healthBar.SetHealth((int)CurrentHealth);
+
         if (CurrentHealth <= 0.01f)
         {
-            Die();
+            _controller.Die();
+            IsInvulnerable = true;
         }
-
-        _healthBar.SetHealth((int)CurrentHealth);
-        _controller.GetHit(IsBlocking);
-    }
-
-    public void Die()
-    {
-        // Do Nothing Yet
+        else
+        {
+            _controller.GetHit(IsBlocking);
+        } 
     }
 
     public void SetTemporaryInvuln(float duration)

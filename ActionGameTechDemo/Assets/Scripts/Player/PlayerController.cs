@@ -214,4 +214,10 @@ public class PlayerController : CharacterManager
         _animator.PlayAnimation(onHitStateName, true);
         _weapon.DeactivateWeapon();
     }
+
+    public void Die()
+    {
+        _animator.PlayAnimation("Defeated", true);
+        _weapon.DeactivateWeapon();
+    }
 }
