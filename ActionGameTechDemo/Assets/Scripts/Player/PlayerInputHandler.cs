@@ -112,7 +112,7 @@ public class PlayerInputHandler : MonoBehaviour
             if (_timeSinceLastBlock > 0.03f)
             {
                 var buttonHeldTime = Time.time - _timeSinceLastBlock;
-                if (buttonHeldTime > 0.2f)
+                if (buttonHeldTime > 0.05f)
                 {
                     IsBlocking = true;
                     IsParrying = false;
@@ -233,8 +233,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnBlockButtonUp(InputAction.CallbackContext context)
     {
-        if (IsInteracting) return;
-
         if (_timeSinceLastBlock > 0.03f)
         {
             var buttonReleaseDelay = Time.time - _timeSinceLastBlock;
