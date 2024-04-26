@@ -207,9 +207,11 @@ public class PlayerController : CharacterManager
         }
     }
 
-    public void GetHit()
+    public void GetHit(bool isBlocking)
     {
-        _animator.PlayAnimation("Hit", true);
+        var onHitStateName = (isBlocking) ? "Hit_Block" : "Hit";
+
+        _animator.PlayAnimation(onHitStateName, true);
         _weapon.DeactivateWeapon();
     }
 }

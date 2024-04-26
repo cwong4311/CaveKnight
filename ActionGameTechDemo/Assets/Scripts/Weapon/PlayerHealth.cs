@@ -68,7 +68,7 @@ public class PlayerHealth : MonoBehaviour
         }
 
         _healthBar.SetHealth((int)CurrentHealth);
-        _controller.GetHit();
+        _controller.GetHit(IsBlocking);
     }
 
     public void Die()

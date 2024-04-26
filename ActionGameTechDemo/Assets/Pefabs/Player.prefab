@@ -172,6 +172,8 @@ MonoBehaviour:
   IsSprinting: 0
   IsRolling: 0
   IsPerformingAction: 0
+  IsBlocking: 0
+  BlockingMovementSpeed: 2
 --- !u!114 &6524170927432354695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +189,8 @@ MonoBehaviour:
   MaxHealth: 300
   CurrentHealth: 300
   IsInvulnerable: 0
+  IsBlocking: 0
+  IsParrying: 0
   _healthBar: {fileID: 0}
 --- !u!1001 &2936346401532131860
 PrefabInstance:
