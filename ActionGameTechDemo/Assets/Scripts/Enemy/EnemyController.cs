@@ -28,6 +28,7 @@ public class EnemyController : CharacterManager
     public float TurnSpeed = 2f;
 
     private Animator _enemyAnimator;
+    private AI_State _aiState;
     private int _verticalHash;
     private int _horizontalHash;
 
@@ -42,7 +43,16 @@ public class EnemyController : CharacterManager
         _verticalHash = Animator.StringToHash("Vertical");
         _horizontalHash = Animator.StringToHash("Horizontal");
 
-        CurrentAction = "Idle";
+        _aiState = new IdleState(this);
+        _aiState.OnStateEnter(null);
+    }
+
+    public void Update()
+    {
+        if (_aiState != null)
+        {
+            _aiState.Update(Time.deltaTime);
+        }
     }
 
     public void UpdateMovementParameters(float vertical, float horizontal)

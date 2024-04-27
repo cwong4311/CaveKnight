@@ -9,25 +9,31 @@ public class DodgeState : AI_State
 
     private float _dodgeTime = 0f;
 
-    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public DodgeState(EnemyController myController) : base(myController)
     {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
-        _dodgeTime = 0f;
     }
 
-    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateEnter(string fromAction)
     {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
+        base.OnStateEnter(fromAction);
+        _dodgeTime = 0f;
 
-        _dodgeTime += Time.deltaTime;
+        // Go to dodge anim state
+    }
+
+    public override void Update(float delta)
+    {
+        _dodgeTime += delta;
         if (_dodgeTime > _delayBeforeMoving)
         {
             DodgeBackwards();
         }
     }
 
+    public override void OnStateExit(string toAction) { }
+
     private void DodgeBackwards()
     {
-        _enemyController.RB.velocity = -1 * _transform.forward * _enemyController.ChaseSpeed * 2.5f;
+        _myController.RB.velocity = -1 * _transform.forward * _myController.ChaseSpeed * 2.5f;
     }
 }

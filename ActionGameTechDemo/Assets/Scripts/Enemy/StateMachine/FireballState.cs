@@ -10,18 +10,23 @@ public class FireballState : AI_State
     private float _fireballTime = 0f;
     private bool _hasShot;
 
-    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public FireballState(EnemyController myController) : base(myController)
     {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
-        _fireballTime = 0f;
-        _hasShot = false;
     }
 
-    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateEnter(string fromAction)
     {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
+        base.OnStateEnter(fromAction);
 
-        _fireballTime += Time.deltaTime;
+        _fireballTime = 0f;
+        _hasShot = false;
+
+        // GO to FIreball State
+    }
+
+    public override void Update(float delta)
+    {
+        _fireballTime += delta;
         if (!_hasShot && _fireballTime > _delayBeforeShooting)
         {
             ShootFireball();
@@ -29,8 +34,10 @@ public class FireballState : AI_State
         }
     }
 
+    public override void OnStateExit(string toAction) { }
+
     private void ShootFireball()
     {
-        _enemyController.SpawnFireball(_enemyController.TargetTransform);
+        _myController.SpawnFireball(_myController.TargetTransform);
     }
 }

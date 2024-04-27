@@ -11,42 +11,42 @@ public class AttackState : AI_State
     private float _timeSinceEntering;
     private Quaternion _targetRotationToPlayer;
 
-    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public AttackState(EnemyController myController) : base(myController)
     {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
-
-        GetRotationToTarget();
-        _timeSinceEntering = 0f;
     }
 
-    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateEnter(string fromAction)
     {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
+        GetRotationToTarget();
+        _timeSinceEntering = 0f;
 
+        // Go to correct animation state
+    }
+
+    public override void Update(float delta)
+    {
         RotateToPlayer();
-        _timeSinceEntering += Time.deltaTime;
+        _timeSinceEntering += delta;
         if (_timeSinceEntering >= DelayBeforeAttackActive)
         {
             ActiveAttack();
         }
     }
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateExit(string toAction)
     {
-        base.OnStateExit(animator, stateInfo, layerIndex);
-
         DeactiveAttack();
     }
 
     private void GetRotationToTarget()
     {
-        Vector3 targetDir = (_enemyController.TargetTransform.position - _transform.position).normalized;
+        Vector3 targetDir = (_myController.TargetTransform.position - _transform.position).normalized;
         _targetRotationToPlayer = Quaternion.LookRotation(targetDir);
     }
 
     private bool RotateToPlayer()
     {
-        var rotateVector = Quaternion.Slerp(_transform.rotation, _targetRotationToPlayer, _enemyController.TurnSpeed * Time.deltaTime).eulerAngles;
+        var rotateVector = Quaternion.Slerp(_transform.rotation, _targetRotationToPlayer, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
         rotateVector.x = 0f;
 
         if (rotateVector.magnitude > 0.5f)
@@ -63,17 +63,17 @@ public class AttackState : AI_State
     {
         if (IsBite)
         {
-            _enemyController.Bite.ActivateWeapon(Damage);
+            _myController.Bite.ActivateWeapon(Damage);
         }
         else
         {
-            _enemyController.Tail.ActivateWeapon(Damage);
+            _myController.Tail.ActivateWeapon(Damage);
         }
     }
 
     private void DeactiveAttack()
     {
-        _enemyController.Bite.DeactivateWeapon();
-        _enemyController.Tail.DeactivateWeapon();
+        _myController.Bite.DeactivateWeapon();
+        _myController.Tail.DeactivateWeapon();
     }
 }
