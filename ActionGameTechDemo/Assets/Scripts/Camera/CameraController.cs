@@ -66,7 +66,8 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            _lookAngle += (mouseX * LookSpeed) / delta;
+            //_lookAngle += (mouseX * LookSpeed) / delta;
+            _lookAngle += mouseX * LookSpeed;
             _pivotAngle -= (mouseY * PivotSpeed) / delta;
             _pivotAngle = Mathf.Clamp(_pivotAngle, MinPivot, MaxPivot);
 
