@@ -15,6 +15,7 @@ public abstract class AI_State
     protected string _lastAction;
     protected bool _stateActive;
     protected float _timeSinceStateEnter;
+    protected float _animationDuration;
 
     public AI_State(EnemyController myController)
     {
@@ -42,5 +43,10 @@ public abstract class AI_State
 
         _stateActive = false;
         _myController.MoveToState(nextState);
+    }
+
+    protected void PlayAnimationState(string animationState)
+    {
+        _animator.CrossFade(animationState, 0.2f);
     }
 }

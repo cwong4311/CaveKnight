@@ -110,9 +110,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsableCommands: []
+  _enemyController: {fileID: 0}
+  _animator: {fileID: 0}
+  _transform: {fileID: 0}
+  _stateActive: 0
+  _timeSinceStateEnter: 0
+  _previousAction: 
   DelayBeforeAttackActive: 0.4
   Damage: 30
   IsBite: 1
+  _timeSinceEntering: 0
+  _targetRotationToPlayer: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1101 &-8073938485698781647
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -204,8 +212,17 @@ MonoBehaviour:
   UsableCommands:
   - Basic Attack
   - Tail Attack
+  _enemyController: {fileID: 0}
+  _animator: {fileID: 0}
+  _transform: {fileID: 0}
+  _stateActive: 0
+  _timeSinceStateEnter: 0
+  _previousAction: 
   MinIdleTime: 1
   MaxIdleTime: 2.2
+  _idleTime: 0
+  _hasAlreadyMoved: 0
+  _lastPerformedAction: 
 --- !u!1101 &-6578586467903110621
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -240,8 +257,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8831006107750127363}
-  m_StateMachineBehaviours:
-  - {fileID: 3933989102927808491}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -269,7 +285,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsableCommands: []
+  _enemyController: {fileID: 0}
+  _animator: {fileID: 0}
+  _transform: {fileID: 0}
+  _stateActive: 0
+  _timeSinceStateEnter: 0
+  _previousAction: 
   _delayBeforeShooting: 0.3
+  _fireballTime: 0
+  _hasShot: 0
 --- !u!1102 &-4824379433006469288
 AnimatorState:
   serializedVersion: 6
@@ -282,9 +306,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 6711860048753988372}
-  m_StateMachineBehaviours:
-  - {fileID: -977849948141568500}
-  - {fileID: 959183694336271942}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -549,9 +571,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsableCommands: []
+  _enemyController: {fileID: 0}
+  _animator: {fileID: 0}
+  _transform: {fileID: 0}
+  _stateActive: 0
+  _timeSinceStateEnter: 0
+  _previousAction: 
   DelayBeforeAttackActive: 0
   Damage: 0
   IsBite: 0
+  _timeSinceEntering: 0
+  _targetRotationToPlayer: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1102 &-475883990882775281
 AnimatorState:
   serializedVersion: 6
@@ -670,7 +700,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsableCommands: []
+  _enemyController: {fileID: 0}
+  _animator: {fileID: 0}
+  _transform: {fileID: 0}
+  _stateActive: 0
+  _timeSinceStateEnter: 0
+  _previousAction: 
   _delayBeforeShooting: 0.4
+  _fireballTime: 0
+  _hasShot: 0
 --- !u!1102 &2297292906560148086
 AnimatorState:
   serializedVersion: 6
@@ -765,9 +803,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsableCommands: []
+  _enemyController: {fileID: 0}
+  _animator: {fileID: 0}
+  _transform: {fileID: 0}
+  _stateActive: 0
+  _timeSinceStateEnter: 0
+  _previousAction: 
   DelayBeforeAttackActive: 0.2
   Damage: 15
   IsBite: 0
+  _timeSinceEntering: 0
+  _targetRotationToPlayer: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1101 &4512512074596339872
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -802,8 +848,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8073938485698781647}
-  m_StateMachineBehaviours:
-  - {fileID: -8086805642052226223}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -831,7 +876,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UsableCommands: []
+  _enemyController: {fileID: 0}
+  _animator: {fileID: 0}
+  _transform: {fileID: 0}
+  _stateActive: 0
+  _timeSinceStateEnter: 0
+  _previousAction: 
   _delayBeforeMoving: 0.5
+  _dodgeTime: 0
 --- !u!1101 &5609114243641110306
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -887,8 +939,7 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: -7020460853728297143}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -959,8 +1010,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2982963106493668899}
-  m_StateMachineBehaviours:
-  - {fileID: -4920346475647028646}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -1009,8 +1059,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8271643182773120707}
-  m_StateMachineBehaviours:
-  - {fileID: 4850845994440522574}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

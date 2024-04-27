@@ -23,25 +23,28 @@ public class EnemyController : CharacterManager
 
     public float MaxDistance = 50;
     public float MinDistance = 5f;
-
     public float ChaseSpeed = 6f;
     public float TurnSpeed = 2f;
 
     private Animator _enemyAnimator;
-    private AI_State _aiState;
+    private Dictionary<string, float> _enemyAnimatorInfoMap = new Dictionary<string, float>();
     private int _verticalHash;
     private int _horizontalHash;
 
+    private AI_State _aiState;
     public string LastPerformedAction = null;
     public string CurrentAction;
 
     private bool _hitArmour;
+    private IStateInfoMap _stateInfo;
 
     public void Awake()
     {
         _enemyAnimator = GetComponent<Animator>();
         _verticalHash = Animator.StringToHash("Vertical");
         _horizontalHash = Animator.StringToHash("Horizontal");
+
+        _stateInfo = StateInfoMapResolver.GetStateInfoMap(_enemyAnimator.runtimeAnimatorController.name);
 
         _aiState = new IdleState(this);
         _aiState.OnStateEnter(null);
@@ -80,7 +83,7 @@ public class EnemyController : CharacterManager
         CurrentAction = targetAnimation;
 
         _hitArmour = false;
-        _enemyAnimator.CrossFade(targetAnimation, 0.2f);
+        _aiState = new AIStateFactory(this).GetAIStateByName(targetAnimation);
     }
 
     public void RegisterState(string stateName)
@@ -101,6 +104,16 @@ public class EnemyController : CharacterManager
             _enemyAnimator.CrossFade("Get Hit", 0.2f);
             _hitArmour = true;
         }
+    }
+
+    public float? GetStateDuration(string stateName)
+    {
+        var stateInfo = _stateInfo.GetStateInfoByName(stateName);
+        if (stateInfo.HasValue)
+        {
+            return (float)stateInfo.Value.Duration;
+        }
+        return null;
     }
 
     public void OnDrawGizmos()
