@@ -55,6 +55,14 @@ public class AnimatorStateInfoGenerator : EditorWindow
                 var speed = j.state.speed;
                 var duration = j.state.motion.averageDuration;
 
+                foreach (var transition in j.state.transitions)
+                {
+                    if (transition.hasExitTime)
+                    {
+                        duration *= transition.exitTime;
+                    }
+                }
+
                 if (stateInfoMap.ContainsKey(name) == false)
                 {
                     stateInfoMap.Add(name, (clip, speed, duration));
