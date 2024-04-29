@@ -25,6 +25,10 @@ public class IdleState : AI_State
         {
             MinIdleTime = 0.6f; MaxIdleTime = 1f;
         }
+        else if (fromAction == "Hurt")
+        {
+            MinIdleTime = 0.4f; MaxIdleTime = 0.7f;
+        }
 
         _idleTime = Random.Range(MinIdleTime, MaxIdleTime);
         _myController.UpdateMovementParameters(0f, 0f, false);

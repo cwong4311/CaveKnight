@@ -19,6 +19,7 @@ public class AIStateFactory
             "Backstep" => new DodgeState(_enemyController),
             "Fireball" => new FireballState(_enemyController, false),
             "BackstepFireball" => new FireballState(_enemyController, true),
+            "Hurt" => new HurtState(_enemyController),
             "Idle" => new IdleState(_enemyController),
             _ => new IdleState(_enemyController)
         };

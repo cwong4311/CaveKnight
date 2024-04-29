@@ -37,9 +37,17 @@ public class EnemyController : CharacterManager
     public string LastPerformedAction = null;
     public string CurrentAction;
 
-    private bool _hitArmour;
     private Vector3 _originalEnemyScale;
     private IStateInfoMap _stateInfo;
+
+    // Stunlock thresholds
+    private bool _hitArmour = false;
+    private float _damageTakenCombo = 0f;
+    private float _currentStunThreshold;
+    private float _lastStunTime = 0f;
+    public float RestunBaseThreshold = 150;
+    public float RestunThresholdGain = 150;
+    public float StunResetDuration = 20f;
 
     public void Awake()
     {
@@ -48,6 +56,7 @@ public class EnemyController : CharacterManager
         _horizontalHash = Animator.StringToHash("Horizontal");
 
         _originalEnemyScale = transform.localScale;
+        _currentStunThreshold = RestunBaseThreshold;
 
         _stateInfo = StateInfoMapResolver.GetStateInfoMap(_enemyAnimator.runtimeAnimatorController.name);
     }
@@ -63,6 +72,15 @@ public class EnemyController : CharacterManager
         {
             _aiState.Update(Time.deltaTime);
         }
+
+        // If enough time has passed since the last stun, reset hit shield and stun thresholds
+        if (_lastStunTime > 0.05f && Time.time - _lastStunTime > StunResetDuration)
+        {
+            _lastStunTime = 0f;
+            _hitArmour = false;
+            _currentStunThreshold = RestunBaseThreshold;
+            _damageTakenCombo = 0;
+        }
     }
 
     public void MoveToState(string targetAnimation)
@@ -73,7 +91,6 @@ public class EnemyController : CharacterManager
 
         _aiState?.OnStateExit(CurrentAction);
 
-        _hitArmour = false;
         _aiState = new AIStateFactory(this).GetAIStateByName(targetAnimation);
 
         _aiState?.OnStateEnter(LastPerformedAction);
@@ -110,12 +127,34 @@ public class EnemyController : CharacterManager
         Fireball.SpawnFireball(target);
     }
 
-    public void GetHit()
+    public void GetHit(float damageTaken)
     {
-        if (CurrentAction == "Idle" && !_hitArmour)
+        // If not yet hit, move into hurt state
+        if (!_hitArmour)
         {
-            _enemyAnimator.CrossFade("Get Hit", 0.2f);
+            MoveToState("Hurt");
+
             _hitArmour = true;
+            _damageTakenCombo = 0;
+
+            _lastStunTime = Time.time;
+        }
+        // Otherwise, if more damage is dealt while already in hurt state
+        // Trigger additional effects
+        else
+        {
+            _damageTakenCombo += damageTaken;
+            if (_damageTakenCombo > _currentStunThreshold)
+            {
+                // Reset damage counter, and increase threshold
+                _damageTakenCombo = 0;
+                _currentStunThreshold += RestunThresholdGain;
+
+                // Reset state duration
+                MoveToState("Hurt");
+
+                _lastStunTime = Time.time;
+            }
         }
     }
 

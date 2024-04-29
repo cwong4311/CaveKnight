@@ -32,7 +32,7 @@ public class EnemyHealth : MonoBehaviour
         }
 
         _healthBar.SetHealth((int)CurrentHealth);
-        _controller.GetHit();
+        _controller.GetHit(damage);
     }
 
     public void Die()
