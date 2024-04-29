@@ -4,32 +4,42 @@ using UnityEngine;
 
 public class AttackState : AI_State
 {
-    public float DelayBeforeAttackActive;
-    public float Damage;
-    public bool IsBite;
+    public float DelayBeforeAttackActive = 0.3f;
+    public float Damage = 20f;
 
-    private float _timeSinceEntering;
+    private bool isPrimaryAttack;
+    private string _primaryAttack = "Basic Attack";
+    private string _secondaryAttack = "Tail Attack";
+
+    private string _animationState;
     private Quaternion _targetRotationToPlayer;
 
-    public AttackState(EnemyController myController) : base(myController)
+    public AttackState(EnemyController myController, bool isPrimaryAttack) : base(myController)
     {
+        this.isPrimaryAttack = isPrimaryAttack;
     }
 
     public override void OnStateEnter(string fromAction)
     {
-        GetRotationToTarget();
-        _timeSinceEntering = 0f;
+        base.OnStateEnter(fromAction);
 
-        // Go to correct animation state
+        _animationState = (isPrimaryAttack) ? _primaryAttack : _secondaryAttack;
+        PlayAnimationState(_animationState);
+
+        GetRotationToTarget();
     }
 
     public override void Update(float delta)
     {
         RotateToPlayer();
-        _timeSinceEntering += delta;
-        if (_timeSinceEntering >= DelayBeforeAttackActive)
+        if (Time.time - _timeSinceStateEnter >= DelayBeforeAttackActive)
         {
             ActiveAttack();
+        }
+
+        if (IsAnimationCompleted(_animationState))
+        {
+            MoveState("Idle");
         }
     }
 
@@ -61,7 +71,7 @@ public class AttackState : AI_State
 
     private void ActiveAttack()
     {
-        if (IsBite)
+        if (isPrimaryAttack)
         {
             _myController.Bite.ActivateWeapon(Damage);
         }

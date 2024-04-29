@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class FireballState : AI_State
 {
-    [SerializeField]
-    private float _delayBeforeShooting;
+    private float _delayBeforeShooting = 0.5f;
 
     private float _fireballTime = 0f;
     private bool _hasShot;
 
-    public FireballState(EnemyController myController) : base(myController)
+    private string _animationState;
+    private string _groundedAnimationState = "Fireball";
+    private string _aerialAnimationState = "BackstepFireball";
+
+    public FireballState(EnemyController myController, bool isAerial) : base(myController)
     {
+        _animationState = isAerial ? _aerialAnimationState : _groundedAnimationState;
     }
 
     public override void OnStateEnter(string fromAction)
@@ -21,7 +25,7 @@ public class FireballState : AI_State
         _fireballTime = 0f;
         _hasShot = false;
 
-        // GO to FIreball State
+        PlayAnimationState(_animationState);
     }
 
     public override void Update(float delta)
@@ -31,6 +35,11 @@ public class FireballState : AI_State
         {
             ShootFireball();
             _hasShot = true;
+        }
+
+        if (IsAnimationCompleted(_animationState))
+        {
+            MoveState("Idle");
         }
     }
 

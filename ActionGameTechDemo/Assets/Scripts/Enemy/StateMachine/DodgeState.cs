@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class DodgeState : AI_State
 {
-    [SerializeField]
-    private float _delayBeforeMoving;
+    private float _delayBeforeMoving = 0.6f;
 
     private float _dodgeTime = 0f;
+
+    private string _backstepAnimationState = "Backstep";
 
     public DodgeState(EnemyController myController) : base(myController)
     {
@@ -19,6 +20,7 @@ public class DodgeState : AI_State
         _dodgeTime = 0f;
 
         // Go to dodge anim state
+        PlayAnimationState(_backstepAnimationState);
     }
 
     public override void Update(float delta)
@@ -27,6 +29,11 @@ public class DodgeState : AI_State
         if (_dodgeTime > _delayBeforeMoving)
         {
             DodgeBackwards();
+        }
+
+        if (IsAnimationCompleted(_backstepAnimationState))
+        {
+            MoveState("BackstepFireball");
         }
     }
 

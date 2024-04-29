@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class IdleState : AI_State
 {
-    public float MinIdleTime;
-    public float MaxIdleTime;
+    public string[] BasicActions = new string[] { "Bite", "Tail" };
 
+    public float MinIdleTime = 1.5f;
+    public float MaxIdleTime = 3;
+
+    public bool IsInIdle;
     private float _idleTime;
     private bool _hasAlreadyMoved;
 
@@ -19,16 +22,20 @@ public class IdleState : AI_State
         base.OnStateEnter(fromAction);
 
         _idleTime = Random.Range(MinIdleTime, MaxIdleTime);
-
-        _myController.RegisterState("Idle");
         _myController.UpdateMovementParameters(0f, 0f, false);
 
+        IsInIdle = false;
         _hasAlreadyMoved = false;
-        // TODO: Go To Idle Anim State
+        // All animations will naturally return to Idle anim state.
+        // Wait for it to do so
     }
 
     public override void Update(float delta)
     {
+        // Wait until animation is back in idle
+        IsInIdle = _animator.GetBool("Idle");
+        if (IsInIdle == false) return;
+
         if (_stateActive == false) return;
 
         if (Time.time - _timeSinceStateEnter >= _idleTime)
@@ -89,10 +96,10 @@ public class IdleState : AI_State
             }
         }
         
-        if (inRange && UsableCommands.Length > 0)
+        if (inRange && BasicActions.Length > 0)
         {
-            var rand = Random.Range(0, UsableCommands.Length);
-            var nextAction = UsableCommands[rand];
+            var rand = Random.Range(0, BasicActions.Length);
+            var nextAction = BasicActions[rand];
             MoveState(nextAction);
         }
     }

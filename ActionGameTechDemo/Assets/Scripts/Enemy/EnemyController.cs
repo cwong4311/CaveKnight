@@ -45,9 +45,11 @@ public class EnemyController : CharacterManager
         _horizontalHash = Animator.StringToHash("Horizontal");
 
         _stateInfo = StateInfoMapResolver.GetStateInfoMap(_enemyAnimator.runtimeAnimatorController.name);
+    }
 
-        _aiState = new IdleState(this);
-        _aiState.OnStateEnter(null);
+    public void OnEnable()
+    {
+        MoveToState("Idle");
     }
 
     public void Update()
@@ -56,6 +58,19 @@ public class EnemyController : CharacterManager
         {
             _aiState.Update(Time.deltaTime);
         }
+    }
+
+    public void MoveToState(string targetAnimation)
+    {
+        LastPerformedAction = CurrentAction;
+        CurrentAction = targetAnimation;
+
+        _aiState?.OnStateExit(CurrentAction);
+
+        _hitArmour = false;
+        _aiState = new AIStateFactory(this).GetAIStateByName(targetAnimation);
+
+        _aiState?.OnStateEnter(LastPerformedAction);
     }
 
     public void UpdateMovementParameters(float vertical, float horizontal)
@@ -75,21 +90,6 @@ public class EnemyController : CharacterManager
             _enemyAnimator.SetFloat(_verticalHash, vertical);
             _enemyAnimator.SetFloat(_horizontalHash, horizontal);
         }
-    }
-
-    public void MoveToState(string targetAnimation)
-    {
-        LastPerformedAction = CurrentAction;
-        CurrentAction = targetAnimation;
-
-        _hitArmour = false;
-        _aiState = new AIStateFactory(this).GetAIStateByName(targetAnimation);
-    }
-
-    public void RegisterState(string stateName)
-    {
-        LastPerformedAction = CurrentAction;
-        CurrentAction = stateName;
     }
 
     public void SpawnFireball(Transform target)
