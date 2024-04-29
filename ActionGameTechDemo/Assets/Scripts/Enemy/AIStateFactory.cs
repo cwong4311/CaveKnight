@@ -15,8 +15,7 @@ public class AIStateFactory
     {
         return stateName switch
         {
-            "Bite" => new AttackState(_enemyController, true),
-            "Tail" => new AttackState(_enemyController, false),
+            "BasicAttack" => new AttackState(_enemyController),
             "Backstep" => new DodgeState(_enemyController),
             "Fireball" => new FireballState(_enemyController, false),
             "BackstepFireball" => new FireballState(_enemyController, true),

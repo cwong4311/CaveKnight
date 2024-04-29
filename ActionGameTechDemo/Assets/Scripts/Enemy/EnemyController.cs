@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -32,10 +33,12 @@ public class EnemyController : CharacterManager
     private int _horizontalHash;
 
     private AI_State _aiState;
+    private Queue<string> _aiActionHistory = new Queue<string>();
     public string LastPerformedAction = null;
     public string CurrentAction;
 
     private bool _hitArmour;
+    private Vector3 _originalEnemyScale;
     private IStateInfoMap _stateInfo;
 
     public void Awake()
@@ -43,6 +46,8 @@ public class EnemyController : CharacterManager
         _enemyAnimator = GetComponent<Animator>();
         _verticalHash = Animator.StringToHash("Vertical");
         _horizontalHash = Animator.StringToHash("Horizontal");
+
+        _originalEnemyScale = transform.localScale;
 
         _stateInfo = StateInfoMapResolver.GetStateInfoMap(_enemyAnimator.runtimeAnimatorController.name);
     }
@@ -62,6 +67,7 @@ public class EnemyController : CharacterManager
 
     public void MoveToState(string targetAnimation)
     {
+
         LastPerformedAction = CurrentAction;
         CurrentAction = targetAnimation;
 
@@ -71,6 +77,13 @@ public class EnemyController : CharacterManager
         _aiState = new AIStateFactory(this).GetAIStateByName(targetAnimation);
 
         _aiState?.OnStateEnter(LastPerformedAction);
+
+        // Store into action history
+        if (_aiState.GetType() != typeof(IdleState))
+        {
+            _aiActionHistory.Enqueue(targetAnimation);
+            if (_aiActionHistory.Count > 3) _aiActionHistory.Dequeue();
+        }
     }
 
     public void UpdateMovementParameters(float vertical, float horizontal)
@@ -114,6 +127,24 @@ public class EnemyController : CharacterManager
             return (float)stateInfo.Value.Duration;
         }
         return null;
+    }
+
+    public string GetLatestAction()
+    {
+        return _aiActionHistory?.LastOrDefault();
+    }
+
+    public void FlipEnemyScale()
+    {
+        transform.localScale = new Vector3(-_originalEnemyScale.x, _originalEnemyScale.y, _originalEnemyScale.z);
+    }
+
+    public void RestoreEnemyScale()
+    {
+        if (transform.localScale != _originalEnemyScale)
+        {
+            transform.localScale = _originalEnemyScale;
+        }  
     }
 
     public void OnDrawGizmos()

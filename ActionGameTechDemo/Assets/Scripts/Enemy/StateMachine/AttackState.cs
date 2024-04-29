@@ -13,10 +13,16 @@ public class AttackState : AI_State
 
     private string _animationState;
     private Quaternion _targetRotationToPlayer;
+    private TargetDirection _directionOfPlayer;
 
-    public AttackState(EnemyController myController, bool isPrimaryAttack) : base(myController)
+    private Vector3 _bossScale;
+
+    public AttackState(EnemyController myController) : base(myController)
     {
-        this.isPrimaryAttack = isPrimaryAttack;
+        _directionOfPlayer = DirectionOfTarget.GetDirectionOfTarget(_myController.transform, _myController.TargetTransform);
+        isPrimaryAttack = (_directionOfPlayer == TargetDirection.Forward) ? true : false;
+
+        _bossScale = myController.transform.localScale;
     }
 
     public override void OnStateEnter(string fromAction)
@@ -24,14 +30,21 @@ public class AttackState : AI_State
         base.OnStateEnter(fromAction);
 
         _animationState = (isPrimaryAttack) ? _primaryAttack : _secondaryAttack;
-        PlayAnimationState(_animationState);
 
-        GetRotationToTarget();
+        if (isPrimaryAttack)
+            GetRotationToTarget();
+
+        if (!isPrimaryAttack && _directionOfPlayer == TargetDirection.Right)
+            _myController.FlipEnemyScale();
+
+        PlayAnimationState(_animationState);
     }
 
     public override void Update(float delta)
     {
-        RotateToPlayer();
+        if (isPrimaryAttack)
+            RotateToPlayer();
+        
         if (Time.time - _timeSinceStateEnter >= DelayBeforeAttackActive)
         {
             ActiveAttack();

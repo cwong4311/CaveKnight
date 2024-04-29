@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class IdleState : AI_State
 {
-    public string[] BasicActions = new string[] { "Bite", "Tail" };
-
     public float MinIdleTime = 1.5f;
     public float MaxIdleTime = 3;
 
@@ -20,6 +19,12 @@ public class IdleState : AI_State
     public override void OnStateEnter(string fromAction)
     {
         base.OnStateEnter(fromAction);
+
+        // shorten delay after a basic action
+        if (fromAction == "BasicAttack")
+        {
+            MinIdleTime = 0.6f; MaxIdleTime = 1f;
+        }
 
         _idleTime = Random.Range(MinIdleTime, MaxIdleTime);
         _myController.UpdateMovementParameters(0f, 0f, false);
@@ -40,7 +45,9 @@ public class IdleState : AI_State
 
         if (Time.time - _timeSinceStateEnter >= _idleTime)
         {
-            if (!_hasAlreadyMoved && _lastAction != "Backstep")
+            _myController.RestoreEnemyScale();
+
+            if (!_hasAlreadyMoved && _lastAction != "BackstepFireball")
             {
                 CheckBackstep();
             }
@@ -96,11 +103,9 @@ public class IdleState : AI_State
             }
         }
         
-        if (inRange && BasicActions.Length > 0)
+        if (inRange)
         {
-            var rand = Random.Range(0, BasicActions.Length);
-            var nextAction = BasicActions[rand];
-            MoveState(nextAction);
+            MoveState("BasicAttack");
         }
     }
 
