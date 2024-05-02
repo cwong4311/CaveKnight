@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,7 +30,7 @@ public class IdleState : AI_State
             MinIdleTime = 0.4f; MaxIdleTime = 0.7f;
         }
 
-        _idleTime = Random.Range(MinIdleTime, MaxIdleTime);
+        _idleTime = UnityEngine.Random.Range(MinIdleTime, MaxIdleTime);
         _myController.UpdateMovementParameters(0f, 0f, false);
 
         IsInIdle = false;
@@ -51,12 +51,17 @@ public class IdleState : AI_State
         {
             _myController.RestoreEnemyScale();
 
-            if (!_hasAlreadyMoved && _lastAction != "BackstepFireball")
+            if (!_hasAlreadyMoved && _myController.LastPerformedAction != "Scream")
+            {
+                CheckScream();
+            }
+
+            if (!_hasAlreadyMoved && _myController.LastPerformedAction != "BackstepFireball")
             {
                 CheckBackstep();
             }
 
-            if (!_hasAlreadyMoved)
+            if (!_hasAlreadyMoved && _myController.LastPerformedAction != "Fireball")
             {
                 CheckFireball();
             }
@@ -110,11 +115,17 @@ public class IdleState : AI_State
             var actionHistory = _myController.GetActionHistory();
             if (actionHistory.Where(e => e.Equals("BasicAttack")).Count() >= 3)
             {
-                CheckBackstep();
-                if (!_stateActive) return;
+                var alternativeChecklist = new List<Action>() {
+                    () => CheckScream(),
+                    () => CheckBackstep(),
+                    () => CheckFireball(),
+                };
 
-                CheckFireball();
-                if (!_stateActive) return;
+                foreach (var altAction in alternativeChecklist)
+                {
+                    altAction.Invoke();
+                    if (!_stateActive) return;
+                }
             }
 
             MoveState("BasicAttack");
@@ -134,6 +145,21 @@ public class IdleState : AI_State
         _myController.RB.velocity = _transform.forward * _myController.ChaseSpeed;
     }
 
+    private void CheckScream()
+    {
+        if (_myController.TargetTransform == null) return;
+
+        var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
+        if (distance <= _myController.MinDistance)
+        {
+            // 5% to trigger fake scream
+            if (UnityEngine.Random.Range(0, 10) == 0)
+            {
+                MoveState("GroundedScream");
+            }
+        }
+    }
+
     private void CheckBackstep()
     {
         if (_myController.TargetTransform == null) return;
@@ -141,7 +167,7 @@ public class IdleState : AI_State
         var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
         if (distance <= _myController.MinDistance)
         {
-            if (Random.Range(0, 3) > 0)
+            if (UnityEngine.Random.Range(0, 4) < 2)
             {
                 MoveState("Backstep");
             }
@@ -155,7 +181,7 @@ public class IdleState : AI_State
         var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
         if (distance > _myController.MinDistance * 1.5f)
         {
-            if (Random.Range(0, 4) < 2)
+            if (UnityEngine.Random.Range(0, 4) < 2)
             {
                 MoveState("Fireball");
             }

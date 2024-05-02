@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.Animations;
+using UnityEngine;
+
+public class FakeScreamState : AI_State
+{
+    private string _animationState = "Scream";
+ 
+    public FakeScreamState(EnemyController myController) : base(myController)
+    {
+    }
+
+    public override void OnStateEnter(string fromAction)
+    {
+        base.OnStateEnter(fromAction);
+
+        PlayAnimationState(_animationState);
+    }
+
+    public override void Update(float delta)
+    {
+        // Start to scream, but then get hurt trying to do so.
+        // This is the Beefy boi's fake scream
+        var duration = _myController.GetStateDuration(_animationState) / 4;
+        if (Time.time - _timeSinceStateEnter > duration)
+        {
+            _myController.ForceGetHit();
+        }
+    }
+
+    public override void OnStateExit(string toAction) { }
+}
