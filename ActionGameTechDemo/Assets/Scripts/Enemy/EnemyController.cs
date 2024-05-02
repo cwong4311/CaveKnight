@@ -27,13 +27,15 @@ public class EnemyController : CharacterManager
     public float ChaseSpeed = 6f;
     public float TurnSpeed = 2f;
 
+    private EnemyHealth _enemyHealth;
+
     private Animator _enemyAnimator;
     private Dictionary<string, float> _enemyAnimatorInfoMap = new Dictionary<string, float>();
     private int _verticalHash;
     private int _horizontalHash;
 
     private AI_State _aiState;
-    private Queue<string> _aiActionHistory = new Queue<string>();
+    private List<string> _aiActionHistory = new List<string>();
     public string LastPerformedAction = null;
     public string CurrentAction;
 
@@ -41,16 +43,17 @@ public class EnemyController : CharacterManager
     private IStateInfoMap _stateInfo;
 
     // Stunlock thresholds
-    private bool _hitArmour = false;
     private float _damageTakenCombo = 0f;
+    private float _lastDamageTakenTime = 0f;
     private float _currentStunThreshold;
     private float _lastStunTime = 0f;
-    public float RestunBaseThreshold = 150;
+    public float RestunBaseThreshold = 50;
     public float RestunThresholdGain = 150;
-    public float StunResetDuration = 20f;
+    public float StunResetDuration = 30f;
 
     public void Awake()
     {
+        _enemyHealth = GetComponent<EnemyHealth>();
         _enemyAnimator = GetComponent<Animator>();
         _verticalHash = Animator.StringToHash("Vertical");
         _horizontalHash = Animator.StringToHash("Horizontal");
@@ -77,15 +80,16 @@ public class EnemyController : CharacterManager
         if (_lastStunTime > 0.05f && Time.time - _lastStunTime > StunResetDuration)
         {
             _lastStunTime = 0f;
-            _hitArmour = false;
+            _lastDamageTakenTime = 0f;
             _currentStunThreshold = RestunBaseThreshold;
             _damageTakenCombo = 0;
         }
+
+        _damageTakenCombo -= Time.deltaTime * 5;    // Lose 5 damageCombo per second
     }
 
     public void MoveToState(string targetAnimation)
     {
-
         LastPerformedAction = CurrentAction;
         CurrentAction = targetAnimation;
 
@@ -95,11 +99,16 @@ public class EnemyController : CharacterManager
 
         _aiState?.OnStateEnter(LastPerformedAction);
 
-        // Store into action history
-        if (_aiState.GetType() != typeof(IdleState))
+        // If not an idle or hurt state, store into action history
+        if (_aiState.GetType() != typeof(IdleState) && _aiState.GetType() != typeof(HurtState))
         {
-            _aiActionHistory.Enqueue(targetAnimation);
-            if (_aiActionHistory.Count > 3) _aiActionHistory.Dequeue();
+            _aiActionHistory.Insert(0, targetAnimation);
+            if (_aiActionHistory.Count > 3) _aiActionHistory.RemoveAt(3);
+        }
+        // If an idle state, remove any trailing invulns
+        else
+        {
+            _enemyHealth.RemoveInvuln();
         }
     }
 
@@ -122,39 +131,25 @@ public class EnemyController : CharacterManager
         }
     }
 
-    public void SpawnFireball(Transform target)
+    public void SpawnFireball(Transform target, bool isHoming)
     {
-        Fireball.SpawnFireball(target);
+        Fireball.SpawnFireball(target, isHoming);
     }
 
     public void GetHit(float damageTaken)
     {
-        // If not yet hit, move into hurt state
-        if (!_hitArmour)
+        // If enough damage is dealt, flinch
+        _damageTakenCombo += damageTaken;
+        if (_damageTakenCombo > _currentStunThreshold)
         {
+            // Reset damage counter, and increase threshold
+            _damageTakenCombo = 0;
+            _currentStunThreshold += RestunThresholdGain;
+
+            // Reset state duration
             MoveToState("Hurt");
 
-            _hitArmour = true;
-            _damageTakenCombo = 0;
-
             _lastStunTime = Time.time;
-        }
-        // Otherwise, if more damage is dealt while already in hurt state
-        // Trigger additional effects
-        else
-        {
-            _damageTakenCombo += damageTaken;
-            if (_damageTakenCombo > _currentStunThreshold)
-            {
-                // Reset damage counter, and increase threshold
-                _damageTakenCombo = 0;
-                _currentStunThreshold += RestunThresholdGain;
-
-                // Reset state duration
-                MoveToState("Hurt");
-
-                _lastStunTime = Time.time;
-            }
         }
     }
 
@@ -168,10 +163,11 @@ public class EnemyController : CharacterManager
         return null;
     }
 
-    public string GetLatestAction()
+    public string[] GetActionHistory()
     {
-        return _aiActionHistory?.LastOrDefault();
+        return _aiActionHistory.ToArray();
     }
+    public string GetLatestAction => _aiActionHistory[0] ?? "";
 
     public void FlipEnemyScale()
     {

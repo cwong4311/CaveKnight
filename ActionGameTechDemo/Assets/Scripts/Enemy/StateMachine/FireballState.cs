@@ -8,6 +8,9 @@ public class FireballState : AI_State
 
     private float _fireballTime = 0f;
     private bool _hasShot;
+    private bool _isHoming;
+
+    private Quaternion _targetRotationToPlayer;
 
     private string _animationState;
     private string _groundedAnimationState = "Fireball";
@@ -15,6 +18,7 @@ public class FireballState : AI_State
 
     public FireballState(EnemyController myController, bool isAerial) : base(myController)
     {
+        _isHoming = isAerial;
         _animationState = isAerial ? _aerialAnimationState : _groundedAnimationState;
     }
 
@@ -25,6 +29,7 @@ public class FireballState : AI_State
         _fireballTime = 0f;
         _hasShot = false;
 
+        GetRotationToTarget();
         PlayAnimationState(_animationState);
     }
 
@@ -35,6 +40,10 @@ public class FireballState : AI_State
         {
             ShootFireball();
             _hasShot = true;
+        }
+        else if (!_hasShot)
+        {
+            RotateToPlayer();
         }
 
         if (IsAnimationCompleted(_animationState))
@@ -47,6 +56,27 @@ public class FireballState : AI_State
 
     private void ShootFireball()
     {
-        _myController.SpawnFireball(_myController.TargetTransform);
+        _myController.SpawnFireball(_myController.TargetTransform, _isHoming);
+    }
+
+    private void GetRotationToTarget()
+    {
+        Vector3 targetDir = (_myController.TargetTransform.position - _transform.position).normalized;
+        _targetRotationToPlayer = Quaternion.LookRotation(targetDir);
+    }
+
+    private bool RotateToPlayer()
+    {
+        var rotateVector = Quaternion.Slerp(_transform.rotation, _targetRotationToPlayer, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
+        rotateVector.x = 0f;
+
+        if (rotateVector.magnitude > 0.5f)
+        {
+            _transform.localEulerAngles = rotateVector;
+
+            return true;
+        }
+
+        return false;
     }
 }

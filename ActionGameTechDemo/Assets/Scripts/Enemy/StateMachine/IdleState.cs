@@ -81,12 +81,6 @@ public class IdleState : AI_State
                     _myController.TargetTransform = collider.transform;
                 }
             }
-
-            if (_myController.TargetTransform == null)
-            {
-                RandomRoam();
-                _hasAlreadyMoved = true;
-            }
         }
         else
         {
@@ -107,16 +101,24 @@ public class IdleState : AI_State
             }
         }
         
+        // Once in range, check action history.
+        // If basic attack was used less than twice, use it again.
+        // Otherwise, check if the other options can be used.
+        // ONLY use basic attack again if no others are applicable
         if (inRange)
         {
+            var actionHistory = _myController.GetActionHistory();
+            if (actionHistory.Where(e => e.Equals("BasicAttack")).Count() >= 2)
+            {
+                CheckBackstep();
+                if (!_stateActive) return;
+
+                CheckFireball();
+                if (!_stateActive) return;
+            }
+
             MoveState("BasicAttack");
         }
-    }
-
-    private void RandomRoam()
-    {
-        _myController.UpdateMovementParameters(0.5f, 0f);
-        // TO DO
     }
 
     private void MoveToTarget()
@@ -153,7 +155,7 @@ public class IdleState : AI_State
         var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
         if (distance > _myController.MinDistance * 1.5f)
         {
-            if (Random.Range(0, 3) == 0)
+            if (Random.Range(0, 4) < 2)
             {
                 MoveState("Fireball");
             }

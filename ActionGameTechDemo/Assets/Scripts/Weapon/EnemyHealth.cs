@@ -39,4 +39,14 @@ public class EnemyHealth : MonoBehaviour
     {
         // Do Nothing Yet
     }
+
+    public void SetInvuln()
+    {
+        IsInvulnerable = true;
+    }
+
+    public void RemoveInvuln()
+    {
+        IsInvulnerable = false;
+    }
 }
