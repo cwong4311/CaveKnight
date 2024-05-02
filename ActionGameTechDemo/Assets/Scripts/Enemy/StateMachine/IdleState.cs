@@ -108,7 +108,7 @@ public class IdleState : AI_State
         if (inRange)
         {
             var actionHistory = _myController.GetActionHistory();
-            if (actionHistory.Where(e => e.Equals("BasicAttack")).Count() >= 2)
+            if (actionHistory.Where(e => e.Equals("BasicAttack")).Count() >= 3)
             {
                 CheckBackstep();
                 if (!_stateActive) return;

@@ -103,7 +103,7 @@ public class EnemyController : CharacterManager
         if (_aiState.GetType() != typeof(IdleState) && _aiState.GetType() != typeof(HurtState))
         {
             _aiActionHistory.Insert(0, targetAnimation);
-            if (_aiActionHistory.Count > 3) _aiActionHistory.RemoveAt(3);
+            if (_aiActionHistory.Count > 5) _aiActionHistory.RemoveAt(5);
         }
         // If an idle state, remove any trailing invulns
         else
@@ -151,6 +151,17 @@ public class EnemyController : CharacterManager
 
             _lastStunTime = Time.time;
         }
+    }
+
+    public void ForceGetHit()
+    {
+        // When forced hit, reset all parameters (and set stun threshold to level 2)
+        _damageTakenCombo = 0;
+        _currentStunThreshold = RestunBaseThreshold + RestunThresholdGain;
+        _lastStunTime = Time.time;
+
+        // And move to hurt state
+        MoveToState("Hurt");
     }
 
     public float? GetStateDuration(string stateName)
