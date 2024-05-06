@@ -51,9 +51,9 @@ public class AnimatorStateInfoGenerator : EditorWindow
             foreach (ChildAnimatorState j in animStates)
             {
                 var name = j.state.name;
-                var clip = j.state.motion.name;
+                var clip = j.state.motion?.name;
                 var speed = j.state.speed;
-                var duration = j.state.motion.averageDuration;
+                var duration = j.state.motion?.averageDuration ?? 1f;
 
                 foreach (var transition in j.state.transitions)
                 {
