@@ -7,6 +7,8 @@ public class EnemyHealth : MonoBehaviour
     public float MaxHealth = 10000;
     public float CurrentHealth = 10000;
 
+    public float HealthPercentage => CurrentHealth / MaxHealth;
+
     public bool IsInvulnerable;
     private EnemyController _controller;
 

@@ -652,6 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LockOnTransform: {fileID: 386490935}
+  EnemyName: Dragon
   EnemyCommands: []
   PlayerDetectionRange: 20
   TargetTransform: {fileID: 0}
@@ -665,6 +666,9 @@ MonoBehaviour:
   TurnSpeed: 4
   LastPerformedAction: 
   CurrentAction: 
+  RestunBaseThreshold: 50
+  RestunThresholdGain: 150
+  StunResetDuration: 30
 --- !u!114 &8345383149817224871
 MonoBehaviour:
   m_ObjectHideFlags: 0

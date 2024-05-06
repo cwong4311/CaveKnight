@@ -14,7 +14,8 @@ public struct EnemyCommands
 // TO DO: Refactor this
 public class EnemyController : CharacterManager
 {
-    public EnemyCommands[] EnemyCommands;
+    public string EnemyName;
+
     public float PlayerDetectionRange;
     public Transform TargetTransform;
     public Rigidbody RB;
@@ -95,9 +96,11 @@ public class EnemyController : CharacterManager
 
         _aiState?.OnStateExit(CurrentAction);
 
-        _aiState = new AIStateFactory(this).GetAIStateByName(targetAnimation);
+        _aiState = new AIStateFactory(this).GetAIStateByName(EnemyName, targetAnimation, _enemyHealth.HealthPercentage);
 
         _aiState?.OnStateEnter(LastPerformedAction);
+
+        if (_aiState == null) { Debug.LogWarning($"EnemyController {EnemyName} has lost its AI State"); return; }
 
         // If not an idle or hurt state, store into action history
         if (_aiState.GetType() != typeof(IdleState) && _aiState.GetType() != typeof(HurtState))
