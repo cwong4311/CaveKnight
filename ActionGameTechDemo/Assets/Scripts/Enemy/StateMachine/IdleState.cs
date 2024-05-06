@@ -14,6 +14,7 @@ public class IdleState : AI_State
 
     public IdleState(EnemyController myController) : base(myController)
     {
+        _stateType = AIStateType.Idle;
     }
 
     public override void OnStateEnter(string fromAction)

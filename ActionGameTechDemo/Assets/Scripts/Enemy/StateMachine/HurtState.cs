@@ -8,6 +8,7 @@ public class HurtState : AI_State
  
     public HurtState(EnemyController myController) : base(myController)
     {
+        _stateType = AIStateType.Hurt;
     }
 
     public override void OnStateEnter(string fromAction)

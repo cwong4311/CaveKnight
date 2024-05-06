@@ -1,5 +1,12 @@
 using UnityEngine;
 
+public enum AIStateType
+{
+    Idle = 1,
+    Hurt = 2,
+    Action = 3
+}
+
 public abstract class AI_State
 {
     protected Animator _animator;
@@ -11,6 +18,9 @@ public abstract class AI_State
     protected bool _stateActive;
     protected float _timeSinceStateEnter;
     protected float _animationDuration;
+
+    // Treat states as action by default. Only Idle or Hurt states should explicitly reassign this field
+    protected AIStateType _stateType = AIStateType.Action;
 
     public AI_State(EnemyController myController)
     {
@@ -58,5 +68,10 @@ public abstract class AI_State
         }
 
         return false;
+    }
+
+    public AIStateType GetStateType()
+    {
+        return _stateType;
     }
 }

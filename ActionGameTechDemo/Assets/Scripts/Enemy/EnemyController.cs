@@ -103,7 +103,7 @@ public class EnemyController : CharacterManager
         if (_aiState == null) { Debug.LogWarning($"EnemyController {EnemyName} has lost its AI State"); return; }
 
         // If not an idle or hurt state, store into action history
-        if (_aiState.GetType() != typeof(IdleState) && _aiState.GetType() != typeof(HurtState))
+        if (_aiState.GetStateType() != AIStateType.Idle && _aiState.GetStateType() != AIStateType.Hurt)
         {
             _aiActionHistory.Insert(0, targetAnimation);
             if (_aiActionHistory.Count > 5) _aiActionHistory.RemoveAt(5);
