@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFireball: MonoBehaviour
+public class Fireball: MonoBehaviour
 {
     // TO DO: Fix this
     public Transform FireballLocation;
