@@ -26,22 +26,22 @@ public class AIStateFactory
         {
             return stateName switch
             {
-                "BasicAttack" => new AttackState(_enemyController),
-                "Backstep" => new DodgeState(_enemyController),
-                "Fireball" => new FireballState(_enemyController, false),
-                "BackstepFireball" => new FireballState(_enemyController, true),
-                "GroundedScream" => new FakeScreamState(_enemyController),
-                "Hurt" => new HurtState(_enemyController),
-                "Idle" => new IdleState(_enemyController),
-                _ => new IdleState(_enemyController)
+                "BasicAttack" => new AI.Dragon.AttackState(_enemyController),
+                "Backstep" => new AI.Dragon.DodgeState(_enemyController),
+                "Fireball" => new AI.Dragon.FireballState(_enemyController, false),
+                "BackstepFireball" => new AI.Dragon.FireballState(_enemyController, true),
+                "GroundedScream" => new AI.Dragon.FakeScreamState(_enemyController),
+                "Hurt" => new AI.Dragon.HurtState(_enemyController),
+                "Idle" => new AI.Dragon.IdleState(_enemyController),
+                _ => new AI.Dragon.IdleState(_enemyController)
             };
         }
         else
         {
             return stateName switch
             {
-                "Idle" => new IdleState(_enemyController),
-                _ => new IdleState(_enemyController)
+                "Idle" => new AI.Dragon.IdleState(_enemyController),
+                _ => new AI.Dragon.IdleState(_enemyController)
             };
         }
     }

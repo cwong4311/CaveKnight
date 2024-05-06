@@ -3,188 +3,191 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class IdleState : AI_State
+namespace AI.Dragon
 {
-    public float MinIdleTime = 1.5f;
-    public float MaxIdleTime = 3;
-
-    public bool IsInIdle;
-    private float _idleTime;
-    private bool _hasAlreadyMoved;
-
-    public IdleState(EnemyController myController) : base(myController)
+    public class IdleState : AI_State
     {
-        _stateType = AIStateType.Idle;
-    }
+        public float MinIdleTime = 1.5f;
+        public float MaxIdleTime = 3;
 
-    public override void OnStateEnter(string fromAction)
-    {
-        base.OnStateEnter(fromAction);
+        public bool IsInIdle;
+        private float _idleTime;
+        private bool _hasAlreadyMoved;
 
-        // shorten delay after a basic action
-        if (fromAction == "BasicAttack")
+        public IdleState(EnemyController myController) : base(myController)
         {
-            MinIdleTime = 0.6f; MaxIdleTime = 1f;
-        }
-        else if (fromAction == "Hurt")
-        {
-            MinIdleTime = 0.4f; MaxIdleTime = 0.7f;
+            _stateType = AIStateType.Idle;
         }
 
-        _idleTime = UnityEngine.Random.Range(MinIdleTime, MaxIdleTime);
-        _myController.UpdateMovementParameters(0f, 0f, false);
-
-        IsInIdle = false;
-        _hasAlreadyMoved = false;
-        // All animations will naturally return to Idle anim state.
-        // Wait for it to do so
-    }
-
-    public override void Update(float delta)
-    {
-        // Wait until animation is back in idle
-        IsInIdle = _animator.GetBool("Idle");
-        if (IsInIdle == false) return;
-
-        if (_stateActive == false) return;
-
-        if (Time.time - _timeSinceStateEnter >= _idleTime)
+        public override void OnStateEnter(string fromAction)
         {
-            _myController.RestoreEnemyScale();
+            base.OnStateEnter(fromAction);
 
-            if (!_hasAlreadyMoved && _myController.LastPerformedAction != "Scream")
+            // shorten delay after a basic action
+            if (fromAction == "BasicAttack")
             {
-                CheckScream();
+                MinIdleTime = 0.6f; MaxIdleTime = 1f;
+            }
+            else if (fromAction == "Hurt")
+            {
+                MinIdleTime = 0.4f; MaxIdleTime = 0.7f;
             }
 
-            if (!_hasAlreadyMoved && _myController.LastPerformedAction != "BackstepFireball")
-            {
-                CheckBackstep();
-            }
+            _idleTime = UnityEngine.Random.Range(MinIdleTime, MaxIdleTime);
+            _myController.UpdateMovementParameters(0f, 0f, false);
 
-            if (!_hasAlreadyMoved && _myController.LastPerformedAction != "Fireball")
-            {
-                CheckFireball();
-            }
-
-            PerformAction();
+            IsInIdle = false;
+            _hasAlreadyMoved = false;
+            // All animations will naturally return to Idle anim state.
+            // Wait for it to do so
         }
-    }
 
-    public override void OnStateExit(string toAction) { }
-
-    private void PerformAction()
-    {
-        bool inRange = false;
-
-        if (_myController.TargetTransform == null)
+        public override void Update(float delta)
         {
-            var colliders = Physics.OverlapSphere(_animator.transform.position, _myController.PlayerDetectionRange);
-            foreach (var collider in colliders)
+            // Wait until animation is back in idle
+            IsInIdle = _animator.GetBool("Idle");
+            if (IsInIdle == false) return;
+
+            if (_stateActive == false) return;
+
+            if (Time.time - _timeSinceStateEnter >= _idleTime)
             {
-                if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                _myController.RestoreEnemyScale();
+
+                if (!_hasAlreadyMoved && _myController.LastPerformedAction != "Scream")
                 {
-                    _myController.TargetTransform = collider.transform;
+                    CheckScream();
                 }
+
+                if (!_hasAlreadyMoved && _myController.LastPerformedAction != "BackstepFireball")
+                {
+                    CheckBackstep();
+                }
+
+                if (!_hasAlreadyMoved && _myController.LastPerformedAction != "Fireball")
+                {
+                    CheckFireball();
+                }
+
+                PerformAction();
             }
         }
-        else
+
+        public override void OnStateExit(string toAction) { }
+
+        private void PerformAction()
         {
-            var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
-            if (distance > _myController.MinDistance && distance < _myController.MaxDistance)
+            bool inRange = false;
+
+            if (_myController.TargetTransform == null)
             {
-                MoveToTarget();
-                _hasAlreadyMoved = true;
-            }
-            else if (distance > _myController.MaxDistance)
-            {
-                _myController.TargetTransform = null;
+                var colliders = Physics.OverlapSphere(_animator.transform.position, _myController.PlayerDetectionRange);
+                foreach (var collider in colliders)
+                {
+                    if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                    {
+                        _myController.TargetTransform = collider.transform;
+                    }
+                }
             }
             else
             {
-                _myController.UpdateMovementParameters(0f, 0f, false);
-                inRange = true;
+                var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
+                if (distance > _myController.MinDistance && distance < _myController.MaxDistance)
+                {
+                    MoveToTarget();
+                    _hasAlreadyMoved = true;
+                }
+                else if (distance > _myController.MaxDistance)
+                {
+                    _myController.TargetTransform = null;
+                }
+                else
+                {
+                    _myController.UpdateMovementParameters(0f, 0f, false);
+                    inRange = true;
+                }
             }
-        }
-        
-        // Once in range, check action history.
-        // If basic attack was used less than twice, use it again.
-        // Otherwise, check if the other options can be used.
-        // ONLY use basic attack again if no others are applicable
-        if (inRange)
-        {
-            var actionHistory = _myController.GetActionHistory();
-            if (actionHistory.Where(e => e.Equals("BasicAttack")).Count() >= 3)
+
+            // Once in range, check action history.
+            // If basic attack was used less than twice, use it again.
+            // Otherwise, check if the other options can be used.
+            // ONLY use basic attack again if no others are applicable
+            if (inRange)
             {
-                var alternativeChecklist = new List<Action>() {
+                var actionHistory = _myController.GetActionHistory();
+                if (actionHistory.Where(e => e.Equals("BasicAttack")).Count() >= 3)
+                {
+                    var alternativeChecklist = new List<Action>() {
                     () => CheckScream(),
                     () => CheckBackstep(),
                     () => CheckFireball(),
                 };
 
-                foreach (var altAction in alternativeChecklist)
+                    foreach (var altAction in alternativeChecklist)
+                    {
+                        altAction.Invoke();
+                        if (!_stateActive) return;
+                    }
+                }
+
+                MoveState("BasicAttack");
+            }
+        }
+
+        private void MoveToTarget()
+        {
+            _myController.UpdateMovementParameters(1f, 0f);
+            Vector3 targetDir = (_myController.TargetTransform.position - _transform.position).normalized;
+
+            var targetRotation = Quaternion.LookRotation(targetDir);
+            var rotateVector = Quaternion.Slerp(_transform.rotation, targetRotation, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
+            rotateVector.x = 0f;
+
+            _transform.localEulerAngles = rotateVector;
+            _myController.RB.velocity = _transform.forward * _myController.ChaseSpeed;
+        }
+
+        private void CheckScream()
+        {
+            if (_myController.TargetTransform == null) return;
+
+            var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
+            if (distance <= _myController.MinDistance)
+            {
+                // 5% to trigger fake scream
+                if (UnityEngine.Random.Range(0, 10) == 0)
                 {
-                    altAction.Invoke();
-                    if (!_stateActive) return;
+                    MoveState("GroundedScream");
                 }
             }
-
-            MoveState("BasicAttack");
         }
-    }
 
-    private void MoveToTarget()
-    {
-        _myController.UpdateMovementParameters(1f, 0f);
-        Vector3 targetDir = (_myController.TargetTransform.position - _transform.position).normalized;
-
-        var targetRotation = Quaternion.LookRotation(targetDir);
-        var rotateVector = Quaternion.Slerp(_transform.rotation, targetRotation, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
-        rotateVector.x = 0f;
-
-        _transform.localEulerAngles = rotateVector;
-        _myController.RB.velocity = _transform.forward * _myController.ChaseSpeed;
-    }
-
-    private void CheckScream()
-    {
-        if (_myController.TargetTransform == null) return;
-
-        var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
-        if (distance <= _myController.MinDistance)
+        private void CheckBackstep()
         {
-            // 5% to trigger fake scream
-            if (UnityEngine.Random.Range(0, 10) == 0)
+            if (_myController.TargetTransform == null) return;
+
+            var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
+            if (distance <= _myController.MinDistance)
             {
-                MoveState("GroundedScream");
+                if (UnityEngine.Random.Range(0, 4) < 2)
+                {
+                    MoveState("Backstep");
+                }
             }
         }
-    }
 
-    private void CheckBackstep()
-    {
-        if (_myController.TargetTransform == null) return;
-
-        var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
-        if (distance <= _myController.MinDistance)
+        private void CheckFireball()
         {
-            if (UnityEngine.Random.Range(0, 4) < 2)
-            {
-                MoveState("Backstep");
-            }
-        }
-    }
+            if (_myController.TargetTransform == null) return;
 
-    private void CheckFireball()
-    {
-        if (_myController.TargetTransform == null) return;
-
-        var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
-        if (distance > _myController.MinDistance * 1.5f)
-        {
-            if (UnityEngine.Random.Range(0, 4) < 2)
+            var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
+            if (distance > _myController.MinDistance * 1.5f)
             {
-                MoveState("Fireball");
+                if (UnityEngine.Random.Range(0, 4) < 2)
+                {
+                    MoveState("Fireball");
+                }
             }
         }
     }

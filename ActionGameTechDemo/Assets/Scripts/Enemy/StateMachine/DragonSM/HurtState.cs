@@ -2,29 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HurtState : AI_State
+namespace AI.Dragon
 {
-    private string _animationState = "Get Hit";
- 
-    public HurtState(EnemyController myController) : base(myController)
+    public class HurtState : AI_State
     {
-        _stateType = AIStateType.Hurt;
-    }
+        private string _animationState = "Get Hit";
 
-    public override void OnStateEnter(string fromAction)
-    {
-        base.OnStateEnter(fromAction);
-
-        PlayAnimationState(_animationState);
-    }
-
-    public override void Update(float delta)
-    {
-        if (IsAnimationCompleted(_animationState))
+        public HurtState(EnemyController myController) : base(myController)
         {
-            MoveState("Idle");
+            _stateType = AIStateType.Hurt;
         }
-    }
 
-    public override void OnStateExit(string toAction) { }
+        public override void OnStateEnter(string fromAction)
+        {
+            base.OnStateEnter(fromAction);
+
+            PlayAnimationState(_animationState);
+        }
+
+        public override void Update(float delta)
+        {
+            if (IsAnimationCompleted(_animationState))
+            {
+                MoveState("Idle");
+            }
+        }
+
+        public override void OnStateExit(string toAction) { }
+    }
 }
