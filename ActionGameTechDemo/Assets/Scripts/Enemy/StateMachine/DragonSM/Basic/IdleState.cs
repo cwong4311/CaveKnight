@@ -115,14 +115,13 @@ namespace AI.Dragon
             // ONLY use basic attack again if no others are applicable
             if (inRange)
             {
-                var actionHistory = _myController.GetActionHistory();
-                if (actionHistory.Where(e => e.Equals("BasicAttack")).Count() >= 3)
+                if (GetTimesRecentlyExecuted("BasicAttack") >= 3)
                 {
                     var alternativeChecklist = new List<Action>() {
-                    () => CheckScream(),
-                    () => CheckBackstep(),
-                    () => CheckFireball(),
-                };
+                        () => CheckScream(),
+                        () => CheckBackstep(),
+                        () => CheckFireball(),
+                    };
 
                     foreach (var altAction in alternativeChecklist)
                     {

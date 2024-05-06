@@ -40,8 +40,8 @@ public class AIStateFactory
         {
             return stateName switch
             {
-                "Idle" => new AI.Dragon.IdleState(_enemyController),
-                _ => new AI.Dragon.IdleState(_enemyController)
+                "Idle" => new AI.Dragon.EnrageIdleState(_enemyController),
+                _ => new AI.Dragon.EnrageIdleState(_enemyController)
             };
         }
     }

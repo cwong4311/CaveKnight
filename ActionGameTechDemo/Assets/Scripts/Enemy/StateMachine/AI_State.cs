@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public enum AIStateType
@@ -68,6 +69,12 @@ public abstract class AI_State
         }
 
         return false;
+    }
+
+    protected int GetTimesRecentlyExecuted(string actionName)
+    {
+        var actionHistory = _myController.GetActionHistory();
+        return actionHistory.Where(e => e.Equals(actionName)).Count();
     }
 
     public AIStateType GetStateType()
