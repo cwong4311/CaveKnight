@@ -14,9 +14,9 @@ namespace AI.Dragon
 
         private Quaternion _targetRotationToPlayer;
 
-        private string _animationState;
-        private string _groundedAnimationState = "Fireball";
-        private string _aerialAnimationState = "BackstepFireball";
+        protected string _animationState;
+        protected string _groundedAnimationState = "Fireball";
+        protected string _aerialAnimationState = "BackstepFireball";
 
         public FireballState(EnemyController myController, bool isAerial) : base(myController)
         {
@@ -56,9 +56,9 @@ namespace AI.Dragon
 
         public override void OnStateExit(string toAction) { }
 
-        private void ShootFireball()
+        protected virtual void ShootFireball()
         {
-            _myController.SpawnFireball(_myController.TargetTransform, _isHoming);
+            _myController.Fireball.SpawnFireball(_myController.TargetTransform, _isHoming);
         }
 
         private void GetRotationToTarget()

@@ -134,11 +134,6 @@ public class EnemyController : CharacterManager
         }
     }
 
-    public void SpawnFireball(Transform target, bool isHoming)
-    {
-        Fireball.SpawnFireball(target, isHoming);
-    }
-
     public void GetHit(float damageTaken)
     {
         // If enough damage is dealt, flinch

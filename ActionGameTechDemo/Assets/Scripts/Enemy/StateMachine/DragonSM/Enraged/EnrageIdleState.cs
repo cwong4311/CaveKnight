@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AI.Dragon
@@ -23,8 +21,13 @@ namespace AI.Dragon
         {
             base.OnStateEnter(fromAction);
 
+            // if transitioning phases, don't have any idle time
+            if (fromAction == "Idle")
+            {
+                MinIdleTime = 0.05f; MaxIdleTime = 0.1f;
+            }
             // extend delay after a special action
-            if (fromAction == "FirePillar")
+            else if (fromAction == "FirePillar")
             {
                 MinIdleTime = 0.4f; MaxIdleTime = 0.7f;
             }
@@ -94,8 +97,8 @@ namespace AI.Dragon
 
         private void PerformAction(float distance)
         {
-            // At any distance, 20% take off
-            if (UnityEngine.Random.Range(0, 5) == 0)
+            // At any distance, 25% take off
+            if (UnityEngine.Random.Range(0, 4) == 0)
             {
                 var aerial = CheckTakeoff();
                 if (aerial) return;
@@ -176,6 +179,7 @@ namespace AI.Dragon
             recentAirborne += GetTimesRecentlyExecuted("DiveBomb");
             recentAirborne += GetTimesRecentlyExecuted("AerialLand");
 
+            // Only allow taking off once every (at least) 5 actions
             if (recentAirborne < 1)
             {
                 MoveState("TakeOff");
@@ -202,7 +206,7 @@ namespace AI.Dragon
         {
             if (_myController.TargetTransform == null) return false;
 
-            if (GetTimesRecentlyExecuted("TailSwipe") < 3)
+            if (GetTimesRecentlyExecuted("TailSwipe") < 2)
             {
                 MoveState("TailSwipe");
                 return true;
