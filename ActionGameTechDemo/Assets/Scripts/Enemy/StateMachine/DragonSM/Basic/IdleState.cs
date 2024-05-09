@@ -50,7 +50,7 @@ namespace AI.Dragon
 
             if (_stateActive == false) return;
 
-            if (Time.time - _timeSinceStateEnter >= _idleTime)
+            if (Time.time - _timeAtStateEnter >= _idleTime)
             {
                 _myController.RestoreEnemyScale();
 

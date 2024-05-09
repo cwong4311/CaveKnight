@@ -25,7 +25,7 @@ namespace AI.Dragon
             // Start to scream, but then get hurt trying to do so.
             // This is the Beefy boi's fake scream
             var duration = _myController.GetStateDuration(_animationState) / 4;
-            if (Time.time - _timeSinceStateEnter > duration)
+            if (Time.time - _timeAtStateEnter > duration)
             {
                 _myController.ForceGetHit();
             }

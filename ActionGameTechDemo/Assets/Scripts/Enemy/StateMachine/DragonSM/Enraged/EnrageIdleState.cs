@@ -52,7 +52,7 @@ namespace AI.Dragon
 
             if (_stateActive == false) return;
 
-            if (Time.time - _timeSinceStateEnter >= _idleTime)
+            if (Time.time - _timeAtStateEnter >= _idleTime)
             {
                 _myController.RestoreEnemyScale();
                 
@@ -97,6 +97,9 @@ namespace AI.Dragon
 
         private void PerformAction(float distance)
         {
+            //Testing code
+            CheckCharging();
+
             // At any distance, 25% take off
             if (UnityEngine.Random.Range(0, 4) == 0)
             {

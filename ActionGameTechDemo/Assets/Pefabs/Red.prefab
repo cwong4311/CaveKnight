@@ -653,12 +653,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LockOnTransform: {fileID: 386490935}
   EnemyName: Dragon
-  EnemyCommands: []
   PlayerDetectionRange: 20
   TargetTransform: {fileID: 0}
   RB: {fileID: 2149660045296410191}
   Bite: {fileID: 137562616}
   Tail: {fileID: 1445535533}
+  Chest: {fileID: 296202316055534995}
   Fireball: {fileID: 329284322510630516}
   MaxDistance: 50
   MinDistance: 5
@@ -1817,6 +1817,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3909679656868392882}
+  - component: {fileID: 3549061183462596599}
+  - component: {fileID: 296202316055534995}
   m_Layer: 9
   m_Name: Root_Pelvis
   m_TagString: Untagged
@@ -1843,6 +1845,31 @@ Transform:
   m_Father: {fileID: 3909679656868448408}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0.000005602885, y: 126.200714, z: 5.0131083}
+--- !u!135 &3549061183462596599
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3909679656868162928}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 130
+  m_Center: {x: -280, y: 0, z: 5}
+--- !u!114 &296202316055534995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3909679656868162928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e5ebc7b708240489d103ca9907ea7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3909679656868164392
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class DragonStateInfo : IStateInfoMap
 		{ "Backstep" , ( "Take Off" , 1 , 1.146667 ) },
 		{ "BackstepFireball" , ( "Fly Fireball Shoot" , 1 , 0.825 ) },
 		{ "Basic Attack" , ( "Basic Attack" , 1 , 0.75 ) },
+		{ "ChargeAttack" , ( "Scream" , 1 , 0.4666667 ) },
 		{ "Charging" , ( "Run" , 1.5 , 0 ) },
 		{ "Die" , ( "Die" , 1 , 1.5 ) },
 		{ "Divebomb" , ( "Fly Glide" , 1 , 1 ) },

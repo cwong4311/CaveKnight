@@ -47,7 +47,7 @@ namespace AI.Dragon
             if (isPrimaryAttack)
                 RotateToPlayer();
 
-            if (Time.time - _timeSinceStateEnter >= DelayBeforeAttackActive)
+            if (Time.time - _timeAtStateEnter >= DelayBeforeAttackActive)
             {
                 ActiveAttack();
             }

@@ -17,7 +17,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void OnEnable()
     {
-        CurrentHealth = MaxHealth;
+        CurrentHealth = MaxHealth / 2 + 1;
         _controller = GetComponent<EnemyController>();
 
         _healthBar.SetMaxHealth((int)MaxHealth);

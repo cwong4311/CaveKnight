@@ -21,6 +21,7 @@ public class EnemyController : CharacterManager
     public Rigidbody RB;
     public WeaponDamager Bite;
     public WeaponDamager Tail;
+    public WeaponDamager Chest;
     public Fireball Fireball;
 
     public float MaxDistance = 50;

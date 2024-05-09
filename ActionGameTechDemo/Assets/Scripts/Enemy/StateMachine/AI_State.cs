@@ -17,7 +17,7 @@ public abstract class AI_State
 
     protected string _lastAction;
     protected bool _stateActive;
-    protected float _timeSinceStateEnter;
+    protected float _timeAtStateEnter;
     protected float _animationDuration;
 
     // Treat states as action by default. Only Idle or Hurt states should explicitly reassign this field
@@ -34,7 +34,7 @@ public abstract class AI_State
     {
         _lastAction = fromAction;
 
-        _timeSinceStateEnter = Time.time;
+        _timeAtStateEnter = Time.time;
         _stateActive = true;
 
         UnityEngine.Debug.Log($"TEST ---- DRAGON: Entered {this.GetType().Name} state from {fromAction}");
@@ -63,7 +63,7 @@ public abstract class AI_State
     protected bool IsAnimationCompleted(string animationState)
     {
         var duration = _myController.GetStateDuration(animationState);
-        if (Time.time - _timeSinceStateEnter > duration)
+        if (Time.time - _timeAtStateEnter > duration)
         {
             return true;
         }
@@ -80,5 +80,15 @@ public abstract class AI_State
     public AIStateType GetStateType()
     {
         return _stateType;
+    }
+
+    protected void WaitOnActionCompleted()
+    {
+        _animator.ResetTrigger("ActionCompleted");
+    }
+
+    protected void SetActionCompleted()
+    {
+        _animator.SetTrigger("ActionCompleted");
     }
 }
