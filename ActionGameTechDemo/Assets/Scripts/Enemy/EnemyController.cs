@@ -87,7 +87,9 @@ public class EnemyController : CharacterManager
             _damageTakenCombo = 0;
         }
 
-        _damageTakenCombo -= Time.deltaTime * 5;    // Lose 5 damageCombo per second
+        // Lose 5 damageCombo per second
+        _damageTakenCombo = (_damageTakenCombo > 0f) ? 
+            _damageTakenCombo - Time.deltaTime * 5 : 0f;
     }
 
     public void MoveToState(string targetAnimation)
