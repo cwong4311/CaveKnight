@@ -72,6 +72,7 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             _controller.GetHit(IsBlocking);
+            SetTemporaryInvuln(0.4f);
         } 
     }
 
