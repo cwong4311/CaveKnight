@@ -40,6 +40,7 @@ public class AIStateFactory
         {
             return stateName switch
             {
+                "TailSwipe" => new AI.Dragon.DoubleTailSwipe(_enemyController),
                 "Charging" => new AI.Dragon.ChargingState(_enemyController),
                 "TripleFireball" => new AI.Dragon.EnragedFireballState(_enemyController, false),
                 "Idle" => new AI.Dragon.EnrageIdleState(_enemyController),

@@ -7,7 +7,7 @@ namespace AI.Dragon
     public class ChargingState : AI_State
     {
         public float DelayBeforeChargeActive = 0.5f;
-        public float Damage = 30f;
+        public float Damage = 50f;
 
         private string _animationState = "ChargeAttack";
         private Quaternion _targetRotationToPlayer;
