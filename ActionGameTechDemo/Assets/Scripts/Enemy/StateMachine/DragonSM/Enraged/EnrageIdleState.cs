@@ -98,7 +98,7 @@ namespace AI.Dragon
         private void PerformAction(float distance)
         {
             //Testing code
-            CheckTailSwipe();
+            CheckTakeoff();
 
             // At any distance, 25% take off
             if (UnityEngine.Random.Range(0, 4) == 0)

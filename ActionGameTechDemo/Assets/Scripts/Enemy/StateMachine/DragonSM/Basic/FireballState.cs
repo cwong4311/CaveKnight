@@ -6,7 +6,7 @@ namespace AI.Dragon
 {
     public class FireballState : AI_State
     {
-        private float _delayBeforeShooting = 0.5f;
+        protected float _delayBeforeShooting = 0.5f;
 
         private float _fireballTime = 0f;
         private bool _hasShot;
@@ -17,11 +17,14 @@ namespace AI.Dragon
         protected string _animationState;
         protected string _groundedAnimationState = "Fireball";
         protected string _aerialAnimationState = "BackstepFireball";
+        protected string _fireballFinishState;
 
         public FireballState(EnemyController myController, bool isAerial) : base(myController)
         {
             _isHoming = isAerial;
             _animationState = isAerial ? _aerialAnimationState : _groundedAnimationState;
+
+            _fireballFinishState = "Idle";
         }
 
         public override void OnStateEnter(string fromAction)
@@ -50,7 +53,7 @@ namespace AI.Dragon
 
             if (IsAnimationCompleted(_animationState))
             {
-                MoveState("Idle");
+                MoveState(_fireballFinishState);
             }
         }
 
