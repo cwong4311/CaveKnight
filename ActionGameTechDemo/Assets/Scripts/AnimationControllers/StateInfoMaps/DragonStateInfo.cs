@@ -4,7 +4,7 @@ public class DragonStateInfo : IStateInfoMap
 {
 	private Dictionary<string, (string, double, double)> stateInfoMap = new Dictionary<string, (string, double, double)>()
 	{
-		{ "AerialLand" , ( "Land" , 1 , 2.35 ) },
+		{ "AerialLand" , ( "Land" , 1 , 2.343754 ) },
 		{ "AirLocomotion" , ( "Dragon_Aerial_BlendTree" , 1 , 0.7308437 ) },
 		{ "BackLand" , ( "Land" , 1 , 2.34 ) },
 		{ "Backstep" , ( "Take Off" , 1 , 1.146667 ) },
@@ -24,7 +24,7 @@ public class DragonStateInfo : IStateInfoMap
 		{ "Null_Override" , ( "" , 1 , 1 ) },
 		{ "Scream" , ( "Scream" , 1 , 2.083333 ) },
 		{ "Tail Attack" , ( "Tail Attack" , 1 , 1.083333 ) },
-		{ "Take Off" , ( "Take Off" , 1 , 1.820049 ) },
+		{ "Take Off" , ( "Take Off" , 1.3 , 1.820049 ) },
 	};
 
 	public StateInfoSetting? GetStateInfoByName(string stateName)

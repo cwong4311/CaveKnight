@@ -70,7 +70,10 @@ namespace AI.Dragon
             }
         }
 
-        public override void OnStateExit(string toAction) { }
+        public override void OnStateExit(string toAction)
+        {
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), false);
+        }
 
         private float? CheckEnemyDistance()
         {
@@ -130,6 +133,8 @@ namespace AI.Dragon
             _randomMovePosition = _myController.transform.position + (_randomMoveDirection * _randomMoveDuration);
             _randomMoveEndAction = moveEndAction;
             _randomMoveStartTime = Time.time;
+
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
 
             ProcessRandomMove();
         }
