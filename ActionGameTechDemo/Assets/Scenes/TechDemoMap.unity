@@ -2307,18 +2307,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 357843811}
     m_Modifications:
-    - target: {fileID: 2149660045296410189, guid: 90dba4dbeab81d54287971a0a3497357, type: 3}
-      propertyPath: m_Radius
-      value: 1.6411695
-      objectReference: {fileID: 0}
-    - target: {fileID: 2149660045296410189, guid: 90dba4dbeab81d54287971a0a3497357, type: 3}
-      propertyPath: m_Center.x
-      value: 0.000000010990051
-      objectReference: {fileID: 0}
-    - target: {fileID: 2149660045296410189, guid: 90dba4dbeab81d54287971a0a3497357, type: 3}
-      propertyPath: m_Center.y
-      value: 1.6377292
-      objectReference: {fileID: 0}
     - target: {fileID: 3909679656868116364, guid: 90dba4dbeab81d54287971a0a3497357, type: 3}
       propertyPath: m_Name
       value: Red
@@ -2326,10 +2314,6 @@ PrefabInstance:
     - target: {fileID: 3909679656868448408, guid: 90dba4dbeab81d54287971a0a3497357, type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3909679656868448408, guid: 90dba4dbeab81d54287971a0a3497357, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.8000001
       objectReference: {fileID: 0}
     - target: {fileID: 3909679656868448408, guid: 90dba4dbeab81d54287971a0a3497357, type: 3}
       propertyPath: m_LocalPosition.x
