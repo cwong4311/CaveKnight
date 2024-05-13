@@ -1931,6 +1931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667e056671bc87e479b6f03bdd797f96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockOnRoot: {fileID: 386490935}
   EnemyHealth: {fileID: 8345383149817224871}
 --- !u!1 &3909679656868164392
 GameObject:
