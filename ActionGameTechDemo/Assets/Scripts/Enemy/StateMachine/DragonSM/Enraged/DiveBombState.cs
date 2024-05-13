@@ -46,21 +46,21 @@ namespace AI.Dragon
 
             if (HasCrashed())
             {
-                // Reset y position
-                var tempPos = _myController.transform.position;
-                _myController.transform.position = new Vector3(tempPos.x, -2.9f, tempPos.z);
-
                 MoveState("Idle");
             }
         }
 
         public override void OnStateExit(string toAction)
         {
+            // Reset y position
+            var tempPos = _myController.transform.position;
+            _myController.transform.position = new Vector3(tempPos.x, -2.9f, tempPos.z);
+
             _myController.RB.velocity *= 0.3f;
             _myController.ToggleGravity(true);
             _myController.ToggleBossCollision(true);
-            DeactiveAttack();
             SetActionCompleted();
+            DeactiveAttack();
         }
 
         private bool HasCrashed()

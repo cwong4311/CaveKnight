@@ -103,8 +103,8 @@ namespace AI.Dragon
 
         public override void OnStateExit(string toAction)
         {
-            DeactiveAttack();
             SetActionCompleted();
+            DeactiveAttack();
         }
 
         private bool RotateToPlayer(float rotationSpeedMultiplier)
