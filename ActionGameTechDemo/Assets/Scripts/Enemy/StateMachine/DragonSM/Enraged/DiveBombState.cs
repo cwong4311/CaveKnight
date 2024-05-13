@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace AI.Dragon
@@ -21,25 +22,29 @@ namespace AI.Dragon
         {
             base.OnStateEnter(fromAction);
 
+            WaitOnActionCompleted();
+
             PlayAnimationState(_animationState);
         }
 
         public override void Update(float delta)
         {
+            GetRotationToTarget();
+
             if (Time.time - _timeAtStateEnter < _preDiveRotationDelay)
             {
-                GetRotationToTarget();
-                RotateToPlayer();
+                RotateToPlayer(_trackingMultiplier);
                 _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 0.5f;
             }
             else
             {
+                RotateToPlayer(0.3f); // small tracking
                 ActiveAttack();
-                _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 4f;
+                _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 3f;
             }
 
-            //TODO: Modify Crash detection behaviour. When bite collider hits ground
-            if (IsAnimationCompleted(_animationState))
+            // Approximate crash behaviour. If y < -3, then it definitely has hit ground level
+            if (HasCrashed())
             {
                 MoveState("Idle");
             }
@@ -50,20 +55,36 @@ namespace AI.Dragon
             _myController.RB.velocity = Vector3.zero;
             _myController.ToggleGravity(true);
             DeactiveAttack();
+            SetActionCompleted();
+        }
+
+        private bool HasCrashed()
+        {
+            var colliders = Physics.OverlapSphere(_myController.Bite.transform.position, 1f);
+            foreach (var collider in colliders)
+            {
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Player")
+                    || collider.gameObject.layer == LayerMask.NameToLayer("Environment"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void GetRotationToTarget()
         {
-            Vector3 targetDir = (_myController.TargetTransform.position - _myController.Bite.transform.position).normalized;
-            _targetRotationToPlayer = Quaternion.LookRotation(targetDir);
+            Vector3 targetDir = (_myController.TargetTransform.position -
+                _myController.ActualBodyTransform.position).normalized;
 
-            Debug.Log("TEST --- " + _targetRotationToPlayer.eulerAngles);
+            _targetRotationToPlayer = Quaternion.LookRotation(targetDir);
         }
 
-        private bool RotateToPlayer()
+        private bool RotateToPlayer(float trackingMultiplier)
         {
             var rotateVector = Quaternion.Slerp(_transform.rotation, _targetRotationToPlayer,
-                _myController.TurnSpeed * Time.deltaTime * _trackingMultiplier).eulerAngles;
+                _myController.TurnSpeed * Time.deltaTime * trackingMultiplier).eulerAngles;
 
             if (rotateVector.magnitude > 0.5f)
             {
@@ -77,11 +98,13 @@ namespace AI.Dragon
 
         private void ActiveAttack()
         {
+            _myController.Bite.GetComponent<SphereCollider>().radius = 120f;
             _myController.Bite.ActivateWeapon(_damage);
         }
 
         private void DeactiveAttack()
         {
+            _myController.Bite.GetComponent<SphereCollider>().radius = 72f;
             _myController.Bite.DeactivateWeapon();
         }
     }

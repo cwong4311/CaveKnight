@@ -220,6 +220,9 @@ public class EnemyController : CharacterManager
         Gizmos.DrawWireSphere(transform.position, MaxDistance);
 
         if (TargetTransform != null)
-            Gizmos.DrawLine(Bite.transform.position, TargetTransform.position);
+            Gizmos.DrawLine(ActualBodyTransform.position, TargetTransform.position);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(Bite.transform.position, 1.5f);
     }
 }

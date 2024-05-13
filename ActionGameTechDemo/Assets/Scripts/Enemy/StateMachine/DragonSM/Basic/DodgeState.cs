@@ -24,6 +24,7 @@ namespace AI.Dragon
             _dodgeTime = 0f;
             _dodgeVelocity = null;
             
+            // Let Idle state re-enable gravity
             _myController.ToggleGravity(false);
 
             // Go to dodge anim state

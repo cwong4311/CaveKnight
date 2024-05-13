@@ -52,6 +52,9 @@ namespace AI.Dragon
 
             if (_stateActive == false) return;
 
+            // Always enable gravity when back in Idle state
+            _myController.ToggleGravity(true);
+
             if (Time.time - _timeAtStateEnter >= _idleTime)
             {
                 _myController.RestoreEnemyScale();

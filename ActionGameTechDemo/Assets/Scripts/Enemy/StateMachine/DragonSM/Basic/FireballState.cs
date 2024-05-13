@@ -34,6 +34,7 @@ namespace AI.Dragon
             _fireballTime = 0f;
             _hasShot = false;
 
+            _myController.RB.velocity *= 0.3f;  // Reduce any existing velocity when firing fireball
             GetRotationToTarget();
             PlayAnimationState(_animationState);
         }
@@ -57,10 +58,7 @@ namespace AI.Dragon
             }
         }
 
-        public override void OnStateExit(string toAction)
-        {
-            _myController.ToggleGravity(true);
-        }
+        public override void OnStateExit(string toAction) { }
 
         protected virtual void ShootFireball()
         {

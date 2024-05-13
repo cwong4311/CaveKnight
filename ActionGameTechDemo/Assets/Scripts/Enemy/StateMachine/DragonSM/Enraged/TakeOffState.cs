@@ -12,6 +12,9 @@ namespace AI.Dragon
         {
             base.OnStateEnter(fromAction);
 
+            // Let Idle state re-enable gravity
+            _myController.ToggleGravity(false);
+
             PlayAnimationState(_animationState);
         }
 
