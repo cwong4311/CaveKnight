@@ -32,9 +32,16 @@ public class WeaponDamager : MonoBehaviour
     {
         if (IsDamageable(collision) && _damageDealt > 0.01f)
         {
-            if (_targetIsEnemy && collision.gameObject.TryGetComponent<EnemyHealth>(out var enemy))
+            if (_targetIsEnemy)
             {
-                enemy.TakeDamage(_damageDealt);
+                if (collision.gameObject.TryGetComponent<EnemyHealth>(out var enemy))
+                {
+                    enemy.TakeDamage(_damageDealt);
+                }
+                else if (collision.gameObject.TryGetComponent<EnemyDamageablePart>(out var enemyPart))
+                {
+                    enemyPart.TakeDamage(_damageDealt);
+                }
             }
             else if (!_targetIsEnemy && collision.gameObject.TryGetComponent<PlayerHealth>(out var player))
             {

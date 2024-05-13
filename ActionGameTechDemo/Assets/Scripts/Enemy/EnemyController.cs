@@ -17,12 +17,16 @@ public class EnemyController : CharacterManager
     public string EnemyName;
 
     public float PlayerDetectionRange;
-    public Transform TargetTransform;
+    public Transform ActualBodyTransform;   // Transform of this Enemy's actual body (not the parent GO)
+    public Transform TargetTransform;       // Transform of the target (player)
     public Rigidbody RB;
     public WeaponDamager Bite;
     public WeaponDamager Tail;
     public WeaponDamager Chest;
     public Fireball Fireball;
+
+    public bool applyGravity = true;
+    public float CharacterGravity = 50;
 
     public float MaxDistance = 50;
     public float MinDistance = 5f;
@@ -57,6 +61,8 @@ public class EnemyController : CharacterManager
     {
         _enemyHealth = GetComponent<EnemyHealth>();
         _enemyAnimator = GetComponent<Animator>();
+        RB.useGravity = false;  // Always use custom gravity
+
         _verticalHash = Animator.StringToHash("Vertical");
         _horizontalHash = Animator.StringToHash("Horizontal");
 
@@ -90,6 +96,14 @@ public class EnemyController : CharacterManager
         // Lose 5 damageCombo per second
         _damageTakenCombo = (_damageTakenCombo > 0f) ? 
             _damageTakenCombo - Time.deltaTime * 5 : 0f;
+    }
+
+    public void FixedUpdate()
+    {
+        if (applyGravity)
+        {
+            RB.velocity += (Vector3.down * CharacterGravity) * Time.fixedDeltaTime;
+        }  
     }
 
     public void MoveToState(string targetAnimation)
@@ -194,10 +208,18 @@ public class EnemyController : CharacterManager
         }  
     }
 
+    public void ToggleGravity(bool isEnabled)
+    {
+        applyGravity = isEnabled;
+    }
+
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, MinDistance);
         Gizmos.DrawWireSphere(transform.position, MaxDistance);
+
+        if (TargetTransform != null)
+            Gizmos.DrawLine(Bite.transform.position, TargetTransform.position);
     }
 }

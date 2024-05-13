@@ -48,14 +48,16 @@ namespace AI.Dragon
         public override void OnStateExit(string toAction)
         {
             _myController.RB.velocity = Vector3.zero;
+            _myController.ToggleGravity(true);
             DeactiveAttack();
         }
 
-        //TODO: Rotation not facing Player
         private void GetRotationToTarget()
         {
-            Vector3 targetDir = (_myController.TargetTransform.position - _transform.position).normalized;
+            Vector3 targetDir = (_myController.TargetTransform.position - _myController.Bite.transform.position).normalized;
             _targetRotationToPlayer = Quaternion.LookRotation(targetDir);
+
+            Debug.Log("TEST --- " + _targetRotationToPlayer.eulerAngles);
         }
 
         private bool RotateToPlayer()

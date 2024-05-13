@@ -40,6 +40,8 @@ namespace AI.Dragon
             _isRandomMove = false;
             // All animations will naturally return to Idle anim state.
             // Wait for it to do so
+
+            _myController.ToggleGravity(false);
         }
 
         public override void Update(float delta)

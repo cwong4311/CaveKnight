@@ -23,6 +23,9 @@ namespace AI.Dragon
             }
         }
 
-        public override void OnStateExit(string toAction) { }
+        public override void OnStateExit(string toAction)
+        {
+            _myController.ToggleGravity(true);
+        }
     }
 }

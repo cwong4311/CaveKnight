@@ -23,6 +23,8 @@ namespace AI.Dragon
             base.OnStateEnter(fromAction);
             _dodgeTime = 0f;
             _dodgeVelocity = null;
+            
+            _myController.ToggleGravity(false);
 
             // Go to dodge anim state
             PlayAnimationState(_backstepAnimationState);
