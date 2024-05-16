@@ -43,11 +43,12 @@ public class AIStateFactory
                 "TakeOff" => new AI.Dragon.TakeOffState(_enemyController),
                 "AerialIdle" => new AI.Dragon.AerialIdleState(_enemyController),
                 "AerialFireball" => new AI.Dragon.AerialFireballState(_enemyController, true),
-                "Landing" => new AI.Dragon.DiveBombState(_enemyController),
+                "Landing" => new AI.Dragon.LandingState(_enemyController),
                 "DiveBomb" => new AI.Dragon.DiveBombState(_enemyController),
                 "TailSwipe" => new AI.Dragon.DoubleTailSwipe(_enemyController),
                 "Charging" => new AI.Dragon.ChargingState(_enemyController),
                 "TripleFireball" => new AI.Dragon.EnragedFireballState(_enemyController, false),
+                "Hurt" => new AI.Dragon.HurtState(_enemyController),
                 "Idle" => new AI.Dragon.EnrageIdleState(_enemyController),
                 _ => new AI.Dragon.EnrageIdleState(_enemyController)
             };

@@ -6,7 +6,7 @@ namespace AI.Dragon
     public class DiveBombState : AI_State
     {
         private string _animationState = "Divebomb";
-        private float _preDiveRotationDelay = 0.8f;
+        private float _preDiveRotationDelay = 0.3f;
 
         private Quaternion _targetRotationToPlayer;
         private Vector3 _divebombDirection;
@@ -23,6 +23,7 @@ namespace AI.Dragon
             base.OnStateEnter(fromAction);
 
             WaitOnActionCompleted();
+            _myController.ToggleBossCollision(false);
 
             PlayAnimationState(_animationState);
         }
@@ -36,16 +37,15 @@ namespace AI.Dragon
             if (Time.time - _timeAtStateEnter < _preDiveRotationDelay)
             {
                 RotateToPlayer(_trackingMultiplier);
-                _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 0.5f;
+                _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 0.3f;
             }
             else
             {
                 RotateToPlayer(0.3f); // small tracking
                 ActiveAttack();
-                _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 3f;
+                _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 3.5f;
             }
 
-            // Approximate crash behaviour. If y < -3, then it definitely has hit ground level
             if (HasCrashed())
             {
                 MoveState("Idle");
@@ -54,10 +54,15 @@ namespace AI.Dragon
 
         public override void OnStateExit(string toAction)
         {
-            _myController.RB.velocity = Vector3.zero;
+            // Reset y position
+            var tempPos = _myController.transform.position;
+            _myController.transform.position = new Vector3(tempPos.x, -2.9f, tempPos.z);
+
+            _myController.RB.velocity *= 0.3f;
             _myController.ToggleGravity(true);
-            DeactiveAttack();
+            _myController.ToggleBossCollision(true);
             SetActionCompleted();
+            DeactiveAttack();
         }
 
         private bool HasCrashed()
@@ -77,8 +82,8 @@ namespace AI.Dragon
 
         private void GetRotationToTarget()
         {
-            Vector3 targetDir = (_myController.TargetTransform.position -
-                _myController.ActualBodyTransform.position).normalized;
+            var adjustedTarget = _myController.TargetTransform.position + _myController.TargetTransform.up;
+            Vector3 targetDir = (adjustedTarget - _myController.ActualBodyTransform.position).normalized;
 
             _targetRotationToPlayer = Quaternion.LookRotation(targetDir);
         }

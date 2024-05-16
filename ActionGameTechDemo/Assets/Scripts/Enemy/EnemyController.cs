@@ -35,6 +35,7 @@ public class EnemyController : CharacterManager
 
     private EnemyHealth _enemyHealth;
 
+    private List<Collider> _activeColliders = new List<Collider>();
     private Animator _enemyAnimator;
     private Dictionary<string, float> _enemyAnimatorInfoMap = new Dictionary<string, float>();
     private int _verticalHash;
@@ -73,6 +74,14 @@ public class EnemyController : CharacterManager
         _currentStunThreshold = RestunBaseThreshold;
 
         _stateInfo = StateInfoMapResolver.GetStateInfoMap(_enemyAnimator.runtimeAnimatorController.name);
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            if (collider.enabled && collider.isTrigger == false)
+            {
+                _activeColliders.Add(collider);
+            }
+        }
     }
 
     public void OnEnable()
@@ -242,6 +251,14 @@ public class EnemyController : CharacterManager
     public void ToggleGravity(bool isEnabled)
     {
         applyGravity = isEnabled;
+    }
+
+    public void ToggleBossCollision(bool canCollide)
+    {
+        foreach (var collider in _activeColliders)
+        {
+            collider.isTrigger = !canCollide;
+        }
     }
 
     public void OnDrawGizmos()
