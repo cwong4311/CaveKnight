@@ -48,6 +48,7 @@ namespace AI.Dragon
 
             if (HasCrashed())
             {
+                ResetXRotation();
                 MoveState("Idle");
             }
         }
@@ -101,6 +102,13 @@ namespace AI.Dragon
             }
 
             return false;
+        }
+
+        private void ResetXRotation()
+        {
+            var resetRotation = _myController.transform.rotation.eulerAngles;
+            resetRotation.x = 0;
+            _myController.transform.localEulerAngles = resetRotation;
         }
 
         private void ActiveAttack()
