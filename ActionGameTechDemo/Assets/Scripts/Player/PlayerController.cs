@@ -221,17 +221,15 @@ public class PlayerController : CharacterManager
 
         if (_hitStunCoroutine != null)
         {
-            Debug.Log($"TEST --- Forcestop Stun {isAttacker}");
             StopCoroutine(_hitStunCoroutine);
         }
-        Debug.Log($"TEST --- Start Stun {isAttacker}");
         _hitStunCoroutine = StartCoroutine(HitStunTimer(duration));
     }
 
     private IEnumerator HitStunTimer(float duration)
     {
         isInHitStun = true;
-        _animator.Anim.speed = 0f;
+        _animator.Anim.speed = 0.01f;
         RB.isKinematic = true;
 
         yield return new WaitForSecondsRealtime(duration);
@@ -239,8 +237,6 @@ public class PlayerController : CharacterManager
         isInHitStun = false;
         _animator.Anim.speed = 1f;
         RB.isKinematic = false;
-
-        Debug.Log("TEST --- Stop Stun");
     }
 
     public void GetHit(bool isBlocking)
