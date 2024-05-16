@@ -23,9 +23,14 @@ public class EnemyHealth : MonoBehaviour
         _healthBar.SetMaxHealth((int)MaxHealth);
     }
 
-    public void TakeDamage(float damage)
+    /// <summary>
+    /// Returns whether damage was taken or not
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <returns></returns>
+    public bool TakeDamage(float damage)
     {
-        if (IsInvulnerable) return;
+        if (IsInvulnerable) return false;
 
         CurrentHealth -= damage;
         if (CurrentHealth <= 0)
@@ -35,6 +40,8 @@ public class EnemyHealth : MonoBehaviour
 
         _healthBar.SetHealth((int)CurrentHealth);
         _controller.GetHit(damage);
+
+        return true;
     }
 
     public void Die()

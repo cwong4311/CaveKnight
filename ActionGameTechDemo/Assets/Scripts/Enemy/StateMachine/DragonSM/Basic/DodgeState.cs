@@ -31,8 +31,10 @@ namespace AI.Dragon
             PlayAnimationState(_backstepAnimationState);
         }
 
-        public override void Update(float delta)
+        public override void Update(float delta, bool isInHitStun)
         {
+            base.Update(delta, isInHitStun);
+
             _dodgeTime += delta;
             if (_dodgeTime > _delayBeforeMoving)
             {

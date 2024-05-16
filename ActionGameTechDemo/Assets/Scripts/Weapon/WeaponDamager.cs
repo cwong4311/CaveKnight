@@ -17,6 +17,7 @@ public class WeaponDamager : MonoBehaviour
     private bool _targetIsEnemy;
 
     private CharacterManager _myCharacter;
+    private List<object> _alreadyHitTargets = new List<object>();
 
     public void Awake()
     {
@@ -30,29 +31,37 @@ public class WeaponDamager : MonoBehaviour
     // TO DO: Damage Once
     public void OnTriggerEnter(Collider collision)
     {
-        if (IsDamageable(collision) && _damageDealt > 0.01f)
-        {
-            if (_targetIsEnemy)
-            {
-                if (collision.gameObject.TryGetComponent<EnemyHealth>(out var enemy))
-                {
-                    enemy.TakeDamage(_damageDealt);
-                }
-                else if (collision.gameObject.TryGetComponent<EnemyDamageablePart>(out var enemyPart))
-                {
-                    enemyPart.TakeDamage(_damageDealt);
-                }
-            }
-            else if (!_targetIsEnemy && collision.gameObject.TryGetComponent<PlayerHealth>(out var player))
-            {
-                if (player.IsParrying)
-                {
-                    _myCharacter?.GetComponent<EnemyController>()?.ForceGetHit();
-                }
+        if (IsDamageable(collision) == false || _damageDealt < 0.01f) return;
 
-                player.TakeDamage(_damageDealt);
+        if (_alreadyHitTargets.Contains(collision)) return;
+
+        bool hasDealtDamage = false;
+        if (_targetIsEnemy)
+        {
+            if (collision.gameObject.TryGetComponent<EnemyHealth>(out var enemy))
+            {
+                hasDealtDamage = enemy.TakeDamage(_damageDealt);
             }
-            // Else maybe a destructable. Handle later
+            else if (collision.gameObject.TryGetComponent<EnemyDamageablePart>(out var enemyPart))
+            {
+                hasDealtDamage = enemyPart.TakeDamage(_damageDealt);
+            }
+        }
+        else if (!_targetIsEnemy && collision.gameObject.TryGetComponent<PlayerHealth>(out var player))
+        {
+            if (player.IsParrying)
+            {
+                _myCharacter?.GetComponent<EnemyController>()?.ForceGetHit();
+            }
+
+            hasDealtDamage = player.TakeDamage(_damageDealt);
+        }
+        // Else maybe a destructable. Handle later
+
+        if (hasDealtDamage)
+        {
+            _alreadyHitTargets.Add(collision);
+            _myCharacter.TriggerHitStop(_damageDealt, true);
         }
     }
 
@@ -84,6 +93,7 @@ public class WeaponDamager : MonoBehaviour
 
         _damageDealt = damage;
         _damageCollider.enabled = true;
+        _alreadyHitTargets.Clear();
     }
 
     public void ActivateWeapon(float damage, float delay)
@@ -104,6 +114,7 @@ public class WeaponDamager : MonoBehaviour
         _damageDealt = damage;
         _damageCollider.enabled = true;
         _delayedWeaponActive = null;
+        _alreadyHitTargets.Clear();
     }
 
     public void DeactivateWeapon()

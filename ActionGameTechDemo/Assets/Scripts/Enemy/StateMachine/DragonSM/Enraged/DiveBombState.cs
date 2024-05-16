@@ -27,8 +27,10 @@ namespace AI.Dragon
             PlayAnimationState(_animationState);
         }
 
-        public override void Update(float delta)
+        public override void Update(float delta, bool isInHitStun)
         {
+            base.Update(delta, isInHitStun);
+
             GetRotationToTarget();
 
             if (Time.time - _timeAtStateEnter < _preDiveRotationDelay)

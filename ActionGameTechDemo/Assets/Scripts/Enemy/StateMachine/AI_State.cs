@@ -40,7 +40,17 @@ public abstract class AI_State
         UnityEngine.Debug.Log($"TEST ---- DRAGON: Entered {this.GetType().Name} state from {fromAction}");
     }
 
-    public abstract void Update(float delta);
+    public virtual void Update(float delta, bool isInHitStun)
+    {
+        // Whenever updating in hitstun, move along the entire 'timeframe' of the state but don't process anything else
+        if (isInHitStun)
+        {
+            _timeAtStateEnter += delta;
+            return;
+        }
+
+        // TO BE Customised per child state
+    }
 
     public virtual void OnStateExit(string toAction)
     {

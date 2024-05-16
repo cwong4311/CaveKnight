@@ -42,8 +42,10 @@ namespace AI.Dragon
             // Wait for it to do so
         }
 
-        public override void Update(float delta)
+        public override void Update(float delta, bool isInHitStun)
         {
+            base.Update(delta, isInHitStun);
+
             // Wait until animation is back in idle
             IsInIdle = _animator.GetBool("Idle");
             if (IsInIdle == false) return;

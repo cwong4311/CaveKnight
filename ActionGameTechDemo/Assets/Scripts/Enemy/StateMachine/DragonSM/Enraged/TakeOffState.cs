@@ -18,8 +18,10 @@ namespace AI.Dragon
             PlayAnimationState(_animationState);
         }
 
-        public override void Update(float delta)
+        public override void Update(float delta, bool isInHitStun)
         {
+            base.Update(delta, isInHitStun);
+
             if (IsAnimationCompleted(_animationState))
             {
                 MoveState("AerialIdle");

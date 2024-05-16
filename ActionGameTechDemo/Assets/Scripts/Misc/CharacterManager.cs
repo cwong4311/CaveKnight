@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterManager : MonoBehaviour, ILockOnAbleObject
+public abstract class CharacterManager : MonoBehaviour, ILockOnAbleObject
 {
 
     public Transform LockOnTransform;
@@ -21,4 +21,6 @@ public class CharacterManager : MonoBehaviour, ILockOnAbleObject
             }
         }
     }
+
+    public abstract void TriggerHitStop(float damageAmount, bool isAttacker);
 }

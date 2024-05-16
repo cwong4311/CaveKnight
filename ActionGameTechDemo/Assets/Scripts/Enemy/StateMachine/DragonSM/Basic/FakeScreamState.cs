@@ -20,8 +20,10 @@ namespace AI.Dragon
             PlayAnimationState(_animationState);
         }
 
-        public override void Update(float delta)
+        public override void Update(float delta, bool isInHitStun)
         {
+            base.Update(delta, isInHitStun);
+
             // Start to scream, but then get hurt trying to do so.
             // This is the Beefy boi's fake scream
             var duration = _myController.GetStateDuration(_animationState) / 4;

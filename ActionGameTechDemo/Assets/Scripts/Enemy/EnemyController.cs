@@ -57,6 +57,9 @@ public class EnemyController : CharacterManager
     public float RestunThresholdGain = 150;
     public float StunResetDuration = 30f;
 
+    private bool isInHitStun = false;
+    private Coroutine _hitStunCoroutine = null;
+
     public void Awake()
     {
         _enemyHealth = GetComponent<EnemyHealth>();
@@ -74,6 +77,7 @@ public class EnemyController : CharacterManager
 
     public void OnEnable()
     {
+        isInHitStun = false;
         MoveToState("Idle");
     }
 
@@ -81,8 +85,10 @@ public class EnemyController : CharacterManager
     {
         if (_aiState != null)
         {
-            _aiState.Update(Time.deltaTime);
+            _aiState.Update(Time.deltaTime, isInHitStun);
         }
+
+        if (isInHitStun) return;
 
         // If enough time has passed since the last stun, reset hit shield and stun thresholds
         if (_lastStunTime > 0.05f && Time.time - _lastStunTime > StunResetDuration)
@@ -149,6 +155,31 @@ public class EnemyController : CharacterManager
             _enemyAnimator.SetFloat(_verticalHash, vertical);
             _enemyAnimator.SetFloat(_horizontalHash, horizontal);
         }
+    }
+
+    public override void TriggerHitStop(float damageAmount, bool isAttacker)
+    {
+        // Attacker has slightly less HitStop than Victim
+        var duration = damageAmount / (isAttacker ? 300 : 500);
+
+        if (_hitStunCoroutine != null)
+        {
+            StopCoroutine(_hitStunCoroutine);
+        }
+        _hitStunCoroutine = StartCoroutine(HitStunTimer(duration));
+    }
+
+    private IEnumerator HitStunTimer(float duration)
+    {
+        isInHitStun = true;
+        _enemyAnimator.speed = 0f;
+        RB.isKinematic = true;
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        isInHitStun = false;
+        _enemyAnimator.speed = 1f;
+        RB.isKinematic = false;
     }
 
     public void GetHit(float damageTaken)

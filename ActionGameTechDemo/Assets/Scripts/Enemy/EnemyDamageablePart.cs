@@ -13,11 +13,13 @@ public class EnemyDamageablePart : MonoBehaviour, ILockOnAbleObject
 
     public Transform LockOnTarget => LockOnRoot ?? transform;
 
-    public void TakeDamage(float damage)
+    public bool TakeDamage(float damage)
     {
         if (EnemyHealth != null)
         {
-            EnemyHealth.TakeDamage(damage);
+            return EnemyHealth.TakeDamage(damage);
         }
+
+        return false;
     }
 }
