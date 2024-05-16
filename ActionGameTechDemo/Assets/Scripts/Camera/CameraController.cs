@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class CameraController : MonoBehaviour
     public float MinCollisionOffset = 0.2f;
 
     public float maxLockonDistance = 30f;
-    private List<CharacterManager> lockonTargets = new List<CharacterManager>();
+    private List<ILockOnAbleObject> lockonTargets = new List<ILockOnAbleObject>();
     public Transform closestLockonTarget;
     public Transform currentLockonTarget;
     public int lockonIndex;
@@ -103,14 +104,14 @@ public class CameraController : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(TargetTransform.position, 30);
         for (int i = 0; i < colliders.Length; i++)
         {
-            var character = colliders[i].GetComponent<CharacterManager>();
-            if (character != null)
+            var lockonObj = colliders[i].GetComponent<ILockOnAbleObject>();
+            if (lockonObj != null)
             {
-                Vector3 lockonDir = character.transform.position - TargetTransform.position;
-                float distFromTarget = Vector3.Distance(TargetTransform.position, character.transform.position);
+                Vector3 lockonDir = lockonObj.LockOnTarget.position - TargetTransform.position;
+                float distFromTarget = Vector3.Distance(TargetTransform.position, lockonObj.LockOnTarget.position);
 
                 float viewAngle = Vector3.Angle(lockonDir, CameraTransform.forward);
-                if (character.transform.root != TargetTransform.transform.root
+                if (lockonObj.LockOnTarget.root != TargetTransform.transform.root
                     && viewAngle > -50 && viewAngle < 50
                     && distFromTarget <= maxLockonDistance)
                 {
@@ -127,20 +128,20 @@ public class CameraController : MonoBehaviour
                         }
                     }
 
-                    if (!hasCollision)
-                        lockonTargets.Add(character);
+                    if (!hasCollision && lockonTargets.Contains(lockonObj) == false)
+                        lockonTargets.Add(lockonObj);
                 }
             }
         }
 
         for (int k = 0; k < lockonTargets.Count; k++)
         {
-            float distFromTarget = Vector3.Distance(TargetTransform.position, lockonTargets[k].transform.position);
+            float distFromTarget = Vector3.Distance(TargetTransform.position, lockonTargets[k].LockOnTarget.position);
 
             if (distFromTarget < shortestDistance)
             {
                 shortestDistance = distFromTarget;
-                closestLockonTarget = lockonTargets[k].LockOnTransform ?? lockonTargets[k].transform;
+                closestLockonTarget = lockonTargets[k].LockOnTarget;
                 lockonIndex = k;
             }
         }
@@ -163,7 +164,7 @@ public class CameraController : MonoBehaviour
         if (lockonTargets == null || lockonTargets.Count <= 0) return false;
 
         lockonIndex = (lockonIndex + 1) % lockonTargets.Count;
-        currentLockonTarget = lockonTargets[lockonIndex].LockOnTransform ?? lockonTargets[lockonIndex].transform;
+        currentLockonTarget = lockonTargets[lockonIndex].LockOnTarget;
         if (currentLockonTarget == closestLockonTarget)
         {
             return false;

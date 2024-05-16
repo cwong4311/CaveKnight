@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Specifically Melee Weapons. Contains OnParried logic
+/// </summary>
 public class WeaponDamager : MonoBehaviour
 {
     private Collider _damageCollider;
@@ -10,10 +13,15 @@ public class WeaponDamager : MonoBehaviour
     private float _tickDamage = 0f;
     private Coroutine _delayedWeaponActive = null;
 
-    private bool _targetEnemy;
+    // true is Enemy, false is Player
+    private bool _targetIsEnemy;
+
+    private CharacterManager _myCharacter;
+    private List<object> _alreadyHitTargets = new List<object>();
 
     public void Awake()
     {
+        _myCharacter = GetComponentInParent<CharacterManager>();
         _damageCollider = GetComponent<Collider>();
         _damageCollider.gameObject.SetActive(true);
         _damageCollider.isTrigger = true;
@@ -23,17 +31,37 @@ public class WeaponDamager : MonoBehaviour
     // TO DO: Damage Once
     public void OnTriggerEnter(Collider collision)
     {
-        if (IsDamageable(collision) && _damageDealt > 0.01f)
+        if (IsDamageable(collision) == false || _damageDealt < 0.01f) return;
+
+        if (_alreadyHitTargets.Contains(collision)) return;
+
+        bool hasDealtDamage = false;
+        if (_targetIsEnemy)
         {
-            if (_targetEnemy && collision.gameObject.TryGetComponent<EnemyHealth>(out var enemy))
+            if (collision.gameObject.TryGetComponent<EnemyHealth>(out var enemy))
             {
-                enemy.TakeDamage(_damageDealt);
+                hasDealtDamage = enemy.TakeDamage(_damageDealt);
             }
-            else if (!_targetEnemy && collision.gameObject.TryGetComponent<PlayerHealth>(out var player))
+            else if (collision.gameObject.TryGetComponent<EnemyDamageablePart>(out var enemyPart))
             {
-                player.TakeDamage(_damageDealt);
+                hasDealtDamage = enemyPart.TakeDamage(_damageDealt);
             }
-            // Else maybe a destructable. Handle later
+        }
+        else if (!_targetIsEnemy && collision.gameObject.TryGetComponent<PlayerHealth>(out var player))
+        {
+            if (player.IsParrying)
+            {
+                _myCharacter?.GetComponent<EnemyController>()?.ForceGetHit();
+            }
+
+            hasDealtDamage = player.TakeDamage(_damageDealt);
+        }
+        // Else maybe a destructable. Handle later
+
+        if (hasDealtDamage)
+        {
+            _alreadyHitTargets.Add(collision);
+            _myCharacter.TriggerHitStop(_damageDealt, true);
         }
     }
 
@@ -52,7 +80,7 @@ public class WeaponDamager : MonoBehaviour
 
     public void SetWeaponTarget(bool targetEnemy)
     {
-        _targetEnemy = targetEnemy;
+        _targetIsEnemy = targetEnemy;
     }
 
     public void ActivateWeapon(float damage)
@@ -65,6 +93,7 @@ public class WeaponDamager : MonoBehaviour
 
         _damageDealt = damage;
         _damageCollider.enabled = true;
+        _alreadyHitTargets.Clear();
     }
 
     public void ActivateWeapon(float damage, float delay)
@@ -85,6 +114,7 @@ public class WeaponDamager : MonoBehaviour
         _damageDealt = damage;
         _damageCollider.enabled = true;
         _delayedWeaponActive = null;
+        _alreadyHitTargets.Clear();
     }
 
     public void DeactivateWeapon()

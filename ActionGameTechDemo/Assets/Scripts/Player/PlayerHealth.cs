@@ -42,6 +42,8 @@ public class PlayerHealth : MonoBehaviour
             {
                 _isTempInvuln = false;
                 IsInvulnerable = false;
+
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
             }
         }
 
@@ -56,13 +58,15 @@ public class PlayerHealth : MonoBehaviour
         IsBlocking = _controller.IsBlocking;
     }
 
-    public void TakeDamage(float damage)
+    public bool TakeDamage(float damage)
     {
-        if (IsInvulnerable) return;
+        if (IsInvulnerable) return false;
         if (IsBlocking) damage *= 0.3f;
 
         CurrentHealth -= damage;
         _healthBar.SetHealth((int)CurrentHealth);
+
+        _controller.TriggerHitStop(damage, false);
 
         if (CurrentHealth <= 0.01f)
         {
@@ -72,7 +76,10 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             _controller.GetHit(IsBlocking);
-        } 
+            SetTemporaryInvuln(0.4f);
+        }
+
+        return true;
     }
 
     public void SetTemporaryInvuln(float duration)
@@ -82,6 +89,8 @@ public class PlayerHealth : MonoBehaviour
         _isTempInvuln = true;
         _timeSinceTempInvuln = Time.time;
         _tempInvulnDuration = duration;
+
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
     }
 
     public void SetParryState(float duration)

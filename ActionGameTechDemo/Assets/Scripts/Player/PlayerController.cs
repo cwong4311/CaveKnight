@@ -25,6 +25,9 @@ public class PlayerController : CharacterManager
     private PlayerWeapon _weapon;
     private PlayerHealth _health;
 
+    private bool isInHitStun = false;
+    private Coroutine _hitStunCoroutine = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,10 +50,14 @@ public class PlayerController : CharacterManager
 
         _cameraGO = Camera.main.transform;
         CameraController = FindObjectOfType<CameraController>();
+
+        isInHitStun = false;
     }
 
     public void Update()
     {
+        if (isInHitStun) return;
+
         float delta = Time.deltaTime;
 
         _inputHandler.IsInteracting = _animator.Anim.GetBool("IsInteracting");
@@ -205,6 +212,31 @@ public class PlayerController : CharacterManager
             _health.SetParryState(0.3f);
             _inputHandler.IsParrying = false;
         }
+    }
+
+    public override void TriggerHitStop(float damageAmount, bool isAttacker)
+    {
+        // Attacker has slightly less HitStop than Victim
+        var duration = damageAmount / (isAttacker ? 300 : 500);
+
+        if (_hitStunCoroutine != null)
+        {
+            StopCoroutine(_hitStunCoroutine);
+        }
+        _hitStunCoroutine = StartCoroutine(HitStunTimer(duration));
+    }
+
+    private IEnumerator HitStunTimer(float duration)
+    {
+        isInHitStun = true;
+        _animator.Anim.speed = 0.01f;
+        RB.isKinematic = true;
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        isInHitStun = false;
+        _animator.Anim.speed = 1f;
+        RB.isKinematic = false;
     }
 
     public void GetHit(bool isBlocking)
