@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace AI.Dragon
@@ -55,9 +56,7 @@ namespace AI.Dragon
 
         public override void OnStateExit(string toAction)
         {
-            // Reset y position
-            var tempPos = _myController.transform.position;
-            _myController.transform.position = new Vector3(tempPos.x, -2.9f, tempPos.z);
+            _myController.StartCoroutine(ReturnToIdlePosition());
 
             _myController.RB.velocity *= 0.3f;
             _myController.ToggleGravity(true);
@@ -121,6 +120,27 @@ namespace AI.Dragon
         {
             _myController.Bite.GetComponent<SphereCollider>().radius = 72f;
             _myController.Bite.DeactivateWeapon();
+        }
+
+        /// <summary>
+        /// Gradually reset the y position to 0, using Slerp.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator ReturnToIdlePosition()
+        {
+            Debug.Log($"TEST ---- Start return {_myController.transform.position}");
+            var tempPos = _myController.transform.position;
+
+            //TODO: Change to time-based instead. Position doesn't work
+            while (_myController.transform.position.y < -2.9f)
+            {
+                var destination = new Vector3(tempPos.x, -2.6f, tempPos.z);
+                _myController.transform.position = Vector3.Slerp(_myController.transform.position, destination, Time.deltaTime * 5);
+                yield return null;
+            }
+
+            _myController.transform.position = new Vector3(tempPos.x, -2.9f, tempPos.z);
+            Debug.Log($"TEST ---- Finish return {_myController.transform.position}");
         }
     }
 }
