@@ -22,7 +22,7 @@ public class AIStateFactory
 
     public AI_State DragonResolver(string stateName, float? healthPercentage)
     {
-        if (healthPercentage.HasValue && healthPercentage > 0.5)
+        if (healthPercentage.HasValue == false || healthPercentage > 0.5)
         {
             return stateName switch
             {
@@ -50,8 +50,8 @@ public class AIStateFactory
                 "TripleFireball" => new AI.Dragon.EnragedFireballState(_enemyController, false),
                 "Hurt" => new AI.Dragon.HurtState(_enemyController),
                 "Idle" => new AI.Dragon.EnrageIdleState(_enemyController),
-                _ => new AI.Dragon.EnrageIdleState(_enemyController)
-            };
+                _ => DragonResolver(stateName, null)    // Refer to default state setup if can't find a match
+            };;
         }
     }
 }

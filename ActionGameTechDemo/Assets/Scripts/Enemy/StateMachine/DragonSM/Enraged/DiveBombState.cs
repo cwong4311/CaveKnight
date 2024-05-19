@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace AI.Dragon
@@ -48,15 +49,14 @@ namespace AI.Dragon
 
             if (HasCrashed())
             {
+                ResetXRotation();
                 MoveState("Idle");
             }
         }
 
         public override void OnStateExit(string toAction)
         {
-            // Reset y position
-            var tempPos = _myController.transform.position;
-            _myController.transform.position = new Vector3(tempPos.x, -2.9f, tempPos.z);
+            _myController.StartCoroutine(ReturnToIdlePosition());
 
             _myController.RB.velocity *= 0.3f;
             _myController.ToggleGravity(true);
@@ -103,6 +103,13 @@ namespace AI.Dragon
             return false;
         }
 
+        private void ResetXRotation()
+        {
+            var resetRotation = _myController.transform.rotation.eulerAngles;
+            resetRotation.x = 0;
+            _myController.transform.localEulerAngles = resetRotation;
+        }
+
         private void ActiveAttack()
         {
             _myController.Bite.GetComponent<SphereCollider>().radius = 120f;
@@ -113,6 +120,28 @@ namespace AI.Dragon
         {
             _myController.Bite.GetComponent<SphereCollider>().radius = 72f;
             _myController.Bite.DeactivateWeapon();
+        }
+
+        /// <summary>
+        /// Gradually reset the y position to 0, using Slerp.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator ReturnToIdlePosition()
+        {
+            var currentTimeTaken = 0f;
+            var totalDuration = 0.5f;
+            var endYPos = -2.9f;
+
+            while (currentTimeTaken < totalDuration)
+            {
+                var destination = new Vector3(_myController.transform.position.x, endYPos, _myController.transform.position.z);
+                _myController.transform.position = Vector3.Slerp(_myController.transform.position, destination, currentTimeTaken / totalDuration);
+
+                currentTimeTaken += Time.deltaTime;
+                yield return null;
+            }
+
+            _myController.transform.position = new Vector3(_myController.transform.position.x, endYPos, _myController.transform.position.z);
         }
     }
 }

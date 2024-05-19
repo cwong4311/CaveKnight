@@ -102,9 +102,6 @@ namespace AI.Dragon
 
         private void PerformAction(float distance)
         {
-            //Testing code
-            CheckTakeoff();
-
             // At any distance, 25% take off
             if (UnityEngine.Random.Range(0, 4) == 0)
             {
@@ -117,7 +114,7 @@ namespace AI.Dragon
             int randomRes = UnityEngine.Random.Range(0, 3);
 
             // from range 0f ~ 5f: Melee
-            if (distance <= 5)
+            if (distance <= 10)
             {
                 if (randomRes > 0)
                 {
@@ -127,9 +124,13 @@ namespace AI.Dragon
             // from range 5f ~ 25f: Mid
             else if (distance < _myController.MaxDistance / 2)
             {
-                if (randomRes > 0)
+                if (randomRes == 0)
                 {
                     if (CheckFireball()) return;
+                }
+                else if (randomRes == 1)
+                {
+                    if (CheckBackstep()) return;
                 }
             }
             // from range 25f ~ 50f: Far
@@ -141,7 +142,7 @@ namespace AI.Dragon
                 }
                 else if (randomRes == 1)
                 {
-                    if (CheckFirePillar()) return;
+                    if (CheckBackstep()) return;
                 }
             }
 
@@ -153,7 +154,7 @@ namespace AI.Dragon
             {
                 var alternativeChecklist = new List<Action>() {
                         () => CheckFireball(),
-                        () => CheckFirePillar(),
+                        () => CheckBackstep(),
                         () => CheckTakeoff()
                         // Don't include tail swipe, as it only works in close range
                     };
@@ -166,13 +167,13 @@ namespace AI.Dragon
             }
         }
 
-        private bool CheckFirePillar()
+        private bool CheckBackstep()
         {
             if (_myController.TargetTransform == null) return false;
 
-            if (GetTimesRecentlyExecuted("FirePillar") < 2)
+            if (GetTimesRecentlyExecuted("Backstep") < 2)
             {
-                MoveState("FirePillar");
+                MoveState("Backstep");
                 return true;
             }
 
