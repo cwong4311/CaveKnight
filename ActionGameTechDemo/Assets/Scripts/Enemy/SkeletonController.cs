@@ -8,12 +8,11 @@ public class SkeletonController : CharacterManager
 {
     public Transform TargetTransform;
 
-    private NavMeshAgent agent;
+    public NavMeshAgent NavMeshAgent;
 
     public void Awake()
     {
         TargetTransform = GameObject.FindObjectOfType<PlayerController>().transform;
-        agent = GetComponent<NavMeshAgent>();
     }
 
     public override void TriggerHitStop(float damageAmount, bool isAttacker)
@@ -23,6 +22,6 @@ public class SkeletonController : CharacterManager
 
     public void Update()
     {
-        agent?.SetDestination(TargetTransform.position);
+        NavMeshAgent?.SetDestination(TargetTransform.position);
     }
 }
