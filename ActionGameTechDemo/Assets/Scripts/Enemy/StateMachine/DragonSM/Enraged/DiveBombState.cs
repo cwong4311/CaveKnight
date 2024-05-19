@@ -128,19 +128,20 @@ namespace AI.Dragon
         /// <returns></returns>
         private IEnumerator ReturnToIdlePosition()
         {
-            Debug.Log($"TEST ---- Start return {_myController.transform.position}");
-            var tempPos = _myController.transform.position;
+            var currentTimeTaken = 0f;
+            var totalDuration = 0.5f;
+            var endYPos = -2.9f;
 
-            //TODO: Change to time-based instead. Position doesn't work
-            while (_myController.transform.position.y < -2.9f)
+            while (currentTimeTaken < totalDuration)
             {
-                var destination = new Vector3(tempPos.x, -2.6f, tempPos.z);
-                _myController.transform.position = Vector3.Slerp(_myController.transform.position, destination, Time.deltaTime * 5);
+                var destination = new Vector3(_myController.transform.position.x, endYPos, _myController.transform.position.z);
+                _myController.transform.position = Vector3.Slerp(_myController.transform.position, destination, currentTimeTaken / totalDuration);
+
+                currentTimeTaken += Time.deltaTime;
                 yield return null;
             }
 
-            _myController.transform.position = new Vector3(tempPos.x, -2.9f, tempPos.z);
-            Debug.Log($"TEST ---- Finish return {_myController.transform.position}");
+            _myController.transform.position = new Vector3(_myController.transform.position.x, endYPos, _myController.transform.position.z);
         }
     }
 }
