@@ -1,0 +1,40 @@
+Skeleton
+- Idle State / Anim loop
+- Walk to Player
+- Attack State (1 Swing)
+- Dodge State
+- OnHit State
+- Death State
+
+
+Assassin
+- Idle State / Anim Loop
+- Walk to Player
+- Stealth Up
+- Basic Attack State
+- Fury Slash State
+- Dodge State
+- OnHit State
+- Death State
+
+
+Mage
+- Idle State / Anim Loop
+- Dodge State (Teleport)
+- Cast in Range State:
+	- Slash beam
+	- FlameThrower
+	- Boulder Spell
+- Melee Flame Sword -> TP
+- OnHit State
+- Death State
+
+
+Minotaur
+- Idle State / Anim Loop
+- Walk to Player
+- Attack 1 State
+- Attack 2 State
+- Attack 3 State
+- OnHit State
+- Death State

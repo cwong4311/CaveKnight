@@ -1,0 +1,19 @@
+Full HP__
+Tail Swipe (L + R)	- Melee L or R		X
+Bite			- Melee F		X
+Retreat + Fireball	- Melee ~ Mid	(20%)	X
+Scream			- Melee ~ Mid	(20%)	X
+Standing Fireball	- Enemy Far		X
+Walk to Enemy		- Mid ~ Far		X
+
+
+
+50% HP
+Tail Swipe (Double fast)	- Melee		(40%)	X
+Charging 3 Loops + Bite		- Melee ~ Mid	(40%)	X
+Triple Fireball			- Mid ~ Far	(40%)	X
+Scream Fire Pillar (6 x 3)	- Far		(40%)	Nop
+Take-Off (Airbox)		- Any distance (20%)	X
+- FlyBy Fireball (1~3 times)
+- Normal Land	(40%)
+- Divekick	(60%)
