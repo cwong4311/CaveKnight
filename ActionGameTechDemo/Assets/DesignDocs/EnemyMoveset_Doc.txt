@@ -10,7 +10,6 @@ Skeleton
 Assassin
 - Idle State / Anim Loop
 - Walk to Player
-- Stealth Up
 - Basic Attack State
 - Fury Slash State
 - Dodge State
