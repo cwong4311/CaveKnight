@@ -604,7 +604,7 @@ GameObject:
   - component: {fileID: 3909679656868448408}
   - component: {fileID: 3909679656875477168}
   - component: {fileID: 8345383149817224871}
-  - component: {fileID: 2149660045296410188}
+  - component: {fileID: 4130584809128974739}
   - component: {fileID: 583814919958355711}
   m_Layer: 9
   m_Name: Red
@@ -668,7 +668,7 @@ MonoBehaviour:
   CurrentHealth: 10000
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
---- !u!114 &2149660045296410188
+--- !u!114 &4130584809128974739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3909679656868116364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5cc9398aa2ad7b4190e46acd4a9f917, type: 3}
+  m_Script: {fileID: 11500000, guid: b0987ad0ff2604f4cb25e9aeadf0be3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   LockOnTransform: {fileID: 386490935}
@@ -686,10 +686,6 @@ MonoBehaviour:
   ActualBodyTransform: {fileID: 3909679656868392882}
   TargetTransform: {fileID: 0}
   RB: {fileID: 583814919958355711}
-  Bite: {fileID: 137562616}
-  Tail: {fileID: 1445535533}
-  Chest: {fileID: 1745794787017432773}
-  Fireball: {fileID: 329284322510630516}
   applyGravity: 1
   CharacterGravity: 50
   MaxDistance: 50
@@ -701,6 +697,10 @@ MonoBehaviour:
   RestunBaseThreshold: 50
   RestunThresholdGain: 150
   StunResetDuration: 30
+  Bite: {fileID: 137562616}
+  Tail: {fileID: 1445535533}
+  Chest: {fileID: 1745794787017432773}
+  Fireball: {fileID: 0}
 --- !u!54 &583814919958355711
 Rigidbody:
   m_ObjectHideFlags: 0
