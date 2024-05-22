@@ -2,43 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AI.Dragon
+namespace AI.Skeleton
 { 
     public class AttackState : AI_State
     {
-        public float DelayBeforeAttackActive = 0.3f;
-        public float Damage = 20f;
+        public float DelayBeforeAttackActive = 0.8f;
+        public float AttackActiveUntil = 1.6f;
+        public float Damage = 15f;
 
-        private bool isPrimaryAttack;
-        private string _primaryAttack = "Basic Attack";
-        private string _secondaryAttack = "Tail Attack";
+        private string _animationState = "Attack";
+        public bool _hasAttacked = false;
 
-        private string _animationState;
         private Quaternion _targetRotationToPlayer;
-        private TargetDirection _directionOfPlayer;
-
-        private Vector3 _bossScale;
 
         public AttackState(EnemyController myController) : base(myController)
         {
-            _directionOfPlayer = DirectionOfTarget.GetDirectionOfTarget(_myController.transform, _myController.TargetTransform);
-            isPrimaryAttack = (_directionOfPlayer == TargetDirection.Forward) ? true : false;
-
-            _bossScale = myController.transform.localScale;
         }
 
         public override void OnStateEnter(string fromAction)
         {
             base.OnStateEnter(fromAction);
 
-            _animationState = (isPrimaryAttack) ? _primaryAttack : _secondaryAttack;
-
-            if (isPrimaryAttack)
-                GetRotationToTarget();
-
-            if (!isPrimaryAttack && _directionOfPlayer == TargetDirection.Right)
-                _myController.FlipEnemyScale();
-
+            GetRotationToTarget();
             PlayAnimationState(_animationState);
         }
 
@@ -46,12 +31,21 @@ namespace AI.Dragon
         {
             base.Update(delta, isInHitStun);
 
-            if (isPrimaryAttack)
-                RotateToPlayer();
-
             if (Time.time - _timeAtStateEnter >= DelayBeforeAttackActive)
             {
-                ActiveAttack();
+                if (_hasAttacked == false)
+                {
+                    ActiveAttack();
+                    _hasAttacked = true;
+                }
+            }
+            else if (Time.time - _timeAtStateEnter >= AttackActiveUntil)
+            {
+                DeactiveAttack();
+            }
+            else
+            {
+                RotateToPlayer();
             }
 
             if (IsAnimationCompleted(_animationState))
@@ -63,6 +57,7 @@ namespace AI.Dragon
         public override void OnStateExit(string toAction)
         {
             DeactiveAttack();
+            _hasAttacked = false;
         }
 
         private void GetRotationToTarget()
@@ -88,20 +83,12 @@ namespace AI.Dragon
 
         private void ActiveAttack()
         {
-            if (isPrimaryAttack)
-            {
-                ((DragonController)_myController).Bite.ActivateWeapon(Damage);
-            }
-            else
-            {
-                ((DragonController)_myController).Tail.ActivateWeapon(Damage);
-            }
+            ((SkeletonController)_myController).Sword.ActivateWeapon(Damage);
         }
 
         private void DeactiveAttack()
         {
-            ((DragonController)_myController).Bite.DeactivateWeapon();
-            ((DragonController)_myController).Tail.DeactivateWeapon();
+            ((SkeletonController)_myController).Sword.DeactivateWeapon();
         }
     }
 }

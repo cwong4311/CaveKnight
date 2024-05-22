@@ -139,12 +139,12 @@ namespace AI.Dragon
 
         private void ActiveAttack()
         {
-            _myController.Chest.ActivateWeapon(Damage);
+            ((DragonController)_myController).Chest.ActivateWeapon(Damage);
         }
 
         private void DeactiveAttack()
         {
-            _myController.Chest.DeactivateWeapon();
+            ((DragonController)_myController).Chest.DeactivateWeapon();
         }
 
     }

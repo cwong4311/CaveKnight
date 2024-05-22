@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958944067519981704}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.804, z: 0}
+  m_LocalPosition: {x: 0, y: 0.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 1958944069006935296}
   m_Layer: 9
   m_Name: Bip001 Head
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 1958944069006935300}
   m_Layer: 9
   m_Name: Bip001
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 1958944069006935302}
   m_Layer: 9
   m_Name: Bip001 Footsteps
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 1958944069006935308}
   m_Layer: 9
   m_Name: Bip001 L Clavicle
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -425,7 +425,7 @@ GameObject:
   - component: {fileID: 1958944069006935320}
   m_Layer: 9
   m_Name: Bip001 L Thigh
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -553,7 +553,7 @@ GameObject:
   - component: {fileID: 1958944069006935328}
   m_Layer: 9
   m_Name: Bip001 Pelvis
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -583,9 +583,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1958944069006935330}
+  - component: {fileID: 1280128055530054101}
+  - component: {fileID: 9033772295539324700}
   m_Layer: 9
   m_Name: Bip001 Prop1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -605,6 +607,31 @@ Transform:
   m_Father: {fileID: 1958944069006935300}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1280128055530054101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958944069006907714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e5ebc7b708240489d103ca9907ea7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &9033772295539324700
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958944069006907714}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.011083931, y: 0.01, z: 0.07984527}
+  m_Center: {x: -0.0005419328, y: 0.000000001212881, z: 0.045997206}
 --- !u!1 &1958944069006907716
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,7 +643,7 @@ GameObject:
   - component: {fileID: 1958944069006935332}
   m_Layer: 9
   m_Name: Bip001 L UpperArm
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -648,7 +675,7 @@ GameObject:
   - component: {fileID: 1958944069006935334}
   m_Layer: 9
   m_Name: Bip001 Neck
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -682,7 +709,7 @@ GameObject:
   - component: {fileID: 1958944069006935336}
   m_Layer: 9
   m_Name: Bip001 R Finger0
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -714,7 +741,7 @@ GameObject:
   - component: {fileID: 1958944069006935338}
   m_Layer: 9
   m_Name: Bip001 R Finger01
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -778,7 +805,7 @@ GameObject:
   - component: {fileID: 1958944069006935342}
   m_Layer: 9
   m_Name: Bip001 R Clavicle
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -810,7 +837,7 @@ GameObject:
   - component: {fileID: 1958944069006935344}
   m_Layer: 9
   m_Name: Bip001 R Finger11
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -842,7 +869,7 @@ GameObject:
   - component: {fileID: 1958944069006935346}
   m_Layer: 9
   m_Name: Bip001 R Finger12
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -873,7 +900,7 @@ GameObject:
   - component: {fileID: 1958944069006935348}
   m_Layer: 9
   m_Name: Bip001 R Finger02
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -904,7 +931,7 @@ GameObject:
   - component: {fileID: 1958944069006935350}
   m_Layer: 9
   m_Name: Bip001 R Finger1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -936,7 +963,7 @@ GameObject:
   - component: {fileID: 1958944069006935352}
   m_Layer: 9
   m_Name: Bip001 R Hand
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -969,7 +996,7 @@ GameObject:
   - component: {fileID: 1958944069006935354}
   m_Layer: 9
   m_Name: Bip001 R Thigh
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1033,7 +1060,7 @@ GameObject:
   - component: {fileID: 1958944069006935358}
   m_Layer: 9
   m_Name: Bip001 R Forearm
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1063,9 +1090,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1958944069006935360}
+  - component: {fileID: 1807723446459703898}
+  - component: {fileID: 3685600566173780300}
   m_Layer: 9
   m_Name: Bip001 Spine
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1088,6 +1117,34 @@ Transform:
   m_Father: {fileID: 1958944069006935328}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1807723446459703898
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958944069006907744}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.021263441
+  m_Height: 0.10183405
+  m_Direction: 0
+  m_Center: {x: -0.03045562, y: -9.0088353e-10, z: 0.000000008556716}
+--- !u!114 &3685600566173780300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958944069006907744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 667e056671bc87e479b6f03bdd797f96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LockOnRoot: {fileID: 1958944067519981707}
+  EnemyHealth: {fileID: 3264501785817348885}
 --- !u!1 &1958944069006907746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,7 +1156,7 @@ GameObject:
   - component: {fileID: 1958944069006935362}
   m_Layer: 9
   m_Name: Bip001 Spine1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1162,7 +1219,7 @@ GameObject:
   - component: {fileID: 1958944069006935366}
   m_Layer: 9
   m_Name: Bip001 R UpperArm
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1312,11 +1369,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1958944069006935370}
   - component: {fileID: 1958944069016267492}
-  - component: {fileID: 1958944067104621500}
+  - component: {fileID: 3264501785817348885}
+  - component: {fileID: 4368948049179034961}
   - component: {fileID: 1958944069006935369}
+  - component: {fileID: 7970107508017793816}
   m_Layer: 9
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1328,9 +1387,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958944069006907754}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -26.337652, y: -0.36999997, z: 39.173}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 15, y: 15, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1958944069006935300}
@@ -1361,7 +1420,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1958944067104621500
+--- !u!114 &3264501785817348885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1370,11 +1429,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 1958944069006907754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ece5f884b928fe4bb20b612ded9b5fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 89c1983883af2a247b03247698256d10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 150
+  CurrentHealth: 150
+  IsInvulnerable: 0
+  _healthBar: {fileID: 0}
+--- !u!114 &4368948049179034961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958944069006907754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dddb57999eae30747b2a39e41b2c3e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   LockOnTransform: {fileID: 1958944067519981707}
+  EnemyName: Skeleton
+  PlayerDetectionRange: 12
+  ActualBodyTransform: {fileID: 1958944069006935300}
   TargetTransform: {fileID: 0}
+  RB: {fileID: 7970107508017793816}
+  applyGravity: 1
+  CharacterGravity: 50
+  MaxDistance: 13
+  MinDistance: 2
+  ChaseSpeed: 4
+  TurnSpeed: 2
+  LastPerformedAction: 
+  CurrentAction: 
+  RestunBaseThreshold: 20
+  RestunThresholdGain: 10
+  StunResetDuration: 20
+  Sword: {fileID: 1280128055530054101}
   NavMeshAgent: {fileID: 1958944069006935369}
 --- !u!195 &1958944069006935369
 NavMeshAgent:
@@ -1390,7 +1481,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 1.8
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1398,6 +1489,22 @@ NavMeshAgent:
   m_BaseOffset: -0.01
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!54 &7970107508017793816
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958944069006907754}
+  serializedVersion: 2
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &1958944069006907756
 GameObject:
   m_ObjectHideFlags: 0

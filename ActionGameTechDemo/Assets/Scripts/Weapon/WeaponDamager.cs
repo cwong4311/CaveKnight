@@ -19,6 +19,8 @@ public class WeaponDamager : MonoBehaviour
     private CharacterManager _myCharacter;
     private List<object> _alreadyHitTargets = new List<object>();
 
+    public bool IsActive => _damageCollider.enabled;
+
     public void Awake()
     {
         _myCharacter = GetComponentInParent<CharacterManager>();

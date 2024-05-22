@@ -1,29 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-
-[System.Serializable]
-public struct EnemyCommands
-{
-    public string commandName;
-    public bool isAttack;
-    public float attackDamage;
-}
 
 // TO DO: Refactor this
 public class EnemyController : CharacterManager
 {
+    [Header("Basic Stats")]
     public string EnemyName;
 
     public float PlayerDetectionRange;
     public Transform ActualBodyTransform;   // Transform of this Enemy's actual body (not the parent GO)
     public Transform TargetTransform;       // Transform of the target (player)
     public Rigidbody RB;
-    public WeaponDamager Bite;
-    public WeaponDamager Tail;
-    public WeaponDamager Chest;
-    public Fireball Fireball;
 
     public bool applyGravity = true;
     public float CharacterGravity = 50;
@@ -50,6 +38,7 @@ public class EnemyController : CharacterManager
     private IStateInfoMap _stateInfo;
 
     // Stunlock thresholds
+    [Header("Stun Variables")]
     private float _damageTakenCombo = 0f;
     private float _lastDamageTakenTime = 0f;
     private float _currentStunThreshold;
@@ -58,10 +47,15 @@ public class EnemyController : CharacterManager
     public float RestunThresholdGain = 150;
     public float StunResetDuration = 30f;
 
+    /// <summary>
+    /// This value starts at 100% and increases each time RestunThresholdGain is applied
+    /// </summary>
+    public float CurrentStunThresholdPercentage => _currentStunThreshold / RestunBaseThreshold;
+
     private bool isInHitStun = false;
     private Coroutine _hitStunCoroutine = null;
 
-    public void Awake()
+    public virtual void Awake()
     {
         _enemyHealth = GetComponent<EnemyHealth>();
         _enemyAnimator = GetComponent<Animator>();
@@ -201,6 +195,8 @@ public class EnemyController : CharacterManager
             _damageTakenCombo = 0;
             _currentStunThreshold += RestunThresholdGain;
 
+            Debug.Log($"TEST ------ {_currentStunThreshold}");
+
             // Reset state duration
             MoveToState("Hurt");
 
@@ -217,6 +213,14 @@ public class EnemyController : CharacterManager
 
         // And move to hurt state
         MoveToState("Hurt");
+    }
+
+    public void Die()
+    {
+        // And move to hurt state
+        MoveToState("Die");
+
+        // Destroy object after X seconds
     }
 
     public float? GetStateDuration(string stateName)
@@ -269,8 +273,5 @@ public class EnemyController : CharacterManager
 
         if (TargetTransform != null)
             Gizmos.DrawLine(ActualBodyTransform.position, TargetTransform.position);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(Bite.transform.position, 1.5f);
     }
 }

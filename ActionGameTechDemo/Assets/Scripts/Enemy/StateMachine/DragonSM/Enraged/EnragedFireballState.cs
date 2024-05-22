@@ -22,9 +22,9 @@ namespace AI.Dragon
             // The other two to the left and right of player location
             // Don't use homing even for Aerial variant
             var playerLocation = _myController.TargetTransform.position + _myController.TargetTransform.up;
-            _myController.Fireball.SpawnFireball(playerLocation);
-            _myController.Fireball.SpawnFireball(playerLocation + _myController.transform.right * -5);
-            _myController.Fireball.SpawnFireball(playerLocation + _myController.transform.right * 5);
+            ((DragonController)_myController).Fireball.SpawnFireball(playerLocation);
+            ((DragonController)_myController).Fireball.SpawnFireball(playerLocation + _myController.transform.right * -5);
+            ((DragonController)_myController).Fireball.SpawnFireball(playerLocation + _myController.transform.right * 5);
         }
     }
 }

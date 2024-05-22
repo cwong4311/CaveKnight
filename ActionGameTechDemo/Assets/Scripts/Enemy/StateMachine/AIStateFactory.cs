@@ -16,6 +16,7 @@ public class AIStateFactory
         return enemyName switch
         {
             "Dragon" => DragonResolver(stateName, healthPercentage),
+            "Skeleton" => SkeletonResolver(stateName),
             _ => null
         };
     }
@@ -53,5 +54,17 @@ public class AIStateFactory
                 _ => DragonResolver(stateName, null)    // Refer to default state setup if can't find a match
             };;
         }
+    }
+
+    public AI_State SkeletonResolver(string stateName)
+    {
+        return stateName switch
+        {
+            "BasicAttack" => new AI.Skeleton.AttackState(_enemyController),
+            "Idle" => new AI.Skeleton.IdleState(_enemyController),
+            "Hurt" => new AI.Skeleton.HurtState(_enemyController),
+            "Die" => new AI.Skeleton.DieState(_enemyController),
+            _ => new AI.Skeleton.IdleState(_enemyController)
+        };
     }
 }

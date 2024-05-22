@@ -20,7 +20,7 @@ public class EnemyHealth : MonoBehaviour
         CurrentHealth = MaxHealth / 2 + 1;
         _controller = GetComponent<EnemyController>();
 
-        _healthBar.SetMaxHealth((int)MaxHealth);
+        _healthBar?.SetMaxHealth((int)MaxHealth);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class EnemyHealth : MonoBehaviour
             Die();
         }
 
-        _healthBar.SetHealth((int)CurrentHealth);
+        _healthBar?.SetHealth((int)CurrentHealth);
         _controller.GetHit(damage);
 
         return true;
