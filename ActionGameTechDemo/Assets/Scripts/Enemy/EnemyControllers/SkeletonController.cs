@@ -16,6 +16,7 @@ public class SkeletonController : EnemyController
     {
         base.Awake();
 
+        NavMeshAgent.speed = ChaseSpeed;
         Sword.SetWeaponTarget(targetEnemy: false);
     }
 

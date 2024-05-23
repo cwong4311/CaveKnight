@@ -65,9 +65,9 @@ public abstract class AI_State
         _myController.MoveToState(nextState);
     }
 
-    protected void PlayAnimationState(string animationState)
+    protected void PlayAnimationState(string animationState, float? crossFadeDuration = null)
     {
-        _animator.CrossFade(animationState, 0.2f);
+        _animator.CrossFade(animationState, crossFadeDuration ?? 0.2f);
     }
 
     protected bool IsAnimationCompleted(string animationState)

@@ -6,8 +6,8 @@ namespace AI.Skeleton
 { 
     public class AttackState : AI_State
     {
-        public float DelayBeforeAttackActive = 0.8f;
-        public float AttackActiveUntil = 1.6f;
+        public float DelayBeforeAttackActive = 0.9f;
+        public float AttackActiveUntil = 1.25f;
         public float Damage = 15f;
 
         private string _animationState = "Attack";
@@ -24,20 +24,17 @@ namespace AI.Skeleton
             base.OnStateEnter(fromAction);
 
             GetRotationToTarget();
-            PlayAnimationState(_animationState);
+            PlayAnimationState(_animationState, 0.05f);
         }
 
         public override void Update(float delta, bool isInHitStun)
         {
             base.Update(delta, isInHitStun);
 
-            if (Time.time - _timeAtStateEnter >= DelayBeforeAttackActive)
+            if (Time.time - _timeAtStateEnter >= DelayBeforeAttackActive && _hasAttacked == false)
             {
-                if (_hasAttacked == false)
-                {
-                    ActiveAttack();
-                    _hasAttacked = true;
-                }
+                ActiveAttack();
+                _hasAttacked = true;
             }
             else if (Time.time - _timeAtStateEnter >= AttackActiveUntil)
             {

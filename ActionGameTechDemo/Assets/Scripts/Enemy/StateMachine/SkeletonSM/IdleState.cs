@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace AI.Skeleton
 {
@@ -15,6 +16,9 @@ namespace AI.Skeleton
 
         private float _strafeTimeRemaining = 0f;
         private float _strafeDirection; // 1 is right, -1 is left
+
+        private NavMeshAgent _myNavAgent;
+        private float _originalNavAgentSpeed = 0f;
 
         // Follow primitive non-random Logic, in this order:
         // 1 - Go Close to Player (if already in melee then skip)
@@ -33,6 +37,9 @@ namespace AI.Skeleton
 
             _idleTime = UnityEngine.Random.Range(MinIdleTime, MaxIdleTime);
             _myController.UpdateMovementParameters(0f, 0f, false);
+
+            _myNavAgent = ((SkeletonController)_myController).NavMeshAgent;
+            _originalNavAgentSpeed = _myNavAgent.speed;
 
             IsInIdle = false;
             _actionStep = 1;
@@ -57,18 +64,21 @@ namespace AI.Skeleton
             {
                 _myController.RestoreEnemyScale();
 
-                PerformAction();
+                PerformAction(delta);
             }
         }
 
         public override void OnStateExit(string toAction)
         {
-            ((SkeletonController)_myController).NavMeshAgent.ResetPath();
+            if (_myNavAgent.hasPath)
+            {
+                _myNavAgent.ResetPath();
+            }
         }
 
-        private void PerformAction()
+        private void PerformAction(float delta)
         {
-            ((SkeletonController)_myController).NavMeshAgent.updateRotation = true;
+            _myNavAgent.updateRotation = true;
 
             if (_myController.TargetTransform == null)
             {
@@ -84,9 +94,9 @@ namespace AI.Skeleton
                 return;
             }
 
-            if (_actionStep == 1)
+            var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
+            if (_actionStep == 1 || _actionStep == 4)
             {
-                var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
                 if (distance > _myController.MinDistance && distance < _myController.MaxDistance)
                 {
                     MoveToTarget();
@@ -97,28 +107,30 @@ namespace AI.Skeleton
                 }
                 else
                 {
-                    _actionStep = 2;
+                    // If in normal chase step, go to strafe step.
+                    // If in special chase step (ie already strafed) immediately attack
+                    _actionStep = (_actionStep == 1) ? 2 : 3;
                     _strafeTimeRemaining = UnityEngine.Random.Range(1, 3);
                     _strafeDirection = GetStrafeDirection();
                 }
             }
             else if (_actionStep == 2)
             {
-                //((SkeletonController)_myController).NavMeshAgent.updateRotation = false;
-                //_myController.UpdateMovementParameters(0.5f, 0f, false);
+                _myNavAgent.updateRotation = false;
+                if (_myNavAgent.hasPath) _myNavAgent.ResetPath();
+                _myController.UpdateMovementParameters(0.5f, 0f, false);
 
-                ////RotateToPlayer();
-                //((SkeletonController)_myController).NavMeshAgent.Move(
-                //    _myController.transform.right * _strafeDirection * _myController.ChaseSpeed * Time.deltaTime);
+                RotateToPlayer();
+                _myNavAgent.Move(_myController.transform.right * _strafeDirection * _myNavAgent.speed * 0.5f * delta);
 
-                //_strafeTimeRemaining -= Time.deltaTime;
-                //if (_strafeTimeRemaining <= 0)
-                //{
-                //    _myController.UpdateMovementParameters(0f, 0f, false);
-                //    _actionStep = 3;
-                //}
-
-                _actionStep = 3;
+                _strafeTimeRemaining -= delta;
+                if (_strafeTimeRemaining <= 0)
+                {
+                    _myController.UpdateMovementParameters(0f, 0f, false);
+                    // If still in range after strafing, attack.
+                    // If not, go back to special 'chase' step
+                    _actionStep = (distance <= _myController.MinDistance) ? 3 : 4;
+                }
             }
             else
             {
@@ -152,15 +164,17 @@ namespace AI.Skeleton
         private float GetStrafeDirection()
         {
             // Raycast right 10f. If it hits, not enough position. Fly left
-            Ray rightRay = new Ray(_transform.position, _transform.right);
+            var directionMod = UnityEngine.Random.Range(0, 2) == 0 ? 1 : -1;
+
+            Ray rightRay = new Ray(_transform.position, _transform.right * directionMod);
             if (Physics.Raycast(rightRay, out var hit, 20f, LayerMask.GetMask("Environment")))
             {
-                return -1;
+                return -1 * directionMod;
             }
             // If it doesn't hit, enough space. Fly right
             else
             {
-                return 1;
+                return 1 * directionMod;
             }
         }
     }
