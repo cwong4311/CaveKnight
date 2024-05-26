@@ -17,6 +17,7 @@ public class AIStateFactory
         {
             "Dragon" => DragonResolver(stateName, healthPercentage),
             "Skeleton" => SkeletonResolver(stateName),
+            "OrcAssassin" => OrcAssassinResolver(stateName),
             _ => null
         };
     }
@@ -66,5 +67,10 @@ public class AIStateFactory
             "Die" => new AI.Skeleton.DieState(_enemyController),
             _ => new AI.Skeleton.IdleState(_enemyController)
         };
+    }
+
+    public AI_State OrcAssassinResolver(string stateName)
+    {
+        return SkeletonResolver(stateName);
     }
 }
