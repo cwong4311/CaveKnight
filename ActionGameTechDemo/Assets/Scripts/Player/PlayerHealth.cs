@@ -76,13 +76,13 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             _controller.GetHit(IsBlocking);
-            SetTemporaryInvuln(0.4f);
+            SetTemporaryInvuln(duration: 0.4f, keepCollision: false);
         }
 
         return true;
     }
 
-    public void SetTemporaryInvuln(float duration, bool keepCollision = true)
+    public void SetTemporaryInvuln(float duration, bool keepCollision)
     {
         IsInvulnerable = true;
 
@@ -98,7 +98,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void SetParryState(float duration)
     {
-        SetTemporaryInvuln(duration);
+        SetTemporaryInvuln(duration: duration, keepCollision: true);
 
         IsParrying = true;
         _timeSinceParry = Time.time;
