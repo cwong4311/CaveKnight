@@ -107,10 +107,18 @@ namespace AI.Skeleton
                 }
                 else
                 {
-                    // If in normal chase step, go to strafe step.
+                    // If in normal chase step, check to strafe or to attack.
                     // If in special chase step (ie already strafed) immediately attack
-                    _actionStep = (_actionStep == 1) ? 2 : 3;
-                    _strafeTimeRemaining = UnityEngine.Random.Range(1, 3);
+                    if (_actionStep == 1)
+                    {
+                        _actionStep = (UnityEngine.Random.Range(0, 3) > 0) ? 2 : 3;
+                    }
+                    else
+                    {
+                        _actionStep = 3;
+                    }
+
+                    _strafeTimeRemaining = UnityEngine.Random.Range(0.5f, 1.5f);
                     _strafeDirection = GetStrafeDirection();
                 }
             }

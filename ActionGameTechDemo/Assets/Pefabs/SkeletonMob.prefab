@@ -102,7 +102,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4569030875346863710}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.07, z: 0}
+  m_LocalPosition: {x: 0, y: 0.11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -954,7 +954,7 @@ Transform:
   m_GameObject: {fileID: 4569030876938598332}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 15, y: 15, z: 15}
+  m_LocalScale: {x: 12, y: 12, z: 12}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4569030876938169298}
@@ -997,8 +997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c1983883af2a247b03247698256d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 300
-  CurrentHealth: 300
+  MaxHealth: 500
+  CurrentHealth: 500
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
 --- !u!114 &1794256766897712007
@@ -1022,7 +1022,7 @@ MonoBehaviour:
   applyGravity: 1
   CharacterGravity: 50
   MaxDistance: 13
-  MinDistance: 2
+  MinDistance: 2.5
   ChaseSpeed: 3.5
   TurnSpeed: 2
   LastPerformedAction: 
@@ -1046,7 +1046,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 1.8
+  m_StoppingDistance: 2.3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
