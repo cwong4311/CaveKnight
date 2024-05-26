@@ -73,7 +73,9 @@ public class AIStateFactory
     {
         return stateName switch
         {
-            "BasicAttack" => new AI.OrcAssassin.AttackState(_enemyController),
+            "FuryAttack" => new AI.OrcAssassin.FuryAttackState(_enemyController),
+            "Attack1" => new AI.OrcAssassin.PrimaryAttackState(_enemyController),
+            "Attack2" => new AI.OrcAssassin.SecondaryAttackState(_enemyController),
             "Idle" => new AI.OrcAssassin.IdleState(_enemyController),
             "Hurt" => new AI.OrcAssassin.HurtState(_enemyController),
             "Die" => new AI.OrcAssassin.DieState(_enemyController),

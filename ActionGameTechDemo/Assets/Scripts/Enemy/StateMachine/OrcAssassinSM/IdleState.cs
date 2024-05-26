@@ -14,6 +14,8 @@ namespace AI.OrcAssassin
         public bool IsInIdle;
         private float _idleTime;
 
+        private bool _hasMoved;
+        private bool _isStrafing;
         private float _strafeTimeRemaining = 0f;
         private float _strafeDirection; // 1 is right, -1 is left
 
@@ -42,6 +44,8 @@ namespace AI.OrcAssassin
             _originalNavAgentSpeed = _myNavAgent.speed;
 
             IsInIdle = false;
+            _hasMoved = false;
+            _isStrafing = false;
             _actionStep = 1;
             // All animations will naturally return to Idle anim state.
             // Wait for it to do so
@@ -95,54 +99,89 @@ namespace AI.OrcAssassin
             }
 
             var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
-            if (_actionStep == 1 || _actionStep == 4)
+            if (_actionStep == 1)
             {
+                // If there's a target but it's too far, move to it
                 if (distance > _myController.MinDistance && distance < _myController.MaxDistance)
                 {
+                    _hasMoved = true;
                     MoveToTarget();
                 }
+                // If it moves out of range stop pursuing
                 else if (distance > _myController.MaxDistance)
                 {
                     _myController.TargetTransform = null;
                 }
-                else
+                // Once we are at melee range:
+                // 1. If we started Idle state in melee range, strafe
+                else if (_hasMoved == false)
                 {
-                    // If in normal chase step, check to strafe or to attack.
-                    // If in special chase step (ie already strafed) immediately attack
-                    if (_actionStep == 1)
+                    if (!_isStrafing)
                     {
-                        _actionStep = (UnityEngine.Random.Range(0, 3) > 0) ? 2 : 3;
+                        _strafeTimeRemaining = UnityEngine.Random.Range(0.5f, 1.5f);
+                        _strafeDirection = GetStrafeDirection();
+                        if (_myNavAgent.hasPath) _myNavAgent.ResetPath();
+
+                        _isStrafing = true;
                     }
-                    else
+
+                    _myNavAgent.updateRotation = false;
+                    _myController.UpdateMovementParameters(0.5f, 0f, false);
+
+                    RotateToPlayer();
+                    _myNavAgent.Move(_myController.transform.right * _strafeDirection * _myNavAgent.speed * 0.2f * delta);
+
+                    // Strafe completed, move to 3rd attack step
+                    _strafeTimeRemaining -= delta;
+                    if (_strafeTimeRemaining <= 0)
                     {
+                        _myController.UpdateMovementParameters(0f, 0f, false);
                         _actionStep = 3;
                     }
-
-                    _strafeTimeRemaining = UnityEngine.Random.Range(0.5f, 1.5f);
-                    _strafeDirection = GetStrafeDirection();
+                }
+                // 2. If we had to run up to target; move to 2nd attack step
+                else
+                {
+                    _actionStep = 2;
                 }
             }
+            // If enemy had to close gap, try to do dash attack
             else if (_actionStep == 2)
             {
-                _myNavAgent.updateRotation = false;
-                if (_myNavAgent.hasPath) _myNavAgent.ResetPath();
-                _myController.UpdateMovementParameters(0.5f, 0f, false);
-
-                RotateToPlayer();
-                _myNavAgent.Move(_myController.transform.right * _strafeDirection * _myNavAgent.speed * 0.5f * delta);
-
-                _strafeTimeRemaining -= delta;
-                if (_strafeTimeRemaining <= 0)
+                // If dash attack is not valid, move to basic attacks
+                if (CheckFuryAttack() == false)
                 {
-                    _myController.UpdateMovementParameters(0f, 0f, false);
-                    // If still in range after strafing, attack.
-                    // If not, go back to special 'chase' step
-                    _actionStep = (distance <= _myController.MinDistance) ? 3 : 4;
+                    _actionStep = 3;
                 }
             }
+            // Perform basic attack
             else
             {
-                MoveState("BasicAttack");
+                bool hasAttacked = false;
+
+                // 50-50 perform Attack 1 or Attack 2
+                if (UnityEngine.Random.Range(0, 2) == 0)
+                {
+                    // If attack 1 isn't valid, do Attack 2
+                    if (CheckAttack1() == false)
+                    {
+                        hasAttacked = CheckAttack2();
+                    }
+                }
+                else
+                {
+                    // If attack 2 isn't valid, do Attack 1
+                    if (CheckAttack2() == false)
+                    {
+                        hasAttacked = CheckAttack1();
+                    }
+                }
+
+                // If neither attack is valid, just do Attack 1
+                if (hasAttacked == false)
+                {
+                    MoveState("Attack1");
+                }
             }
         }
 
@@ -184,6 +223,38 @@ namespace AI.OrcAssassin
             {
                 return 1 * directionMod;
             }
+        }
+
+        // Attacks
+
+        private bool CheckFuryAttack()
+        {
+            if (GetTimesRecentlyExecuted("FuryAttack") < 2)
+            {
+                MoveState("FuryAttack");
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckAttack1()
+        {
+            if (GetTimesRecentlyExecuted("Attack1") < 2)
+            {
+                MoveState("Attack1");
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckAttack2()
+        {
+            if (GetTimesRecentlyExecuted("Attack2") < 2)
+            {
+                MoveState("Attack2");
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AI.OrcAssassin
 { 
-    public class AttackState : AI_State
+    public class PrimaryAttackState : AI_State
     {
         public float DelayBeforeAttackActive = 0.9f;
         public float AttackActiveUntil = 1.25f;
@@ -15,7 +15,7 @@ namespace AI.OrcAssassin
 
         private Quaternion _targetRotationToPlayer;
 
-        public AttackState(EnemyController myController) : base(myController)
+        public PrimaryAttackState(EnemyController myController) : base(myController)
         {
         }
 
