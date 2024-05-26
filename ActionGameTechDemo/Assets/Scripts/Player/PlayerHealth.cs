@@ -82,7 +82,7 @@ public class PlayerHealth : MonoBehaviour
         return true;
     }
 
-    public void SetTemporaryInvuln(float duration)
+    public void SetTemporaryInvuln(float duration, bool keepCollision = true)
     {
         IsInvulnerable = true;
 
@@ -90,7 +90,10 @@ public class PlayerHealth : MonoBehaviour
         _timeSinceTempInvuln = Time.time;
         _tempInvulnDuration = duration;
 
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
+        if (!keepCollision)
+        {
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
+        }
     }
 
     public void SetParryState(float duration)
