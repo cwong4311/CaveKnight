@@ -5394,7 +5394,7 @@ GameObject:
   - component: {fileID: 1207031909448333283}
   - component: {fileID: 1261481860594283607}
   - component: {fileID: 2394020670628681019}
-  - component: {fileID: 7381530477104971365}
+  - component: {fileID: 7276683050021035966}
   - component: {fileID: 4370022235187378456}
   - component: {fileID: 5167532399594202839}
   m_Layer: 9
@@ -5460,7 +5460,7 @@ MonoBehaviour:
   CurrentHealth: 400
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
---- !u!114 &7381530477104971365
+--- !u!114 &7276683050021035966
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5469,7 +5469,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1213119524185714053}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dddb57999eae30747b2a39e41b2c3e7a, type: 3}
+  m_Script: {fileID: 11500000, guid: b0a83ce07f16b1b43a03f8422ec01d17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   LockOnTransform: {fileID: 3250698821645150662}
@@ -5489,7 +5489,8 @@ MonoBehaviour:
   RestunBaseThreshold: 30
   RestunThresholdGain: 20
   StunResetDuration: 15
-  Sword: {fileID: 7275957143819230531}
+  MainDagger: {fileID: 1959611650302125477}
+  OffhandDagger: {fileID: 7275957143819230531}
   NavMeshAgent: {fileID: 4370022235187378456}
 --- !u!195 &4370022235187378456
 NavMeshAgent:

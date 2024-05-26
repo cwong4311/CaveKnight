@@ -71,6 +71,13 @@ public class AIStateFactory
 
     public AI_State OrcAssassinResolver(string stateName)
     {
-        return SkeletonResolver(stateName);
+        return stateName switch
+        {
+            "BasicAttack" => new AI.OrcAssassin.AttackState(_enemyController),
+            "Idle" => new AI.OrcAssassin.IdleState(_enemyController),
+            "Hurt" => new AI.OrcAssassin.HurtState(_enemyController),
+            "Die" => new AI.OrcAssassin.DieState(_enemyController),
+            _ => new AI.OrcAssassin.IdleState(_enemyController)
+        };
     }
 }
