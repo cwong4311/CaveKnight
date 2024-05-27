@@ -8,8 +8,8 @@ namespace AI.OrcAssassin
 {
     public class IdleState : AI_State
     {
-        public float MinIdleTime = 0.8f;
-        public float MaxIdleTime = 1.4f;
+        public float MinIdleTime = 0.3f;
+        public float MaxIdleTime = 0.7f;
 
         public bool IsInIdle;
         private float _idleTime;
@@ -36,6 +36,15 @@ namespace AI.OrcAssassin
         public override void OnStateEnter(string fromAction)
         {
             base.OnStateEnter(fromAction);
+
+            if (fromAction == "Dodge")
+            {
+                MinIdleTime = 0.03f; MaxIdleTime = 0.06f;
+            }
+            if (fromAction == "FuryAttack" || fromAction == "Hurt")
+            {
+                MinIdleTime = 0.8f; MaxIdleTime = 1.4f;
+            }
 
             _idleTime = UnityEngine.Random.Range(MinIdleTime, MaxIdleTime);
             _myController.UpdateMovementParameters(0f, 0f, false);
@@ -98,7 +107,15 @@ namespace AI.OrcAssassin
                 return;
             }
 
+            // Get the distance between this enemy and the target (player)
             var distance = Vector3.Distance(_transform.position, _myController.TargetTransform.position);
+
+            // If within close range, and target is attacking, try to dodge.
+            if (distance < _myController.MinDistance * 2 && IsTargetAttacking())
+            {
+                if (CheckDodge()) return;
+            }
+            // Otherwise, evaluate which action to perform as listed below
             if (_actionStep == 1)
             {
                 // If there's a target but it's too far, move to it
@@ -252,6 +269,19 @@ namespace AI.OrcAssassin
             if (GetTimesRecentlyExecuted("Attack2") < 2)
             {
                 MoveState("Attack2");
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckDodge()
+        {
+            // Don't allow more than 2 dodges within the last 5 actions
+            // NOR allow dodging twice in a row
+            if (GetTimesRecentlyExecuted("Dodge") < 2 &&
+                _myController.GetActionHistory()[0] != "Dodge")
+            {
+                MoveState("Dodge");
                 return true;
             }
             return false;

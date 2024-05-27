@@ -73,6 +73,7 @@ public class AIStateFactory
     {
         return stateName switch
         {
+            "Dodge" => new AI.OrcAssassin.DodgeState(_enemyController),
             "FuryAttack" => new AI.OrcAssassin.FuryAttackState(_enemyController),
             "Attack1" => new AI.OrcAssassin.PrimaryAttackState(_enemyController),
             "Attack2" => new AI.OrcAssassin.SecondaryAttackState(_enemyController),
