@@ -7,7 +7,7 @@ public class OrcAssassinStateInfo : IStateInfoMap
 		{ "Attack" , ( "atack17" , 1 , 0.78 ) },
 		{ "Attack_2" , ( "atack22" , 1 , 1.134421 ) },
 		{ "Death" , ( "death4" , 1 , 2.916667 ) },
-		{ "Dodge" , ( "sneakwalk" , 1 , 0.4957329 ) },
+		{ "Dodge" , ( "sneakwalk" , 1.6 , 0.8392904 ) },
 		{ "GroundLocomotive" , ( "Assassin_Idle" , 1 , 1.902778 ) },
 		{ "Hit" , ( "dodge" , 0.6 , 0.574653 ) },
 		{ "SpecialAttack" , ( "atack14" , 1.4 , 1.605486 ) },
