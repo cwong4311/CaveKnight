@@ -265,6 +265,16 @@ public class EnemyController : CharacterManager
         }
     }
 
+    public void EnableInvuln()
+    {
+        _enemyHealth.SetInvuln();
+    }
+
+    public void DisableInvuln()
+    {
+        _enemyHealth.RemoveInvuln();
+    }
+
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

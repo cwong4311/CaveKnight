@@ -108,4 +108,16 @@ public abstract class AI_State
     {
         return (float)frame / _framesPerSecond;
     }
+
+    protected bool IsTargetAttacking()
+    {
+        if (_myController.TargetTransform == null) return false;
+
+        if (_myController.TargetTransform.TryGetComponent<PlayerController>(out var player) == false)
+        {
+            return false;
+        }
+
+        return player?.GetIsAttacking() ?? false;
+    }
 }
