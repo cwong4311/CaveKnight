@@ -263,4 +263,9 @@ public class PlayerController : CharacterManager
         _animator.PlayAnimation("Defeated", true);
         _weapon.DeactivateWeapon();
     }
+
+    public bool GetIsAttacking()
+    {
+        return _weapon.IsAttacking;
+    }
 }
