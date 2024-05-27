@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace AI.OrcAssassin
-{ 
+{
     public class SecondaryAttackState : AI_State
     {
-        public float DelayBeforeAttackActive = 0.9f;
-        public float AttackActiveUntil = 1.25f;
-        public float Damage = 15f;
+        private int _delayInFrames = 25;
+        private int _untilInFrames = 37;
+        public float DelayBeforeAttackActive => FramesToTime(_delayInFrames);
+        public float AttackActiveUntil => FramesToTime(_untilInFrames);
+
+        public float Damage = 20f;
 
         private string _animationState = "Attack_2";
         public bool _hasAttacked = false;
@@ -31,14 +34,13 @@ namespace AI.OrcAssassin
         {
             base.Update(delta, isInHitStun);
 
-            if (Time.time - _timeAtStateEnter >= DelayBeforeAttackActive && _hasAttacked == false)
-            {
-                ActiveAttack();
-                _hasAttacked = true;
-            }
-            else if (Time.time - _timeAtStateEnter >= AttackActiveUntil)
+            if (Time.time - _timeAtStateEnter >= AttackActiveUntil)
             {
                 DeactiveAttack();
+            }
+            else if (Time.time - _timeAtStateEnter >= DelayBeforeAttackActive)
+            {
+                ActiveAttack();
             }
             else
             {
@@ -80,12 +82,20 @@ namespace AI.OrcAssassin
 
         private void ActiveAttack()
         {
-            ((OrcAssassinController)_myController).MainDagger.ActivateWeapon(Damage);
+            if (_hasAttacked == false)
+            {
+                ((OrcAssassinController)_myController).MainDagger.ActivateWeapon(Damage);
+                _hasAttacked = true;
+            }
         }
 
         private void DeactiveAttack()
         {
-            ((OrcAssassinController)_myController).MainDagger.DeactivateWeapon();
+            if (_hasAttacked)
+            {
+                ((OrcAssassinController)_myController).MainDagger.DeactivateWeapon();
+                _hasAttacked = false;
+            }
         }
     }
 }

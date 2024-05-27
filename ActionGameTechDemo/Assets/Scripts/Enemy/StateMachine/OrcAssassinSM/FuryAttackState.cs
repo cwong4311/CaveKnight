@@ -7,8 +7,6 @@ namespace AI.OrcAssassin
 { 
     public class FuryAttackState : AI_State
     {
-        public int _framesPerSecond = 60;
-
         private int _hit1Delay = 20;
         private int _hit1Until = 30;
         private int _hit2Delay = 50;
@@ -44,6 +42,8 @@ namespace AI.OrcAssassin
         public override void OnStateEnter(string fromAction)
         {
             base.OnStateEnter(fromAction);
+
+            _myController.RB.velocity *= 0.3f;
 
             _attackStep = 1;
             _animStep = 1;
@@ -153,11 +153,6 @@ namespace AI.OrcAssassin
                 ((OrcAssassinController)_myController).MainDagger.DeactivateWeapon();
                 _hasAttacked = false;
             }
-        }
-
-        private float FramesToTime(int frame)
-        {
-            return (float)frame / _framesPerSecond;
         }
     }
 }

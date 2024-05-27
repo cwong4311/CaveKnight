@@ -20,6 +20,8 @@ public abstract class AI_State
     protected float _timeAtStateEnter;
     protected float _animationDuration;
 
+    protected int _framesPerSecond = 60;
+
     // Treat states as action by default. Only Idle or Hurt states should explicitly reassign this field
     protected AIStateType _stateType = AIStateType.Action;
 
@@ -100,5 +102,10 @@ public abstract class AI_State
     protected void SetActionCompleted()
     {
         _animator.SetTrigger("ActionCompleted");
+    }
+
+    protected float FramesToTime(int frame)
+    {
+        return (float)frame / _framesPerSecond;
     }
 }

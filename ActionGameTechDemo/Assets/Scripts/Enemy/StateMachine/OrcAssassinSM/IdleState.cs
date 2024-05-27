@@ -177,10 +177,10 @@ namespace AI.OrcAssassin
                     }
                 }
 
-                // If neither attack is valid, just do Attack 1
+                // If neither attack is valid, just do Fury Attack
                 if (hasAttacked == false)
                 {
-                    MoveState("Attack1");
+                    MoveState("FuryAttack");
                 }
             }
         }
