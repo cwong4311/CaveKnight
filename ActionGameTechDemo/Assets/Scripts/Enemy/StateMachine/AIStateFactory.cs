@@ -18,6 +18,7 @@ public class AIStateFactory
             "Dragon" => DragonResolver(stateName, healthPercentage),
             "Skeleton" => SkeletonResolver(stateName),
             "OrcAssassin" => OrcAssassinResolver(stateName),
+            "Minotaur" => MinotaurResolver(stateName),
             _ => null
         };
     }
@@ -81,6 +82,20 @@ public class AIStateFactory
             "Hurt" => new AI.OrcAssassin.HurtState(_enemyController),
             "Die" => new AI.OrcAssassin.DieState(_enemyController),
             _ => new AI.OrcAssassin.IdleState(_enemyController)
+        };
+    }
+
+    public AI_State MinotaurResolver(string stateName)
+    {
+        return stateName switch
+        {
+            "Attack1" => new AI.Minotaur.PrimaryAttackState(_enemyController),
+            "Attack2" => new AI.Minotaur.SecondaryAttackState(_enemyController),
+            "Kick" => new AI.Minotaur.KickState(_enemyController),
+            "Idle" => new AI.Minotaur.IdleState(_enemyController),
+            "Hurt" => new AI.Minotaur.HurtState(_enemyController),
+            "Die" => new AI.Minotaur.DieState(_enemyController),
+            _ => new AI.Minotaur.IdleState(_enemyController)
         };
     }
 }
