@@ -64,7 +64,7 @@ namespace AI.Dragon
 
         protected virtual void ShootFireball()
         {
-            _myController.Fireball.SpawnFireball(_myController.TargetTransform, _isHoming);
+            ((DragonController)_myController).Fireball.SpawnFireball(_myController.TargetTransform, _isHoming);
         }
 
         private void GetRotationToTarget()

@@ -20,6 +20,8 @@ public abstract class AI_State
     protected float _timeAtStateEnter;
     protected float _animationDuration;
 
+    protected int _framesPerSecond = 60;
+
     // Treat states as action by default. Only Idle or Hurt states should explicitly reassign this field
     protected AIStateType _stateType = AIStateType.Action;
 
@@ -37,7 +39,7 @@ public abstract class AI_State
         _timeAtStateEnter = Time.time;
         _stateActive = true;
 
-        UnityEngine.Debug.Log($"TEST ---- DRAGON: Entered {this.GetType().Name} state from {fromAction}");
+        UnityEngine.Debug.Log($"TEST ---- {_myController.EnemyName}: Entered {this.GetType().Name} state from {fromAction}");
     }
 
     public virtual void Update(float delta, bool isInHitStun)
@@ -54,7 +56,7 @@ public abstract class AI_State
 
     public virtual void OnStateExit(string toAction)
     {
-        UnityEngine.Debug.Log($"TEST ---- DRAGON: Exiting {this.GetType().Name} state to {toAction}");
+        UnityEngine.Debug.Log($"TEST ---- {_myController.EnemyName}: Exiting {this.GetType().Name} state to {toAction}");
     }
 
     protected void MoveState(string nextState)
@@ -65,9 +67,9 @@ public abstract class AI_State
         _myController.MoveToState(nextState);
     }
 
-    protected void PlayAnimationState(string animationState)
+    protected void PlayAnimationState(string animationState, float? crossFadeDuration = null)
     {
-        _animator.CrossFade(animationState, 0.2f);
+        _animator.CrossFade(animationState, crossFadeDuration ?? 0.2f);
     }
 
     protected bool IsAnimationCompleted(string animationState)
@@ -100,5 +102,22 @@ public abstract class AI_State
     protected void SetActionCompleted()
     {
         _animator.SetTrigger("ActionCompleted");
+    }
+
+    protected float FramesToTime(int frame)
+    {
+        return (float)frame / _framesPerSecond;
+    }
+
+    protected bool IsTargetAttacking()
+    {
+        if (_myController.TargetTransform == null) return false;
+
+        if (_myController.TargetTransform.TryGetComponent<PlayerController>(out var player) == false)
+        {
+            return false;
+        }
+
+        return player?.GetIsAttacking() ?? false;
     }
 }

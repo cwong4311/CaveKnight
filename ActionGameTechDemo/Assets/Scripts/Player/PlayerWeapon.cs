@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour
@@ -14,6 +15,8 @@ public class PlayerWeapon : MonoBehaviour
 
     private string _currentAttackName;
     private float _currentAttackDamage;
+
+    public bool IsAttacking;
 
     public void Initialise()
     {
@@ -61,6 +64,7 @@ public class PlayerWeapon : MonoBehaviour
     /// </summary>
     public void ActivateWeapon()
     {
+        IsAttacking = true;
         _weaponHolder.ActivateWeapon(_currentAttackDamage);
     }
 
@@ -69,6 +73,7 @@ public class PlayerWeapon : MonoBehaviour
     /// </summary>
     public void DeactivateWeapon()
     {
+        IsAttacking = false;
         _weaponHolder.DeactivateWeapon();
     }
 }

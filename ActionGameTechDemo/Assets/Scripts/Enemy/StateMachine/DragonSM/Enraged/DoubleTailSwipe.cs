@@ -93,12 +93,12 @@ namespace AI.Dragon
 
         private void ActiveAttack()
         {
-            _myController.Tail.ActivateWeapon(Damage);
+            ((DragonController)_myController).Tail.ActivateWeapon(Damage);
         }
 
         private void DeactiveAttack()
         {
-            _myController.Tail.DeactivateWeapon();
+            ((DragonController)_myController).Tail.DeactivateWeapon();
         }
     }
 }

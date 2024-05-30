@@ -197,7 +197,7 @@ public class PlayerController : CharacterManager
                 _animator.PlayAnimation("DodgeRoll", true);
             }
 
-            _health.SetTemporaryInvuln(1f);
+            _health.SetTemporaryInvuln(duration: 1f, keepCollision: false);
             IsRolling = true;
             _inputHandler.IsRolling = false;
         }
@@ -262,5 +262,10 @@ public class PlayerController : CharacterManager
     {
         _animator.PlayAnimation("Defeated", true);
         _weapon.DeactivateWeapon();
+    }
+
+    public bool GetIsAttacking()
+    {
+        return _weapon.IsAttacking;
     }
 }

@@ -67,7 +67,7 @@ namespace AI.Dragon
 
         private bool HasCrashed()
         {
-            var colliders = Physics.OverlapSphere(_myController.Bite.transform.position, 1f);
+            var colliders = Physics.OverlapSphere(((DragonController)_myController).Bite.transform.position, 1f);
             foreach (var collider in colliders)
             {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player")
@@ -112,14 +112,14 @@ namespace AI.Dragon
 
         private void ActiveAttack()
         {
-            _myController.Bite.GetComponent<SphereCollider>().radius = 120f;
-            _myController.Bite.ActivateWeapon(_damage);
+            ((DragonController)_myController).Bite.GetComponent<SphereCollider>().radius = 120f;
+            ((DragonController)_myController).Bite.ActivateWeapon(_damage);
         }
 
         private void DeactiveAttack()
         {
-            _myController.Bite.GetComponent<SphereCollider>().radius = 72f;
-            _myController.Bite.DeactivateWeapon();
+            ((DragonController)_myController).Bite.GetComponent<SphereCollider>().radius = 72f;
+            ((DragonController)_myController).Bite.DeactivateWeapon();
         }
 
         /// <summary>
