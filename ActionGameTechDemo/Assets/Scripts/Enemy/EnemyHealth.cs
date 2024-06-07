@@ -46,7 +46,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void Die()
     {
-        // Do Nothing Yet
+        _controller.Die();
     }
 
     public void SetInvuln()
