@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 // TO DO: Refactor this
@@ -221,6 +222,8 @@ public class EnemyController : CharacterManager
         MoveToState("Die");
 
         // Destroy object after X seconds
+        var rootCharacterGP = PrefabUtility.GetOutermostPrefabInstanceRoot(this);
+        Destroy(rootCharacterGP, 0.3f);
     }
 
     public float? GetStateDuration(string stateName)
