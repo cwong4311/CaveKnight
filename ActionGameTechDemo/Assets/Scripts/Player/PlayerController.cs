@@ -17,9 +17,6 @@ public class PlayerController : CharacterManager
     public bool IsBlocking;
     public float BlockingMovementSpeed = 4f;
 
-    public bool applyGravity = true;
-    public float CharacterGravity = 50;
-
     private Transform _cameraGO;
     private Vector3 _moveDirection;
 
@@ -82,14 +79,6 @@ public class PlayerController : CharacterManager
         UpdateRotation(delta);
         UpdateRollAndSprint(delta);
         UpdateAttack(delta);
-    }
-
-    public void FixedUpdate()
-    {
-        if (applyGravity)
-        {
-            RB.velocity += (Vector3.down * CharacterGravity) * Time.fixedDeltaTime;
-        }
     }
 
     private void UpdateMovement(float delta)

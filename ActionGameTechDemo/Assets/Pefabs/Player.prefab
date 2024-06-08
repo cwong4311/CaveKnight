@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 2936346402416061501}
   - component: {fileID: 2936346402416061500}
   - component: {fileID: 6524170927432354695}
+  - component: {fileID: 3625841231686026745}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -174,8 +175,6 @@ MonoBehaviour:
   IsPerformingAction: 0
   IsBlocking: 0
   BlockingMovementSpeed: 2
-  applyGravity: 1
-  CharacterGravity: 50
 --- !u!114 &6524170927432354695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +193,21 @@ MonoBehaviour:
   IsBlocking: 0
   IsParrying: 0
   _healthBar: {fileID: 0}
+--- !u!114 &3625841231686026745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2936346402416061502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 006ac482138f9b849a81234a49ed42f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharacterGravity: 130
+  maxStepHeight: 0.5
+  stepSearchOvershoot: 0.01
 --- !u!1001 &2936346401532131860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -606,6 +620,7 @@ MonoBehaviour:
   LightDamage3: 30
   HeavyDamage: 80
   _weaponHolder: {fileID: 4915329462744785262}
+  IsAttacking: 0
 --- !u!114 &2936346402585720261
 MonoBehaviour:
   m_ObjectHideFlags: 0
