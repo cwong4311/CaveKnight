@@ -86,6 +86,9 @@ namespace AI.Dragon
 
             if (_myController.TargetTransform == null)
             {
+                // If no current target, AND no players nearby, don't do anyting else
+                if (_myController.IsAnyPlayerNearby() == false) return;
+
                 var colliders = Physics.OverlapSphere(_animator.transform.position, _myController.PlayerDetectionRange);
                 foreach (var collider in colliders)
                 {

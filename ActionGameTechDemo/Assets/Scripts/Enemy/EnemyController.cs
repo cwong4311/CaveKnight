@@ -57,6 +57,7 @@ public class EnemyController : CharacterManager
     private Coroutine _hitStunCoroutine = null;
 
     public Vector3 SpawnPoint;
+    private List<GameObject> _allPossiblePlayers = new List<GameObject>();
 
     public virtual void Awake()
     {
@@ -81,6 +82,12 @@ public class EnemyController : CharacterManager
         }
 
         SpawnPoint = transform.position;
+        // Expensive behaviour, but only on spawn. All enemies will only engage behaviour if ANY
+        // player reaches within it's detection range.
+        foreach (var player in FindObjectsByType<PlayerController>(FindObjectsSortMode.InstanceID))
+        {
+            _allPossiblePlayers.Add(player.gameObject);
+        }
     }
 
     public void OnEnable()
@@ -280,6 +287,19 @@ public class EnemyController : CharacterManager
     public void DisableInvuln()
     {
         _enemyHealth.RemoveInvuln();
+    }
+
+    public bool IsAnyPlayerNearby()
+    {
+        foreach (var player in _allPossiblePlayers)
+        {
+            if (Vector3.Distance(transform.position, player.transform.position) < PlayerDetectionRange)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void OnDrawGizmos()

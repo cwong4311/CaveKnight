@@ -17,6 +17,7 @@ namespace AI.Skeleton
         {
             base.OnStateEnter(fromAction);
 
+            _myController.TargetTransform = null;
             PlayAnimationState(_animationState);
         }
 

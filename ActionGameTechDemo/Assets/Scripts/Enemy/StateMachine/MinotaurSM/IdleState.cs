@@ -100,6 +100,9 @@ namespace AI.Minotaur
                     _myController.UpdateMovementParameters(0f, 0f, false);
                 }
 
+                // If no current target, AND no players nearby, don't do anyting else
+                if (_myController.IsAnyPlayerNearby() == false) return;
+
                 var colliders = Physics.OverlapSphere(_animator.transform.position, _myController.PlayerDetectionRange);
                 foreach (var collider in colliders)
                 {

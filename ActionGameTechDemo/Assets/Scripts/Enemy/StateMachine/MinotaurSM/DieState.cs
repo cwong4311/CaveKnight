@@ -17,6 +17,7 @@ namespace AI.Minotaur
         {
             base.OnStateEnter(fromAction);
 
+            _myController.TargetTransform = null;
             PlayAnimationState(_animationState);
         }
 
