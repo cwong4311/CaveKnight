@@ -95,6 +95,11 @@ namespace AI.OrcAssassin
 
             if (_myController.TargetTransform == null)
             {
+                if (_myNavAgent.remainingDistance < 0.1f)
+                {
+                    _myController.UpdateMovementParameters(0f, 0f, false);
+                }
+
                 var colliders = Physics.OverlapSphere(_animator.transform.position, _myController.PlayerDetectionRange);
                 foreach (var collider in colliders)
                 {
@@ -128,6 +133,8 @@ namespace AI.OrcAssassin
                 else if (distance > _myController.MaxDistance)
                 {
                     _myController.TargetTransform = null;
+                    _actionStep = 1;
+                    MoveToSpawn();
                 }
                 // Once we are at melee range:
                 // 1. If we started Idle state in melee range, strafe
@@ -206,6 +213,12 @@ namespace AI.OrcAssassin
         {
             _myController.UpdateMovementParameters(1f, 0f);
             ((OrcAssassinController)_myController).MoveToDestination(_myController.TargetTransform.position);
+        }
+
+        private void MoveToSpawn()
+        {
+            _myController.UpdateMovementParameters(1f, 0f);
+            ((SkeletonController)_myController).MoveToDestination(_myController.SpawnPoint);
         }
 
         private bool RotateToPlayer()

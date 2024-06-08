@@ -56,6 +56,8 @@ public class EnemyController : CharacterManager
     private bool isInHitStun = false;
     private Coroutine _hitStunCoroutine = null;
 
+    public Vector3 SpawnPoint;
+
     public virtual void Awake()
     {
         _enemyHealth = GetComponent<EnemyHealth>();
@@ -77,6 +79,8 @@ public class EnemyController : CharacterManager
                 _activeColliders.Add(collider);
             }
         }
+
+        SpawnPoint = transform.position;
     }
 
     public void OnEnable()
