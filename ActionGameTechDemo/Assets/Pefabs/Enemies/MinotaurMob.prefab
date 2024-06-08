@@ -4367,8 +4367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c1983883af2a247b03247698256d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 1200
-  CurrentHealth: 1200
+  MaxHealth: 800
+  CurrentHealth: 800
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
 --- !u!114 &3385988664307942143
@@ -4400,6 +4400,7 @@ MonoBehaviour:
   RestunBaseThreshold: 40
   RestunThresholdGain: 100
   StunResetDuration: 20
+  SpawnPoint: {x: 0, y: 0, z: 0}
   Axe: {fileID: 1875218068846199839}
   Foot: {fileID: 1875218067149818043}
   NavMeshAgent: {fileID: 3385988664307942113}

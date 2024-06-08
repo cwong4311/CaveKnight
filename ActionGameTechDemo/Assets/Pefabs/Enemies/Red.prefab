@@ -664,8 +664,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c1983883af2a247b03247698256d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 10000
-  CurrentHealth: 10000
+  MaxHealth: 5000
+  CurrentHealth: 5000
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
 --- !u!114 &4130584809128974739
@@ -697,6 +697,7 @@ MonoBehaviour:
   RestunBaseThreshold: 50
   RestunThresholdGain: 150
   StunResetDuration: 30
+  SpawnPoint: {x: 0, y: 0, z: 0}
   Bite: {fileID: 137562616}
   Tail: {fileID: 1445535533}
   Chest: {fileID: 1745794787017432773}
