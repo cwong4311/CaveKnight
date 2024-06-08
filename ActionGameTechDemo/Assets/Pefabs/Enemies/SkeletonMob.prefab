@@ -1024,7 +1024,7 @@ MonoBehaviour:
   MaxDistance: 13
   MinDistance: 2.5
   ChaseSpeed: 3.5
-  TurnSpeed: 2
+  TurnSpeed: 1
   LastPerformedAction: 
   CurrentAction: 
   RestunBaseThreshold: 20
