@@ -38,6 +38,8 @@ public class CameraController : MonoBehaviour
     {
         _defaultPosition = CameraTransform.localPosition.z;
         _ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+
+        _lookAngle = transform.rotation.eulerAngles.y % 360;
     }
 
     public void FollowTarget(float delta)
@@ -68,7 +70,7 @@ public class CameraController : MonoBehaviour
         else
         {
             //_lookAngle += (mouseX * LookSpeed) / delta;
-            _lookAngle += mouseX * LookSpeed;
+            _lookAngle = (_lookAngle + (mouseX * LookSpeed)) % 360;
             _pivotAngle -= (mouseY * PivotSpeed) / delta;
             _pivotAngle = Mathf.Clamp(_pivotAngle, MinPivot, MaxPivot);
 
