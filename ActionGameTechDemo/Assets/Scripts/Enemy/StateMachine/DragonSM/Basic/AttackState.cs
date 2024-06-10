@@ -74,11 +74,10 @@ namespace AI.Dragon
         private bool RotateToPlayer()
         {
             var rotateVector = Quaternion.Slerp(_transform.rotation, _targetRotationToPlayer, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
-            rotateVector.x = 0f;
 
             if (rotateVector.magnitude > 0.5f)
             {
-                _transform.localEulerAngles = rotateVector;
+                _transform.localEulerAngles = Vector3.up * rotateVector.y;
 
                 return true;
             }

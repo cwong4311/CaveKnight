@@ -115,13 +115,11 @@ namespace AI.Dragon
             {
                 // If fireballs left to shoot, move first then shoot
                 CheckMove(CheckFireball);
-                Debug.Log($"TEST ---- Has fireballs. Moving to {_randomMovePosition}");
             }
             else
             {
                 // If no fireball, land
                 CheckLand();
-                Debug.Log($"TEST ---- No fireballs. Landing");
             }
 
             _actionDecided = true;
@@ -145,7 +143,6 @@ namespace AI.Dragon
         {
             if (Time.time - _randomMoveStartTime > _randomMoveDuration)
             {
-                Debug.Log($"TEST ---- Movement End. Perform Action");
                 _myController.UpdateMovementParameters(0f, 0f);
                 _myController.RB.velocity = Vector3.zero;
                 _randomMoveEndAction();
@@ -164,7 +161,6 @@ namespace AI.Dragon
                 return;
             }
 
-            Debug.Log($"TEST ---- Fireball");
             MoveState("AerialFireball");
         }
 
@@ -178,12 +174,10 @@ namespace AI.Dragon
 
             if (UnityEngine.Random.Range(0, 3) == 0)
             {
-                Debug.Log($"TEST ---- Land");
                 MoveState("Landing");
             }
             else
             {
-                Debug.Log($"TEST ---- Divebomb");
                 MoveState("DiveBomb");
             }
         }

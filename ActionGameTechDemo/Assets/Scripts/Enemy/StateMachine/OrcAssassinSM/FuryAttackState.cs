@@ -125,11 +125,10 @@ namespace AI.OrcAssassin
             var targetRotationToPlayer = Quaternion.LookRotation(targetDir);
 
             var rotateVector = Quaternion.Slerp(_transform.rotation, targetRotationToPlayer, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
-            rotateVector.x = 0f;
 
             if (rotateVector.magnitude > 0.5f)
             {
-                _transform.localEulerAngles = rotateVector;
+                _transform.localEulerAngles = Vector3.up * rotateVector.y;
 
                 return true;
             }

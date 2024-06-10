@@ -149,9 +149,8 @@ namespace AI.Dragon
 
             var targetRotation = Quaternion.LookRotation(targetDir);
             var rotateVector = Quaternion.Slerp(_transform.rotation, targetRotation, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
-            rotateVector.x = 0f;
 
-            _transform.localEulerAngles = rotateVector;
+            _transform.localEulerAngles = Vector3.up * rotateVector.y;
             _myController.RB.velocity = _transform.forward * _myController.ChaseSpeed;
         }
 

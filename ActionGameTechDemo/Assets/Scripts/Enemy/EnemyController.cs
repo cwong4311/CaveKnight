@@ -207,8 +207,6 @@ public class EnemyController : CharacterManager
             _damageTakenCombo = 0;
             _currentStunThreshold += RestunThresholdGain;
 
-            Debug.Log($"TEST ------ {_currentStunThreshold}");
-
             // Reset state duration
             MoveToState("Hurt");
 

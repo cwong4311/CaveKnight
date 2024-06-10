@@ -39,7 +39,6 @@ public abstract class AI_State
         _timeAtStateEnter = Time.time;
         _stateActive = true;
 
-        UnityEngine.Debug.Log($"TEST ---- {_myController.EnemyName}: Entered {this.GetType().Name} state from {fromAction}");
     }
 
     public virtual void Update(float delta, bool isInHitStun)
@@ -54,10 +53,7 @@ public abstract class AI_State
         // TO BE Customised per child state
     }
 
-    public virtual void OnStateExit(string toAction)
-    {
-        UnityEngine.Debug.Log($"TEST ---- {_myController.EnemyName}: Exiting {this.GetType().Name} state to {toAction}");
-    }
+    public virtual void OnStateExit(string toAction) { }
 
     protected void MoveState(string nextState)
     {
