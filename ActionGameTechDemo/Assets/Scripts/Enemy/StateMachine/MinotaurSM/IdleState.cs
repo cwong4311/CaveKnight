@@ -223,7 +223,7 @@ namespace AI.Minotaur
         private void MoveToSpawn()
         {
             _myController.UpdateMovementParameters(1f, 0f);
-            ((SkeletonController)_myController).MoveToDestination(_myController.SpawnPoint);
+            ((MinotaurController)_myController).MoveToDestination(_myController.SpawnPoint);
         }
 
         private bool RotateToPlayer()
