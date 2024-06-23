@@ -233,6 +233,8 @@ public class EnemyController : CharacterManager
         // Destroy object after X seconds
         var rootCharacterGP = PrefabUtility.GetOutermostPrefabInstanceRoot(this);
         Destroy(rootCharacterGP, 0.3f);
+
+        Destroy(this.gameObject, 0.5f);
     }
 
     public float? GetStateDuration(string stateName)
