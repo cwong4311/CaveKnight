@@ -745,11 +745,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Footstep: {fileID: 8300000, guid: d629a403dc7b74c48a71666a285164e6, type: 3}
   Runstep: {fileID: 8300000, guid: 611abdaba4931434aa0fd60f328fef47, type: 3}
-  LightSwing: {fileID: 8300000, guid: e9488684e9b2c3344b37d7e4402fdb4b, type: 3}
-  MediumSwing: {fileID: 8300000, guid: 58f2e24e13566d946af4f3dd225601af, type: 3}
-  HeavySwing: {fileID: 8300000, guid: 9a99078d2716d9b4389b7628ce57b562, type: 3}
-  Smash: {fileID: 8300000, guid: 6b15a3616d56aa647b21087a2945030f, type: 3}
+  LightSwing: {fileID: 8300000, guid: 142fe7877b0cdb249a81c21abf53fd2e, type: 3}
+  MediumSwing: {fileID: 8300000, guid: bc277de9a914a7441b49211a98a38d32, type: 3}
+  HeavySwing: {fileID: 8300000, guid: 58f2e24e13566d946af4f3dd225601af, type: 3}
+  Smash: {fileID: 8300000, guid: f5d5787a6cc39c54abb83ceb0424f7b1, type: 3}
   OnHurt: {fileID: 8300000, guid: ab0dbeea7eaf42b459aac9946d2f048c, type: 3}
+  OnBlock: {fileID: 8300000, guid: ba27b9ee1512f674a8825621e1ce0bbe, type: 3}
+  OnParry: {fileID: 8300000, guid: bc277de9a914a7441b49211a98a38d32, type: 3}
 --- !u!4 &3401702075844582911 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}

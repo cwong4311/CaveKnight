@@ -16,6 +16,8 @@ public class PlayerSoundManager : SoundManager
 
     [Header("Misc")]
     public AudioClip OnHurt;
+    public AudioClip OnBlock;
+    public AudioClip OnParry;
 
     public void FootStep()
     {
@@ -50,5 +52,15 @@ public class PlayerSoundManager : SoundManager
     public void Hurt()
     {
         PlayOneShot(OnHurt);
+    }
+
+    public void Block()
+    {
+        PlayOneShot(OnBlock);
+    }
+
+    public void Parry()
+    {
+        PlayOneShot(OnParry);
     }
 }
