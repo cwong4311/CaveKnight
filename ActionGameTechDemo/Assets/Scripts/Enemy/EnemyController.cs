@@ -22,7 +22,7 @@ public class EnemyController : CharacterManager
     public float ChaseSpeed = 6f;
     public float TurnSpeed = 2f;
 
-    private EnemyHealth _enemyHealth;
+    protected EnemyHealth _enemyHealth;
 
     private List<Collider> _activeColliders = new List<Collider>();
     private Animator _enemyAnimator;
@@ -117,6 +117,8 @@ public class EnemyController : CharacterManager
         // Lose 5 damageCombo per second
         _damageTakenCombo = (_damageTakenCombo > 0f) ? 
             _damageTakenCombo - Time.deltaTime * 5 : 0f;
+
+        LateUpdate();
     }
 
     public void FixedUpdate()
@@ -125,6 +127,14 @@ public class EnemyController : CharacterManager
         {
             RB.velocity += (Vector3.down * CharacterGravity) * Time.fixedDeltaTime;
         }  
+    }
+
+    /// <summary>
+    /// Override in child classes if anything needs to be done in LateUpdate
+    /// </summary>
+    protected virtual void LateUpdate()
+    {
+        // Do Nothing
     }
 
     public void MoveToState(string targetAnimation)
