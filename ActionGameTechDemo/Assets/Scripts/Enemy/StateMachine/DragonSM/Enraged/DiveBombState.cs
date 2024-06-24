@@ -130,7 +130,7 @@ namespace AI.Dragon
         {
             var currentTimeTaken = 0f;
             var totalDuration = 0.5f;
-            var endYPos = -2.9f;
+            var endYPos = 30f;
 
             while (currentTimeTaken < totalDuration)
             {
