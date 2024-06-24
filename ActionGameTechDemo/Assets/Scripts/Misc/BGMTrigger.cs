@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SoundTrigger : MonoBehaviour
+public class BGMTrigger : MonoBehaviour
 {
     public LayerMask TriggerOnLayer;
 
