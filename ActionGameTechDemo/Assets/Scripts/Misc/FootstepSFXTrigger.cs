@@ -11,13 +11,17 @@ public class FootstepSFXTrigger : MonoBehaviour
 
     public float FootstepDelay;
 
+    [SerializeField]
     private AudioSource _audioSource;
+
     private float _remainingDelay;
     private bool _isTrigger;
 
     public void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+            _audioSource = GetComponent<AudioSource>();
+
         var collider = GetComponent<Collider>();
         if (collider != null)
         {
@@ -61,10 +65,14 @@ public class FootstepSFXTrigger : MonoBehaviour
         OnLeaveGround(other);
     }
 
+    public bool isLog = false;
+
     protected virtual void OnTouchGround(Collider other)
     {
         if ((FootstepOnLayer.value & (1 << other.transform.gameObject.layer)) > 0)
         {
+            if (isLog) Debug.Log($"TEST ----- Foot {transform.name} touched {other.gameObject.name}");
+
             if (touchingColliders.Count == 0)
             {
                 PlayFootstep();
@@ -78,6 +86,8 @@ public class FootstepSFXTrigger : MonoBehaviour
     {
         if ((FootstepOnLayer.value & (1 << other.transform.gameObject.layer)) > 0)
         {
+            if (isLog) Debug.Log($"TEST ----- Foot {transform.name} left {other.gameObject.name}");
+
             if (touchingColliders.Contains(other))
             {
                 touchingColliders.Remove(other);
