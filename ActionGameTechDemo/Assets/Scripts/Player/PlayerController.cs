@@ -30,6 +30,7 @@ public class PlayerController : CharacterManager
     private PlayerInputHandler _inputHandler;
     private PlayerAnimationHandler _animator;
     private PlayerWeapon _weapon;
+    private PlayerMagic _magic;
     private PlayerStatus _playerStatus;
 
     private bool isInHitStun = false;
@@ -51,6 +52,12 @@ public class PlayerController : CharacterManager
         if (_weapon != null)
         {
             _weapon.Initialise();
+        }
+
+        _magic = GetComponentInChildren<PlayerMagic>();
+        if (_magic != null)
+        {
+            _magic.Initialise();
         }
 
         _playerStatus = GetComponent<PlayerStatus>();
@@ -86,6 +93,7 @@ public class PlayerController : CharacterManager
         UpdateRotation(delta);
         UpdateRollAndSprint(delta);
         UpdateAttack(delta);
+        UpdateSpell(delta);
     }
 
     private void UpdateMovement(float delta)
@@ -224,6 +232,19 @@ public class PlayerController : CharacterManager
 
             _animator.PlayAnimation("Parry", true);
             _playerStatus.SetParryState(0.3f);
+        }
+    }
+
+    private void UpdateSpell(float delta)
+    {
+        if (_inputHandler.IsInteracting) return;
+
+        if (_inputHandler.IsCastSpellOne)
+        {
+            _inputHandler.IsCastSpellOne = false;
+            if (_playerStatus.ConsumeMana(HealManaCost) == false) return;
+
+            _magic.CastHeal();
         }
     }
 

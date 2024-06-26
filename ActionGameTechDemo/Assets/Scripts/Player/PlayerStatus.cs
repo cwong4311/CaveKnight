@@ -84,10 +84,10 @@ public class PlayerStatus : MonoBehaviour
             _lastStaminaConsumptionTime = -1;
         }
 
-        // Regain mana at a rate of 5mp every second
+        // Regain mana at a rate of 1mp every second
         if (_currentMana < MaxMana)
         {
-            _currentMana = Mathf.Min(_currentMana + (Time.deltaTime * 5), MaxMana);
+            _currentMana = Mathf.Min(_currentMana + (Time.deltaTime), MaxMana);
         }
 
         IsBlocking = _controller.IsBlocking;

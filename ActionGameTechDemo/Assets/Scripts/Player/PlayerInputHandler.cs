@@ -19,6 +19,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool IsParrying;
     public int LightComboStep = -1;
 
+    public bool IsCastSpellOne;
+
     public bool LockedOn;
 
     private PlayerControls _inputActions;
@@ -66,6 +68,8 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Player.Lockon.performed += OnLockon;
 
         _inputActions.Player.ToggleCursor.performed += OnEscapeToggle;
+
+        _inputActions.Player.Heal.performed += OnCastSpellOne;
     }
 
     public void OnEnable()
@@ -77,6 +81,7 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Player.Block.Enable();
         _inputActions.Player.Lockon.Enable();
         _inputActions.Player.ToggleCursor.Enable();
+        _inputActions.Player.Heal.Enable();
     }
 
     public void OnDisable()
@@ -283,5 +288,12 @@ public class PlayerInputHandler : MonoBehaviour
 
             _cursorLocked = true;
         }
+    }
+
+    public void OnCastSpellOne(InputAction.CallbackContext context)
+    {
+        if (IsInteracting) return;
+
+        IsCastSpellOne = true;
     }
 }
