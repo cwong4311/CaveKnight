@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class DragonController : EnemyController
 {
@@ -11,6 +10,8 @@ public class DragonController : EnemyController
     public WeaponDamager Chest;
     public Fireball Fireball;
 
+    protected int _bossBGMState = -1;
+
     public override void Awake()
     {
         base.Awake();
@@ -18,5 +19,28 @@ public class DragonController : EnemyController
         Bite.SetWeaponTarget(targetEnemy: false);
         Tail.SetWeaponTarget(targetEnemy: false);
         Chest.SetWeaponTarget(targetEnemy: false);
+    }
+
+    protected override void LateUpdate()
+    {
+        if (TargetTransform != null)
+        {
+            if (_enemyHealth.HealthPercentage > 0.5)
+            {
+                if (_bossBGMState == 0) return;
+
+                _bossBGMState = 0;
+                BGMMusicManager.PlayBossBGM(_bossBGMState);
+            }
+            else
+            {
+                if (_bossBGMState == 1) return;
+
+                _bossBGMState = 1;
+                BGMMusicManager.PlayBossBGM(_bossBGMState);
+            }
+        }
+
+        _bossBGMState = -1;
     }
 }
