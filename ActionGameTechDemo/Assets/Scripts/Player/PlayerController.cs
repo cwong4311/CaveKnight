@@ -8,6 +8,7 @@ public class PlayerController : CharacterManager
     public CameraController CameraController;
     private GameObject _baseCam;
 
+    [Header("Movement Parameters")]
     public float MovementSpeed = 5f;
     public float SprintSpeed = 8f;
     public float RotationSpeed = 10f;
@@ -17,13 +18,19 @@ public class PlayerController : CharacterManager
     public bool IsBlocking;
     public float BlockingMovementSpeed = 4f;
 
+    [Header("Action Cost")]
+    public float RollStaminaConsumption = 40;
+    public float HeavyAttackStaminaConsumption = 30;
+    public float ParryStaminaConsumption = 20;
+    public float HealManaCost = 30;
+
     private Transform _cameraGO;
     private Vector3 _moveDirection;
 
     private PlayerInputHandler _inputHandler;
     private PlayerAnimationHandler _animator;
     private PlayerWeapon _weapon;
-    private PlayerHealth _health;
+    private PlayerStatus _playerStatus;
 
     private bool isInHitStun = false;
     private Coroutine _hitStunCoroutine = null;
@@ -46,7 +53,7 @@ public class PlayerController : CharacterManager
             _weapon.Initialise();
         }
 
-        _health = GetComponent<PlayerHealth>();
+        _playerStatus = GetComponent<PlayerStatus>();
 
         _cameraGO = Camera.main.transform;
         CameraController = FindObjectOfType<CameraController>();
@@ -167,6 +174,9 @@ public class PlayerController : CharacterManager
 
         if (_inputHandler.IsRolling)
         {
+            _inputHandler.IsRolling = false;
+            if (_playerStatus.ConsumeStamina(RollStaminaConsumption) == false) return;
+
             _moveDirection = ((_cameraGO.forward * _inputHandler.VerticalMove)
                 + (_cameraGO.right * _inputHandler.HorizontalMove));
             _moveDirection.y = 0;
@@ -186,9 +196,8 @@ public class PlayerController : CharacterManager
                 _animator.PlayAnimation("DodgeRoll", true);
             }
 
-            _health.SetTemporaryInvuln(duration: 1f, keepCollision: false);
+            _playerStatus.SetTemporaryInvuln(duration: 1f, keepCollision: false);
             IsRolling = true;
-            _inputHandler.IsRolling = false;
         }
     }
 
@@ -198,19 +207,23 @@ public class PlayerController : CharacterManager
 
         if (_inputHandler.IsHeavyAttacking)
         {
-            _weapon.HeavyAttack();
             _inputHandler.IsHeavyAttacking = false;
+            if (_playerStatus.ConsumeStamina(HeavyAttackStaminaConsumption) == false) return;
+
+            _weapon.HeavyAttack();
         }
         else if (_inputHandler.IsLightAttacking)
         {
-            _weapon.LightAttack(_inputHandler.LightComboStep);
             _inputHandler.IsLightAttacking = false;
+            _weapon.LightAttack(_inputHandler.LightComboStep);
         }
         else if (_inputHandler.IsParrying)
         {
-            _animator.PlayAnimation("Parry", true);
-            _health.SetParryState(0.3f);
             _inputHandler.IsParrying = false;
+            if (_playerStatus.ConsumeStamina(ParryStaminaConsumption) == false) return;
+
+            _animator.PlayAnimation("Parry", true);
+            _playerStatus.SetParryState(0.3f);
         }
     }
 

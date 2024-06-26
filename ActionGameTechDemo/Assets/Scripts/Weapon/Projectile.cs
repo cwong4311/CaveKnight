@@ -67,7 +67,7 @@ public class Projectile : MonoBehaviour
     {
         if (IsDamageable(collision) && Damage > 0.01f)
         {
-            if (collision.gameObject.TryGetComponent<PlayerHealth>(out var player))
+            if (collision.gameObject.TryGetComponent<PlayerStatus>(out var player))
             {
                 if (player.IsInvulnerable)
                 {

@@ -175,6 +175,10 @@ MonoBehaviour:
   IsPerformingAction: 0
   IsBlocking: 0
   BlockingMovementSpeed: 2
+  RollStaminaConsumption: 40
+  HeavyAttackStaminaConsumption: 30
+  ParryStaminaConsumption: 20
+  HealManaCost: 30
 --- !u!114 &6524170927432354695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,15 +188,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2936346402416061502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5258f26e800ad424eb6965efea500469, type: 3}
+  m_Script: {fileID: 11500000, guid: b8ae0aea52906c844929e0e916fb5068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 300
-  CurrentHealth: 300
+  MaxStamina: 120
+  MaxMana: 50
+  StaminaRegainDelay: 2
   IsInvulnerable: 0
   IsBlocking: 0
   IsParrying: 0
   _healthBar: {fileID: 0}
+  _staminaBar: {fileID: 0}
+  _manaBar: {fileID: 0}
 --- !u!114 &3625841231686026745
 MonoBehaviour:
   m_ObjectHideFlags: 0
