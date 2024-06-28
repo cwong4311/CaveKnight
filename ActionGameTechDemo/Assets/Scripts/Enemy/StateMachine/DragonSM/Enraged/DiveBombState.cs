@@ -9,6 +9,8 @@ namespace AI.Dragon
         private string _animationState = "Divebomb";
         private float _preDiveRotationDelay = 0.3f;
 
+        private float _maxFlightTime = 7f; // If dragon hasn't crashed in 7 seconds, something went wrong. Immediately end it
+
         private Quaternion _targetRotationToPlayer;
         private Vector3 _divebombDirection;
 
@@ -47,7 +49,7 @@ namespace AI.Dragon
                 _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 3.5f;
             }
 
-            if (HasCrashed())
+            if (HasCrashed() || (Time.time - _timeAtStateEnter > _maxFlightTime))
             {
                 ResetXRotation();
                 MoveState("Idle");
