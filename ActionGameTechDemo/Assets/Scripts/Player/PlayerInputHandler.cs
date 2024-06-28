@@ -132,6 +132,18 @@ public class PlayerInputHandler : MonoBehaviour
 
         if (_cameraController != null)
         {
+            // If camera is currently locked on, but there's no actual target locked on
+            // Likely target died. Try to swap targets, or stop lockon if no targets
+            if (_cameraController.currentLockonTarget == null && LockedOn)
+            {
+                var canCycle = _cameraController.CycleLockon();
+                if (canCycle == false)
+                {
+                    _cameraController.ClearLockon();
+                    LockedOn = false;
+                }
+            }
+
             _cameraController.FollowTarget(delta);
             _cameraController.HandleCameraRotation(delta, MouseX, MouseY);
         }
