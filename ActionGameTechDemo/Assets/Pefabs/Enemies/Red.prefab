@@ -706,6 +706,7 @@ MonoBehaviour:
   Tail: {fileID: 1445535533}
   Chest: {fileID: 1745794787017432773}
   Fireball: {fileID: 329284322510630516}
+  HUDBossName: Beast of Gluttony
 --- !u!114 &1187181234361464245
 MonoBehaviour:
   m_ObjectHideFlags: 0

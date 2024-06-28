@@ -244,7 +244,7 @@ public class EnemyController : CharacterManager
         var rootCharacterGP = PrefabUtility.GetOutermostPrefabInstanceRoot(this);
         Destroy(rootCharacterGP, 0.3f);
 
-        Destroy(this.gameObject, 0.5f);
+        Destroy(this.gameObject, 5f);
     }
 
     public float? GetStateDuration(string stateName)
