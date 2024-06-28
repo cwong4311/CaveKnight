@@ -6,6 +6,7 @@ public class PlayerMagic : MonoBehaviour
     public float HealPotency = 30f;
     public GameObject HealSpellPF;
     private PlayerAnimationHandler _animatorHandler;
+    private PlayerSoundManager _soundManager;
 
     [SerializeField]
     private PlayerStatus _playerStatus;
@@ -13,10 +14,13 @@ public class PlayerMagic : MonoBehaviour
     public void Initialise()
     {
         _animatorHandler = GetComponent<PlayerAnimationHandler>();
+        _soundManager = GetComponent<PlayerSoundManager>();
     }
 
     public void CastHeal()
     {
+        _soundManager.PlayHealSound();
+
         // Generate the heal circle, then let a coroutine handle the heal behaviour
         var healCircle = Instantiate(HealSpellPF, transform.position, Quaternion.identity, transform);
         StartCoroutine(HealCircleFlow(healCircle));
