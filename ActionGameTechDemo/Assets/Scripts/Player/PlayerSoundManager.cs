@@ -14,6 +14,9 @@ public class PlayerSoundManager : SoundManager
     public AudioClip HeavySwing;
     public AudioClip Smash;
 
+    [Header("Spell")]
+    public AudioClip Heal;
+
     [Header("Misc")]
     public AudioClip OnHurt;
     public AudioClip OnBlock;
@@ -62,5 +65,10 @@ public class PlayerSoundManager : SoundManager
     public void Parry()
     {
         PlayOneShot(OnParry);
+    }
+
+    public void PlayHealSound()
+    {
+        PlayOneShot(Heal);
     }
 }
