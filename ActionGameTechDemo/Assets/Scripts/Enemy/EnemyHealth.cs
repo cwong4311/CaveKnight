@@ -13,14 +13,14 @@ public class EnemyHealth : MonoBehaviour
     private EnemyController _controller;
 
     [SerializeField]
-    private HealthBar _healthBar;
+    private StatusBar _healthBar;
 
     public void OnEnable()
     {
         CurrentHealth = MaxHealth;
         _controller = GetComponent<EnemyController>();
 
-        _healthBar?.SetMaxHealth((int)MaxHealth);
+        _healthBar?.SetMaxStatus((int)MaxHealth);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class EnemyHealth : MonoBehaviour
             Die();
         }
 
-        _healthBar?.SetHealth((int)CurrentHealth);
+        _healthBar?.SetStatus((int)CurrentHealth);
         _controller.GetHit(damage);
 
         return true;

@@ -49,7 +49,7 @@ public class WeaponDamager : MonoBehaviour
                 hasDealtDamage = enemyPart.TakeDamage(_damageDealt);
             }
         }
-        else if (!_targetIsEnemy && collision.gameObject.TryGetComponent<PlayerHealth>(out var player))
+        else if (!_targetIsEnemy && collision.gameObject.TryGetComponent<PlayerStatus>(out var player))
         {
             if (player.IsParrying)
             {
