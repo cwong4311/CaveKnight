@@ -151,6 +151,7 @@ MonoBehaviour:
   IsBlocking: 0
   IsParrying: 0
   LightComboStep: 0
+  IsCastSpellOne: 0
   LockedOn: 0
 --- !u!114 &2936346402416061500
 MonoBehaviour:
@@ -175,6 +176,10 @@ MonoBehaviour:
   IsPerformingAction: 0
   IsBlocking: 0
   BlockingMovementSpeed: 2
+  RollStaminaConsumption: 40
+  HeavyAttackStaminaConsumption: 30
+  ParryStaminaConsumption: 20
+  HealManaCost: 30
 --- !u!114 &6524170927432354695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,15 +189,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2936346402416061502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5258f26e800ad424eb6965efea500469, type: 3}
+  m_Script: {fileID: 11500000, guid: b8ae0aea52906c844929e0e916fb5068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 300
-  CurrentHealth: 300
+  MaxStamina: 120
+  MaxMana: 50
+  StaminaRegainDelay: 2
   IsInvulnerable: 0
   IsBlocking: 0
   IsParrying: 0
   _healthBar: {fileID: 0}
+  _staminaBar: {fileID: 0}
+  _manaBar: {fileID: 0}
 --- !u!114 &3625841231686026745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -837,6 +846,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputHandler: {fileID: 2936346402416061501}
   _playerController: {fileID: 2936346402416061500}
+--- !u!114 &7327958052088052351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2629704912083912517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d25ea9555ecf0a4d8989b0ebbe2c58c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealPotency: 50
+  HealSpellPF: {fileID: 4903317575198938071, guid: 703b20d1b72aafb4597d2faa91d34e98, type: 3}
+  _playerStatus: {fileID: 6524170927432354695}
 --- !u!114 &8326519833583385697
 MonoBehaviour:
   m_ObjectHideFlags: 0
