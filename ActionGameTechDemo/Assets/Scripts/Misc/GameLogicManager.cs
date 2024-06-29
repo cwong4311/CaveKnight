@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameLogicManager : MonoBehaviour
 {
     public Animator Menu;
+    public GameObject PauseScreen;
     public PlayerController Player;
 
     public AudioSource MenuAudio;
@@ -18,27 +19,36 @@ public class GameLogicManager : MonoBehaviour
     public AudioMixerSnapshot GameOverMixerSnapshot;
     public AudioMixerSnapshot PausedMixerSnapshot;
 
+    public static Action OnPause;
     public static Action OnGameOver;
     public static Action OnLevelComplete;
 
     private Coroutine _currentGameEndScreen;
+    private bool _isPaused;
+    private float _originalTimeScale;
 
     public void OnEnable()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        _isPaused = false;
         _currentGameEndScreen = null;
-        PlayMenuAnimation("Intro");
 
-        OnGameOver += PlayGameOverScreen;
-        OnLevelComplete += PlayLevelCompletedScreen;
+        PlayMenuAnimation("Intro");
 
         if (MenuAudio == null) MenuAudio = GetComponent<AudioSource>();
         DefaultMixerSnapshot.TransitionTo(.01f);
+
+        OnGameOver += PlayGameOverScreen;
+        OnLevelComplete += PlayLevelCompletedScreen;
+        OnPause += OnPausePressed;
     }
 
     public void OnDisable()
     {
         OnGameOver = null;
         OnLevelComplete = null;
+        OnPause = null;
     }
 
     protected void PlayGameOverScreen()
@@ -94,7 +104,51 @@ public class GameLogicManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void ReturnToMainMenu()
+    protected void OnPausePressed()
+    {
+        var isNowPaused = !_isPaused;
+        if (isNowPaused)
+        {
+            Pause();
+        }
+        else
+        {
+            UnPause();
+        }
+    }
+
+    public void Pause()
+    {
+        if (_isPaused) return;
+        if (_currentGameEndScreen != null) return;
+
+        _isPaused = true;
+
+        _originalTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        PauseScreen.SetActive(true);
+
+        PausedMixerSnapshot.TransitionTo(.01f);
+    }
+
+    public void UnPause()
+    {
+        if (!_isPaused) return;
+
+        _isPaused = false;
+        Time.timeScale = _originalTimeScale;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        PauseScreen.SetActive(false);
+
+        DefaultMixerSnapshot.TransitionTo(0.5f);
+    }
+
+    public void ReturnToMainMenu()
     {
 
     }

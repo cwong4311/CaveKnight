@@ -60,18 +60,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleCursor",
+                    "name": "Heal",
                     "type": "Button",
-                    "id": "01922c23-13cc-4bcc-8912-9f5b10659ae5",
+                    "id": "ed1f45e9-b624-49e0-b8d4-a93ae2e0850e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Heal",
+                    "name": "Pause",
                     "type": "Button",
-                    "id": "ed1f45e9-b624-49e0-b8d4-a93ae2e0850e",
+                    "id": "c89918a9-4450-4234-b4c2-4fd51b76f2c5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -202,23 +202,23 @@
                 },
                 {
                     "name": "",
-                    "id": "bb9e88f4-e777-4005-9fe1-76ddf36fe572",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleCursor",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "0c5a2fdb-0e60-4bbf-bc61-a5f8704c7ee2",
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Heal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d686106-b84c-4ba6-b0fb-fb1d7f92228c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
