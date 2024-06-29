@@ -72,6 +72,8 @@ public class PlayerController : CharacterManager
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (isInHitStun) return;
 
         float delta = Time.deltaTime;
@@ -268,7 +270,7 @@ public class PlayerController : CharacterManager
         _animator.Anim.speed = 0.01f;
         RB.isKinematic = true;
 
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSeconds(duration);
 
         isInHitStun = false;
         _animator.Anim.speed = 1f;

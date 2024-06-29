@@ -42,6 +42,9 @@ public class PlayerMagic : MonoBehaviour
         // Over 3 seconds, make the healing circle grow in size, and heal by ticks
         while (timeElapsed < totalDuration)
         {
+            if (GameLogicManager.IsPaused)
+                yield return new WaitUntil(() => !GameLogicManager.IsPaused);
+
             if (healCircle != null)
                 healCircle.transform.localScale = Vector3.Slerp(healCircle.transform.localScale, Vector3.one / 2, Time.deltaTime);
 

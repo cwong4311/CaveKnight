@@ -23,15 +23,16 @@ public class GameLogicManager : MonoBehaviour
     public static Action OnGameOver;
     public static Action OnLevelComplete;
 
+    public static bool IsPaused;
+
     private Coroutine _currentGameEndScreen;
-    private bool _isPaused;
     private float _originalTimeScale;
 
     public void OnEnable()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        _isPaused = false;
+        IsPaused = false;
         _currentGameEndScreen = null;
 
         PlayMenuAnimation("Intro");
@@ -106,7 +107,7 @@ public class GameLogicManager : MonoBehaviour
 
     protected void OnPausePressed()
     {
-        var isNowPaused = !_isPaused;
+        var isNowPaused = !IsPaused;
         if (isNowPaused)
         {
             Pause();
@@ -119,10 +120,10 @@ public class GameLogicManager : MonoBehaviour
 
     public void Pause()
     {
-        if (_isPaused) return;
+        if (IsPaused) return;
         if (_currentGameEndScreen != null) return;
 
-        _isPaused = true;
+        IsPaused = true;
 
         _originalTimeScale = Time.timeScale;
         Time.timeScale = 0f;
@@ -136,9 +137,9 @@ public class GameLogicManager : MonoBehaviour
 
     public void UnPause()
     {
-        if (!_isPaused) return;
+        if (!IsPaused) return;
 
-        _isPaused = false;
+        IsPaused = false;
         Time.timeScale = _originalTimeScale;
 
         Cursor.visible = false;

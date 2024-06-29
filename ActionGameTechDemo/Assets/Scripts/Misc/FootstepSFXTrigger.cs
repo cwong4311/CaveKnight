@@ -31,6 +31,8 @@ public class FootstepSFXTrigger : MonoBehaviour
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (_remainingDelay >= 0)
         {
             _remainingDelay -= Time.deltaTime;

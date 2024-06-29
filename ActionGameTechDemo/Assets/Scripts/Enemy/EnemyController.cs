@@ -100,6 +100,8 @@ public class EnemyController : CharacterManager
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (_aiState != null)
         {
             _aiState.Update(Time.deltaTime, isInHitStun);
@@ -202,7 +204,7 @@ public class EnemyController : CharacterManager
         _enemyAnimator.speed = 0f;
         RB.isKinematic = true;
 
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSeconds(duration);
 
         isInHitStun = false;
         _enemyAnimator.speed = 1f;

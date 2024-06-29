@@ -85,6 +85,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (IsInteracting)
         {
             _timeSinceLastAttackInput = 0f;

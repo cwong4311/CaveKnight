@@ -53,6 +53,8 @@ public class PlayerStatus : MonoBehaviour
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (_isTempInvuln)
         {
             if (Time.time - _timeSinceTempInvuln >= _tempInvulnDuration)
