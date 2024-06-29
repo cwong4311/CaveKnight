@@ -48,6 +48,8 @@ public class EnemyController : CharacterManager
     public float RestunThresholdGain = 150;
     public float StunResetDuration = 30f;
 
+    protected float _destroyAfterDeath = 5f;
+
     /// <summary>
     /// This value starts at 100% and increases each time RestunThresholdGain is applied
     /// </summary>
@@ -235,16 +237,14 @@ public class EnemyController : CharacterManager
         MoveToState("Hurt");
     }
 
-    public void Die()
+    public virtual void Die()
     {
         // And move to hurt state
         MoveToState("Die");
 
         // Destroy object after X seconds
         var rootCharacterGP = PrefabUtility.GetOutermostPrefabInstanceRoot(this);
-        Destroy(rootCharacterGP, 0.3f);
-
-        Destroy(this.gameObject, 5f);
+        Destroy(rootCharacterGP, _destroyAfterDeath);
     }
 
     public float? GetStateDuration(string stateName)

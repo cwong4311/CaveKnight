@@ -57,4 +57,12 @@ public class DragonController : EnemyController
         _bossBGMState = -1;
         healthHUD?.HideHealthBar();
     }
+
+    public override void Die()
+    {
+        _destroyAfterDeath = 10f;
+        base.Die();
+
+        GameLogicManager.OnLevelComplete?.Invoke();
+    }
 }
