@@ -15,7 +15,6 @@ public class GameLogicManager : MonoBehaviour
 
     public AudioSource MenuAudio;
     public AudioClip GameOverSound;
-    public AudioClip YouWinSound;
     public AudioMixerSnapshot DefaultMixerSnapshot;
     public AudioMixerSnapshot GameOverMixerSnapshot;
     public AudioMixerSnapshot PausedMixerSnapshot;
@@ -93,7 +92,7 @@ public class GameLogicManager : MonoBehaviour
             PerformAfterDelay(5,
             () => {
                 OnPause = null;
-                MenuAudio?.PlayOneShot(YouWinSound);
+                PausedMixerSnapshot.TransitionTo(5f);
                 SetWinScreenStats();
                 PlayMenuAnimation("YouWin");
 
