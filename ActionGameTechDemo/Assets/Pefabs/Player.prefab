@@ -881,6 +881,7 @@ MonoBehaviour:
   Smash: {fileID: 8300000, guid: f5d5787a6cc39c54abb83ceb0424f7b1, type: 3}
   Heal: {fileID: 8300000, guid: 0a0480f9a99157243a95eacb420942e1, type: 3}
   OnHurt: {fileID: 8300000, guid: ab0dbeea7eaf42b459aac9946d2f048c, type: 3}
+  OnDeath: {fileID: 8300000, guid: 6213536b5b67b4c4697ab6927fa73243, type: 3}
   OnBlock: {fileID: 8300000, guid: ba27b9ee1512f674a8825621e1ce0bbe, type: 3}
   OnParry: {fileID: 8300000, guid: bc277de9a914a7441b49211a98a38d32, type: 3}
 --- !u!4 &3401702075844582911 stripped

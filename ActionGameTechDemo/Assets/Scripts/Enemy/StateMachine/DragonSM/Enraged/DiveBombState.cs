@@ -136,10 +136,14 @@ namespace AI.Dragon
 
             while (currentTimeTaken < totalDuration)
             {
+                if (GameLogicManager.IsPaused)
+                    yield return new WaitUntil(() => !GameLogicManager.IsPaused);
+
                 var destination = new Vector3(_myController.transform.position.x, endYPos, _myController.transform.position.z);
                 _myController.transform.position = Vector3.Slerp(_myController.transform.position, destination, currentTimeTaken / totalDuration);
 
                 currentTimeTaken += Time.deltaTime;
+
                 yield return null;
             }
 

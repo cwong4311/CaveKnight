@@ -32,6 +32,7 @@ public class PlayerController : CharacterManager
     private PlayerWeapon _weapon;
     private PlayerMagic _magic;
     private PlayerStatus _playerStatus;
+    private PlayerSoundManager _playerSound;
 
     private bool isInHitStun = false;
     private Coroutine _hitStunCoroutine = null;
@@ -61,6 +62,7 @@ public class PlayerController : CharacterManager
         }
 
         _playerStatus = GetComponent<PlayerStatus>();
+        _playerSound = GetComponentInChildren<PlayerSoundManager>();
 
         _cameraGO = Camera.main.transform;
         CameraController = FindObjectOfType<CameraController>();
@@ -70,6 +72,8 @@ public class PlayerController : CharacterManager
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (isInHitStun) return;
 
         float delta = Time.deltaTime;
@@ -266,7 +270,7 @@ public class PlayerController : CharacterManager
         _animator.Anim.speed = 0.01f;
         RB.isKinematic = true;
 
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSeconds(duration);
 
         isInHitStun = false;
         _animator.Anim.speed = 1f;
@@ -285,6 +289,8 @@ public class PlayerController : CharacterManager
     {
         _animator.PlayAnimation("Defeated", true);
         _weapon.DeactivateWeapon();
+
+        GameLogicManager.OnGameOver?.Invoke();
     }
 
     public bool GetIsAttacking()

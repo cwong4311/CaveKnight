@@ -81,6 +81,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     private void OnAnimatorMove()
     {
         if (_inputHandler.IsInteracting == false) return;
+        if (Mathf.Approximately(Time.deltaTime, 0f)) return;
 
         float delta = Time.deltaTime;
         _playerController.RB.drag = 0;

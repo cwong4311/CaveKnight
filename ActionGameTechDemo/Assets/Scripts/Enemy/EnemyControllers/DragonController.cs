@@ -10,6 +10,9 @@ public class DragonController : EnemyController
     public WeaponDamager Chest;
     public Fireball Fireball;
 
+    [Header("Boss HUD Name")]
+    public string HUDBossName;
+
     protected int _bossBGMState = -1;
 
     public override void Awake()
@@ -23,6 +26,8 @@ public class DragonController : EnemyController
 
     protected override void LateUpdate()
     {
+        var healthHUD = _enemyHealth.GetHealthHUD();
+
         if (TargetTransform != null)
         {
             if (_enemyHealth.HealthPercentage > 0.5)
@@ -31,6 +36,9 @@ public class DragonController : EnemyController
 
                 _bossBGMState = 0;
                 BGMMusicManager.PlayBossBGM(_bossBGMState);
+
+                healthHUD?.ShowHealthBar();
+                healthHUD?.SetBossName(HUDBossName);
             }
             else
             {
@@ -38,9 +46,23 @@ public class DragonController : EnemyController
 
                 _bossBGMState = 1;
                 BGMMusicManager.PlayBossBGM(_bossBGMState);
+
+                healthHUD?.ShowHealthBar();
+                healthHUD?.SetBossName(HUDBossName);
             }
+
+            return;
         }
 
         _bossBGMState = -1;
+        healthHUD?.HideHealthBar();
+    }
+
+    public override void Die()
+    {
+        _destroyAfterDeath = 10f;
+        base.Die();
+
+        GameLogicManager.OnLevelComplete?.Invoke();
     }
 }
