@@ -36,6 +36,7 @@ public class AIStateFactory
                 "GroundedScream" => new AI.Dragon.FakeScreamState(_enemyController),
                 "Hurt" => new AI.Dragon.HurtState(_enemyController),
                 "Idle" => new AI.Dragon.IdleState(_enemyController),
+                "Die" => new AI.Dragon.DieState(_enemyController),
                 _ => new AI.Dragon.IdleState(_enemyController)
             };
         }

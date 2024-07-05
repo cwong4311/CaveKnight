@@ -60,8 +60,9 @@ public class DragonController : EnemyController
 
     public override void Die()
     {
-        _destroyAfterDeath = 10f;
-        base.Die();
+        // Don't invoke base behaviour. Dragon will not be destroyed
+        MoveToState("Die");
+        _isDead = true;
 
         GameLogicManager.OnLevelComplete?.Invoke();
     }
