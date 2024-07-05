@@ -19,6 +19,8 @@ public class WeaponDamager : MonoBehaviour
     private CharacterManager _myCharacter;
     private List<object> _alreadyHitTargets = new List<object>();
 
+    public bool IsActive => _damageCollider.enabled;
+
     public void Awake()
     {
         _myCharacter = GetComponentInParent<CharacterManager>();
@@ -47,7 +49,7 @@ public class WeaponDamager : MonoBehaviour
                 hasDealtDamage = enemyPart.TakeDamage(_damageDealt);
             }
         }
-        else if (!_targetIsEnemy && collision.gameObject.TryGetComponent<PlayerHealth>(out var player))
+        else if (!_targetIsEnemy && collision.gameObject.TryGetComponent<PlayerStatus>(out var player))
         {
             if (player.IsParrying)
             {

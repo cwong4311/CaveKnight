@@ -13,14 +13,15 @@ public class EnemyHealth : MonoBehaviour
     private EnemyController _controller;
 
     [SerializeField]
-    private HealthBar _healthBar;
+    private BossHealthBar _healthBar;
 
     public void OnEnable()
     {
-        CurrentHealth = MaxHealth / 2 + 1;
+        CurrentHealth = MaxHealth;
         _controller = GetComponent<EnemyController>();
 
-        _healthBar.SetMaxHealth((int)MaxHealth);
+        _healthBar?.SetMaxStatus((int)MaxHealth);
+        _healthBar?.HideHealthBar();
     }
 
     /// <summary>
@@ -38,7 +39,7 @@ public class EnemyHealth : MonoBehaviour
             Die();
         }
 
-        _healthBar.SetHealth((int)CurrentHealth);
+        _healthBar?.SetStatus((int)CurrentHealth);
         _controller.GetHit(damage);
 
         return true;
@@ -46,7 +47,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void Die()
     {
-        // Do Nothing Yet
+        _controller.Die();
     }
 
     public void SetInvuln()
@@ -57,5 +58,10 @@ public class EnemyHealth : MonoBehaviour
     public void RemoveInvuln()
     {
         IsInvulnerable = false;
+    }
+
+    public BossHealthBar GetHealthHUD()
+    {
+        return _healthBar;
     }
 }

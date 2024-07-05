@@ -1,29 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEditor;
 using UnityEngine;
-
-[System.Serializable]
-public struct EnemyCommands
-{
-    public string commandName;
-    public bool isAttack;
-    public float attackDamage;
-}
 
 // TO DO: Refactor this
 public class EnemyController : CharacterManager
 {
+    [Header("Basic Stats")]
     public string EnemyName;
 
     public float PlayerDetectionRange;
     public Transform ActualBodyTransform;   // Transform of this Enemy's actual body (not the parent GO)
     public Transform TargetTransform;       // Transform of the target (player)
     public Rigidbody RB;
-    public WeaponDamager Bite;
-    public WeaponDamager Tail;
-    public WeaponDamager Chest;
-    public Fireball Fireball;
 
     public bool applyGravity = true;
     public float CharacterGravity = 50;
@@ -33,7 +22,7 @@ public class EnemyController : CharacterManager
     public float ChaseSpeed = 6f;
     public float TurnSpeed = 2f;
 
-    private EnemyHealth _enemyHealth;
+    protected EnemyHealth _enemyHealth;
 
     private List<Collider> _activeColliders = new List<Collider>();
     private Animator _enemyAnimator;
@@ -50,6 +39,7 @@ public class EnemyController : CharacterManager
     private IStateInfoMap _stateInfo;
 
     // Stunlock thresholds
+    [Header("Stun Variables")]
     private float _damageTakenCombo = 0f;
     private float _lastDamageTakenTime = 0f;
     private float _currentStunThreshold;
@@ -58,10 +48,20 @@ public class EnemyController : CharacterManager
     public float RestunThresholdGain = 150;
     public float StunResetDuration = 30f;
 
+    protected float _destroyAfterDeath = 5f;
+
+    /// <summary>
+    /// This value starts at 100% and increases each time RestunThresholdGain is applied
+    /// </summary>
+    public float CurrentStunThresholdPercentage => _currentStunThreshold / RestunBaseThreshold;
+
     private bool isInHitStun = false;
     private Coroutine _hitStunCoroutine = null;
 
-    public void Awake()
+    public Vector3 SpawnPoint;
+    private List<GameObject> _allPossiblePlayers = new List<GameObject>();
+
+    public virtual void Awake()
     {
         _enemyHealth = GetComponent<EnemyHealth>();
         _enemyAnimator = GetComponent<Animator>();
@@ -82,6 +82,14 @@ public class EnemyController : CharacterManager
                 _activeColliders.Add(collider);
             }
         }
+
+        SpawnPoint = transform.position;
+        // Expensive behaviour, but only on spawn. All enemies will only engage behaviour if ANY
+        // player reaches within it's detection range.
+        foreach (var player in FindObjectsByType<PlayerController>(FindObjectsSortMode.InstanceID))
+        {
+            _allPossiblePlayers.Add(player.gameObject);
+        }
     }
 
     public void OnEnable()
@@ -92,6 +100,8 @@ public class EnemyController : CharacterManager
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (_aiState != null)
         {
             _aiState.Update(Time.deltaTime, isInHitStun);
@@ -111,6 +121,8 @@ public class EnemyController : CharacterManager
         // Lose 5 damageCombo per second
         _damageTakenCombo = (_damageTakenCombo > 0f) ? 
             _damageTakenCombo - Time.deltaTime * 5 : 0f;
+
+        LateUpdate();
     }
 
     public void FixedUpdate()
@@ -119,6 +131,14 @@ public class EnemyController : CharacterManager
         {
             RB.velocity += (Vector3.down * CharacterGravity) * Time.fixedDeltaTime;
         }  
+    }
+
+    /// <summary>
+    /// Override in child classes if anything needs to be done in LateUpdate
+    /// </summary>
+    protected virtual void LateUpdate()
+    {
+        // Do Nothing
     }
 
     public void MoveToState(string targetAnimation)
@@ -184,7 +204,7 @@ public class EnemyController : CharacterManager
         _enemyAnimator.speed = 0f;
         RB.isKinematic = true;
 
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSeconds(duration);
 
         isInHitStun = false;
         _enemyAnimator.speed = 1f;
@@ -217,6 +237,16 @@ public class EnemyController : CharacterManager
 
         // And move to hurt state
         MoveToState("Hurt");
+    }
+
+    public virtual void Die()
+    {
+        // And move to hurt state
+        MoveToState("Die");
+
+        // Destroy object after X seconds
+        var rootCharacterGP = PrefabUtility.GetOutermostPrefabInstanceRoot(this);
+        Destroy(rootCharacterGP, _destroyAfterDeath);
     }
 
     public float? GetStateDuration(string stateName)
@@ -261,6 +291,29 @@ public class EnemyController : CharacterManager
         }
     }
 
+    public void EnableInvuln()
+    {
+        _enemyHealth.SetInvuln();
+    }
+
+    public void DisableInvuln()
+    {
+        _enemyHealth.RemoveInvuln();
+    }
+
+    public bool IsAnyPlayerNearby()
+    {
+        foreach (var player in _allPossiblePlayers)
+        {
+            if (Vector3.Distance(transform.position, player.transform.position) < PlayerDetectionRange)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -269,8 +322,5 @@ public class EnemyController : CharacterManager
 
         if (TargetTransform != null)
             Gizmos.DrawLine(ActualBodyTransform.position, TargetTransform.position);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(Bite.transform.position, 1.5f);
     }
 }

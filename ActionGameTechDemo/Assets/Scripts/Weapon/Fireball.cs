@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Fireball: MonoBehaviour
 {
-    // TO DO: Fix this
     public Transform FireballLocation;
     public GameObject FireballPF;
 

@@ -19,6 +19,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool IsParrying;
     public int LightComboStep = -1;
 
+    public bool IsCastSpellOne;
+
     public bool LockedOn;
 
     private PlayerControls _inputActions;
@@ -32,8 +34,6 @@ public class PlayerInputHandler : MonoBehaviour
     private float _timeSinceLastAttackFinish;
     private float _timeSinceLastBlock;
 
-    private bool _cursorLocked;
-
     public void Awake()
     {
         if (_inputActions == null)
@@ -42,10 +42,6 @@ public class PlayerInputHandler : MonoBehaviour
         }
 
         _cameraController = FindObjectOfType<CameraController>();
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        _cursorLocked = true;
     }
 
     public void Start()
@@ -65,7 +61,9 @@ public class PlayerInputHandler : MonoBehaviour
 
         _inputActions.Player.Lockon.performed += OnLockon;
 
-        _inputActions.Player.ToggleCursor.performed += OnEscapeToggle;
+        _inputActions.Player.Heal.performed += OnCastSpellOne;
+
+        _inputActions.Player.Pause.performed += OnEscapeToggle;
     }
 
     public void OnEnable()
@@ -76,7 +74,8 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Player.Attack.Enable();
         _inputActions.Player.Block.Enable();
         _inputActions.Player.Lockon.Enable();
-        _inputActions.Player.ToggleCursor.Enable();
+        _inputActions.Player.Heal.Enable();
+        _inputActions.Player.Pause.Enable();
     }
 
     public void OnDisable()
@@ -86,6 +85,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (IsInteracting)
         {
             _timeSinceLastAttackInput = 0f;
@@ -127,6 +128,18 @@ public class PlayerInputHandler : MonoBehaviour
 
         if (_cameraController != null)
         {
+            // If camera is currently locked on, but there's no actual target locked on
+            // Likely target died. Try to swap targets, or stop lockon if no targets
+            if (_cameraController.currentLockonTarget == null && LockedOn)
+            {
+                var canCycle = _cameraController.CycleLockon();
+                if (canCycle == false)
+                {
+                    _cameraController.ClearLockon();
+                    LockedOn = false;
+                }
+            }
+
             _cameraController.FollowTarget(delta);
             _cameraController.HandleCameraRotation(delta, MouseX, MouseY);
         }
@@ -269,19 +282,13 @@ public class PlayerInputHandler : MonoBehaviour
     }
     public void OnEscapeToggle(InputAction.CallbackContext context)
     {
-        if (_cursorLocked)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+        GameLogicManager.OnPause?.Invoke();
+    }
 
-            _cursorLocked = false;
-        }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+    public void OnCastSpellOne(InputAction.CallbackContext context)
+    {
+        if (IsInteracting) return;
 
-            _cursorLocked = true;
-        }
+        IsCastSpellOne = true;
     }
 }

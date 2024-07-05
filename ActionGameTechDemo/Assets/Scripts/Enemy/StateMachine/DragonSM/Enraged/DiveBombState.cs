@@ -9,6 +9,8 @@ namespace AI.Dragon
         private string _animationState = "Divebomb";
         private float _preDiveRotationDelay = 0.3f;
 
+        private float _maxFlightTime = 7f; // If dragon hasn't crashed in 7 seconds, something went wrong. Immediately end it
+
         private Quaternion _targetRotationToPlayer;
         private Vector3 _divebombDirection;
 
@@ -47,7 +49,7 @@ namespace AI.Dragon
                 _myController.RB.velocity = _myController.transform.forward * _myController.ChaseSpeed * 3.5f;
             }
 
-            if (HasCrashed())
+            if (HasCrashed() || (Time.time - _timeAtStateEnter > _maxFlightTime))
             {
                 ResetXRotation();
                 MoveState("Idle");
@@ -67,7 +69,7 @@ namespace AI.Dragon
 
         private bool HasCrashed()
         {
-            var colliders = Physics.OverlapSphere(_myController.Bite.transform.position, 1f);
+            var colliders = Physics.OverlapSphere(((DragonController)_myController).Bite.transform.position, 1f);
             foreach (var collider in colliders)
             {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player")
@@ -112,14 +114,14 @@ namespace AI.Dragon
 
         private void ActiveAttack()
         {
-            _myController.Bite.GetComponent<SphereCollider>().radius = 120f;
-            _myController.Bite.ActivateWeapon(_damage);
+            ((DragonController)_myController).Bite.GetComponent<SphereCollider>().radius = 120f;
+            ((DragonController)_myController).Bite.ActivateWeapon(_damage);
         }
 
         private void DeactiveAttack()
         {
-            _myController.Bite.GetComponent<SphereCollider>().radius = 72f;
-            _myController.Bite.DeactivateWeapon();
+            ((DragonController)_myController).Bite.GetComponent<SphereCollider>().radius = 72f;
+            ((DragonController)_myController).Bite.DeactivateWeapon();
         }
 
         /// <summary>
@@ -130,14 +132,18 @@ namespace AI.Dragon
         {
             var currentTimeTaken = 0f;
             var totalDuration = 0.5f;
-            var endYPos = -2.9f;
+            var endYPos = 30f;
 
             while (currentTimeTaken < totalDuration)
             {
+                if (GameLogicManager.IsPaused)
+                    yield return new WaitUntil(() => !GameLogicManager.IsPaused);
+
                 var destination = new Vector3(_myController.transform.position.x, endYPos, _myController.transform.position.z);
                 _myController.transform.position = Vector3.Slerp(_myController.transform.position, destination, currentTimeTaken / totalDuration);
 
                 currentTimeTaken += Time.deltaTime;
+
                 yield return null;
             }
 

@@ -86,6 +86,9 @@ namespace AI.Dragon
 
             if (_myController.TargetTransform == null)
             {
+                // If no current target, AND no players nearby, don't do anyting else
+                if (_myController.IsAnyPlayerNearby() == false) return;
+
                 var colliders = Physics.OverlapSphere(_animator.transform.position, _myController.PlayerDetectionRange);
                 foreach (var collider in colliders)
                 {
@@ -146,9 +149,8 @@ namespace AI.Dragon
 
             var targetRotation = Quaternion.LookRotation(targetDir);
             var rotateVector = Quaternion.Slerp(_transform.rotation, targetRotation, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
-            rotateVector.x = 0f;
 
-            _transform.localEulerAngles = rotateVector;
+            _transform.localEulerAngles = Vector3.up * rotateVector.y;
             _myController.RB.velocity = _transform.forward * _myController.ChaseSpeed;
         }
 

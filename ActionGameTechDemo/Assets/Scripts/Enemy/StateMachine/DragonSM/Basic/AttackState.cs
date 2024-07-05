@@ -74,11 +74,10 @@ namespace AI.Dragon
         private bool RotateToPlayer()
         {
             var rotateVector = Quaternion.Slerp(_transform.rotation, _targetRotationToPlayer, _myController.TurnSpeed * Time.deltaTime).eulerAngles;
-            rotateVector.x = 0f;
 
             if (rotateVector.magnitude > 0.5f)
             {
-                _transform.localEulerAngles = rotateVector;
+                _transform.localEulerAngles = Vector3.up * rotateVector.y;
 
                 return true;
             }
@@ -90,18 +89,18 @@ namespace AI.Dragon
         {
             if (isPrimaryAttack)
             {
-                _myController.Bite.ActivateWeapon(Damage);
+                ((DragonController)_myController).Bite.ActivateWeapon(Damage);
             }
             else
             {
-                _myController.Tail.ActivateWeapon(Damage);
+                ((DragonController)_myController).Tail.ActivateWeapon(Damage);
             }
         }
 
         private void DeactiveAttack()
         {
-            _myController.Bite.DeactivateWeapon();
-            _myController.Tail.DeactivateWeapon();
+            ((DragonController)_myController).Bite.DeactivateWeapon();
+            ((DragonController)_myController).Tail.DeactivateWeapon();
         }
     }
 }
