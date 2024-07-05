@@ -49,6 +49,7 @@ public class EnemyController : CharacterManager
     public float StunResetDuration = 30f;
 
     protected float _destroyAfterDeath = 5f;
+    protected bool _isDead = false;
 
     /// <summary>
     /// This value starts at 100% and increases each time RestunThresholdGain is applied
@@ -102,6 +103,8 @@ public class EnemyController : CharacterManager
     {
         if (GameLogicManager.IsPaused) return;
 
+        if (_isDead) return;
+
         if (_aiState != null)
         {
             _aiState.Update(Time.deltaTime, isInHitStun);
@@ -143,6 +146,8 @@ public class EnemyController : CharacterManager
 
     public void MoveToState(string targetAnimation)
     {
+        if (_isDead) return;
+
         LastPerformedAction = CurrentAction;
         CurrentAction = targetAnimation;
 
@@ -244,9 +249,11 @@ public class EnemyController : CharacterManager
         // And move to hurt state
         MoveToState("Die");
 
+        _isDead = true;
+
         // Destroy object after X seconds
-        var rootCharacterGP = PrefabUtility.GetOutermostPrefabInstanceRoot(this);
-        Destroy(rootCharacterGP, _destroyAfterDeath);
+        var charToDestroy = _enemyHealth?.gameObject;
+        Destroy(charToDestroy, 5f);
     }
 
     public float? GetStateDuration(string stateName)
