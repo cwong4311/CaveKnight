@@ -693,7 +693,7 @@ MonoBehaviour:
   applyGravity: 1
   CharacterGravity: 50
   MaxDistance: 70
-  MinDistance: 5
+  MinDistance: 4
   ChaseSpeed: 6
   TurnSpeed: 4
   LastPerformedAction: 
