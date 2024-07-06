@@ -210,6 +210,8 @@ public class GameLogicManager : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
+        UnPause();
 
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 }
