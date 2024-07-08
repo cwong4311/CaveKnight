@@ -101,6 +101,8 @@ public class CameraController : MonoBehaviour
 
     public bool HandleLockon()
     {
+        if (TargetTransform == null) return false;
+
         float shortestDistance = Mathf.Infinity;
 
         Collider[] colliders = Physics.OverlapSphere(TargetTransform.position, 30);
