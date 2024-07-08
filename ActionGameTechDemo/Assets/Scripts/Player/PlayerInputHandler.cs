@@ -67,6 +67,28 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Pause.action.performed += OnEscapeToggle;
     }
 
+    public void OnDestroy()
+    {
+        _inputActions.Movement.action.performed -= OnPlayerMovement;
+
+        _inputActions.Camera.action.performed -= OnCameraMovement;
+
+        _inputActions.Roll.action.started -= OnShiftDown;
+        _inputActions.Roll.action.canceled -= OnShiftUp;
+
+        _inputActions.Attack.action.started -= OnAttackButtonDown;
+        _inputActions.Attack.action.canceled -= OnAttackButtonUp;
+
+        _inputActions.Block.action.started -= OnBlockButtonDown;
+        _inputActions.Block.action.canceled -= OnBlockButtonUp;
+
+        _inputActions.Lockon.action.performed -= OnLockon;
+
+        _inputActions.Heal.action.performed -= OnCastSpellOne;
+
+        _inputActions.Pause.action.performed -= OnEscapeToggle;
+    }
+
     public void OnEnable()
     {
         _inputActions.Movement.action.Enable();
