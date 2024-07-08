@@ -11,7 +11,9 @@ public class GameLogicManager : MonoBehaviour
 {
     public Animator Menu;
     public GameObject PauseScreen;
+    public GameObject SettingsScreen;
     public PlayerController Player;
+    public GameObject PlayerCamera;
 
     public AudioSource MenuAudio;
     public AudioClip GameOverSound;
@@ -19,6 +21,7 @@ public class GameLogicManager : MonoBehaviour
     public AudioMixerSnapshot GameOverMixerSnapshot;
     public AudioMixerSnapshot PausedMixerSnapshot;
 
+    public GameObject SpawnLocation;
     public GameObject EnemyPool;
 
     public TextMeshProUGUI FinalScore;
@@ -41,6 +44,8 @@ public class GameLogicManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         IsPaused = false;
         _currentGameEndScreen = null;
+
+        SettingsScreen.SetActive(false);
 
         PlayMenuAnimation("Intro");
 
@@ -204,6 +209,7 @@ public class GameLogicManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         PauseScreen.SetActive(false);
+        SettingsScreen.SetActive(false);
 
         DefaultMixerSnapshot.TransitionTo(0.5f);
     }
@@ -213,5 +219,23 @@ public class GameLogicManager : MonoBehaviour
         UnPause();
 
         SceneManager.LoadScene(0, LoadSceneMode.Single);
+    }
+
+    public void ShowSettings()
+    {
+        SettingsScreen.SetActive(true);
+    }
+
+    public void HideSettings()
+    {
+        SettingsScreen.SetActive(false);
+    }
+
+    public void Respawn()
+    {
+        Player.transform.position = SpawnLocation.transform.position;
+        PlayerCamera.transform.position = SpawnLocation.transform.position;
+
+        UnPause();
     }
 }
