@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Diagnostics.Contracts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,16 +8,33 @@ public class MenuLogicManager : MonoBehaviour
     public GameObject SettingsMenu;
     public GameObject KeybindMenu;
     public GameObject CreditsMenu;
+    public GameObject LoadingScreen;
+
+    private Coroutine _gameLoadCoroutine;
 
     public void OnEnable()
     {
+        if (_gameLoadCoroutine != null)
+        {
+            StopCoroutine(_gameLoadCoroutine);
+            _gameLoadCoroutine = null;
+        }
+
+        SettingsMenu.SetActive(false);
+        LoadingScreen.SetActive(false);
+
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
     public void StartGame()
     {
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        if (_gameLoadCoroutine != null)
+        {
+            return;
+        }
+
+        _gameLoadCoroutine = StartCoroutine(StartGameCoroutine());
     }
 
     public void QuitGame()
@@ -61,4 +79,13 @@ public class MenuLogicManager : MonoBehaviour
         CreditsMenu?.SetActive(false);
     }
 
+
+    private IEnumerator StartGameCoroutine()
+    {
+        LoadingScreen.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
+    }
 }

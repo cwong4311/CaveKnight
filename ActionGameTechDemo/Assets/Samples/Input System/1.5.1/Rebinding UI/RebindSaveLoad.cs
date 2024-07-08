@@ -5,9 +5,11 @@ public class RebindSaveLoad : MonoBehaviour
 {
     public InputActionAsset actions;
 
+    public string BindProfileName;
+
     public void OnEnable()
     {
-        var rebinds = PlayerPrefs.GetString("rebinds");
+        var rebinds = PlayerPrefs.GetString(BindProfileName);
         if (!string.IsNullOrEmpty(rebinds))
             actions.LoadBindingOverridesFromJson(rebinds);
     }
@@ -15,6 +17,6 @@ public class RebindSaveLoad : MonoBehaviour
     public void OnDisable()
     {
         var rebinds = actions.SaveBindingOverridesAsJson();
-        PlayerPrefs.SetString("rebinds", rebinds);
+        PlayerPrefs.SetString(BindProfileName, rebinds);
     }
 }
