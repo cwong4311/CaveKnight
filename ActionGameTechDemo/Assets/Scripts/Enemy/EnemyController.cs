@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-// TO DO: Refactor this
 public class EnemyController : CharacterManager
 {
     [Header("Basic Stats")]
