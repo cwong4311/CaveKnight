@@ -30,7 +30,7 @@ public class DragonController : EnemyController
 
         if (TargetTransform != null)
         {
-            if (_enemyHealth.HealthPercentage > 0.5)
+            if (_enemyHealth.HealthPercentage > 0.4)
             {
                 if (_bossBGMState == 0) return;
 
