@@ -25,7 +25,7 @@ public class AIStateFactory
 
     public AI_State DragonResolver(string stateName, float? healthPercentage)
     {
-        if (healthPercentage.HasValue == false || healthPercentage > 0.5)
+        if (healthPercentage.HasValue == false || healthPercentage > 0.4)
         {
             return stateName switch
             {
