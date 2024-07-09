@@ -487,8 +487,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.011083931, y: 0.01, z: 0.07984527}
-  m_Center: {x: -0.0005419328, y: 0.000000001212881, z: 0.045997206}
+  m_Size: {x: 0.019664958, y: 0.010000001, z: 0.08909307}
+  m_Center: {x: 0.0037486008, y: 5.660143e-10, z: 0.05062136}
 --- !u!1 &4569030876938598294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,7 +1025,7 @@ MonoBehaviour:
   applyGravity: 1
   CharacterGravity: 50
   MaxDistance: 13
-  MinDistance: 2.5
+  MinDistance: 2.2
   ChaseSpeed: 3.5
   TurnSpeed: 1
   LastPerformedAction: 
@@ -1069,7 +1069,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2.3
+  m_StoppingDistance: 2.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1112,7 +1112,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 15
   Pan2D: 0
@@ -1830,6 +1830,10 @@ PrefabInstance:
       propertyPath: _audioSource
       value: 
       objectReference: {fileID: 6579825117963229279}
+    - target: {fileID: 2131864588613124557, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
+      propertyPath: m_Radius
+      value: 0.08
+      objectReference: {fileID: 0}
     - target: {fileID: 2231971553471841155, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
       propertyPath: FollowTarget
       value: 
@@ -1861,6 +1865,10 @@ PrefabInstance:
     - target: {fileID: 4990196539167508329, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
       propertyPath: m_TagString
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130410973069325277, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
+      propertyPath: m_Radius
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 6112808070553583189, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
       propertyPath: FollowTarget
