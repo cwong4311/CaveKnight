@@ -70,7 +70,7 @@ public class CameraController : MonoBehaviour
         else
         {
             //_lookAngle += (mouseX * LookSpeed) / delta;
-            _lookAngle = (_lookAngle + (mouseX * LookSpeed)) % 360;
+            _lookAngle = (_lookAngle + (Clamp(mouseX, -60, 60) * LookSpeed)) % 360;
             _pivotAngle -= (mouseY * PivotSpeed) / delta;
             _pivotAngle = Mathf.Clamp(_pivotAngle, MinPivot, MaxPivot);
 
@@ -183,5 +183,10 @@ public class CameraController : MonoBehaviour
         currentLockonTarget = null;
         closestLockonTarget = null;
         lockonIndex = 0;
+    }
+
+    private float Clamp(float value, float min, float max)
+    {
+        return (value < min) ? min : (value > max) ? max : value;
     }
 }
