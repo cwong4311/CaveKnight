@@ -73,8 +73,6 @@ public class FootstepSFXTrigger : MonoBehaviour
     {
         if ((FootstepOnLayer.value & (1 << other.transform.gameObject.layer)) > 0)
         {
-            if (isLog) Debug.Log($"TEST ----- Foot {transform.name} touched {other.gameObject.name}");
-
             if (touchingColliders.Count == 0)
             {
                 PlayFootstep();
@@ -88,8 +86,6 @@ public class FootstepSFXTrigger : MonoBehaviour
     {
         if ((FootstepOnLayer.value & (1 << other.transform.gameObject.layer)) > 0)
         {
-            if (isLog) Debug.Log($"TEST ----- Foot {transform.name} left {other.gameObject.name}");
-
             if (touchingColliders.Contains(other))
             {
                 touchingColliders.Remove(other);
