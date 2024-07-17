@@ -266,7 +266,7 @@ public class EnemyController : CharacterManager
 
     public string[] GetActionHistory()
     {
-        return _aiActionHistory.ToArray();
+        return _aiActionHistory.Count > 0 ? _aiActionHistory.ToArray() : new string[] { "null" };
     }
     public string GetLatestAction => _aiActionHistory[0] ?? "";
 
