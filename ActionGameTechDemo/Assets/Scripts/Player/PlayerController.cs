@@ -166,12 +166,21 @@ public class PlayerController : CharacterManager
         }
         else
         {
-            // If performing any action other than rolling, don't allow character rotation
-            if (IsPerformingAction && !IsRolling) return;
-
-            Vector3 targetDir = ((_cameraGO.forward * _inputHandler.VerticalMove)
+            // If performing any action other than rolling, always face in camera direction
+            Vector3 targetDir = Vector3.one;
+            if (IsPerformingAction && !IsRolling)
+            {
+                // targetDir = _cameraGO.forward.normalized;
+                return;
+            }
+            // Otherwise, when not performing any action OR rolling, face in the direction of the player
+            else
+            {
+                targetDir = ((_cameraGO.forward * _inputHandler.VerticalMove)
                 + (_cameraGO.right * _inputHandler.HorizontalMove))
                 .normalized;
+            }
+
             targetDir.y = 0;
 
             if (targetDir == Vector3.zero)
