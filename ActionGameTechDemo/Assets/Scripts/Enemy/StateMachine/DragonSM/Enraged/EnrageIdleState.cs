@@ -35,6 +35,10 @@ namespace AI.Dragon
             {
                 MinIdleTime = 1f; MaxIdleTime = 1.3f;
             }
+            else if (fromAction == "Hurt")
+            {
+                MinIdleTime = 1.8f; MaxIdleTime = 2.4f;
+            }
 
             _idleTime = UnityEngine.Random.Range(MinIdleTime, MaxIdleTime);
             _myController.UpdateMovementParameters(0f, 0f, false);

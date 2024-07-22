@@ -25,7 +25,7 @@ public class AIStateFactory
 
     public AI_State DragonResolver(string stateName, float? healthPercentage)
     {
-        if (healthPercentage.HasValue == false || healthPercentage > 0.5)
+        if (healthPercentage.HasValue == false || healthPercentage > 0.4)
         {
             return stateName switch
             {
@@ -36,6 +36,7 @@ public class AIStateFactory
                 "GroundedScream" => new AI.Dragon.FakeScreamState(_enemyController),
                 "Hurt" => new AI.Dragon.HurtState(_enemyController),
                 "Idle" => new AI.Dragon.IdleState(_enemyController),
+                "Die" => new AI.Dragon.DieState(_enemyController),
                 _ => new AI.Dragon.IdleState(_enemyController)
             };
         }

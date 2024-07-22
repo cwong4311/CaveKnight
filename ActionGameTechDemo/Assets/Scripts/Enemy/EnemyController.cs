@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-// TO DO: Refactor this
 public class EnemyController : CharacterManager
 {
     [Header("Basic Stats")]
@@ -47,6 +45,9 @@ public class EnemyController : CharacterManager
     public float RestunBaseThreshold = 50;
     public float RestunThresholdGain = 150;
     public float StunResetDuration = 30f;
+
+    protected float _destroyAfterDeath = 5f;
+    protected bool _isDead = false;
 
     /// <summary>
     /// This value starts at 100% and increases each time RestunThresholdGain is applied
@@ -98,6 +99,10 @@ public class EnemyController : CharacterManager
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
+        if (_isDead) return;
+
         if (_aiState != null)
         {
             _aiState.Update(Time.deltaTime, isInHitStun);
@@ -139,6 +144,8 @@ public class EnemyController : CharacterManager
 
     public void MoveToState(string targetAnimation)
     {
+        if (_isDead) return;
+
         LastPerformedAction = CurrentAction;
         CurrentAction = targetAnimation;
 
@@ -200,7 +207,7 @@ public class EnemyController : CharacterManager
         _enemyAnimator.speed = 0f;
         RB.isKinematic = true;
 
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSeconds(duration);
 
         isInHitStun = false;
         _enemyAnimator.speed = 1f;
@@ -235,16 +242,16 @@ public class EnemyController : CharacterManager
         MoveToState("Hurt");
     }
 
-    public void Die()
+    public virtual void Die()
     {
         // And move to hurt state
         MoveToState("Die");
 
-        // Destroy object after X seconds
-        var rootCharacterGP = PrefabUtility.GetOutermostPrefabInstanceRoot(this);
-        Destroy(rootCharacterGP, 0.3f);
+        _isDead = true;
 
-        Destroy(this.gameObject, 0.5f);
+        // Destroy object after X seconds
+        var charToDestroy = _enemyHealth?.gameObject;
+        Destroy(charToDestroy, 5f);
     }
 
     public float? GetStateDuration(string stateName)
@@ -259,7 +266,7 @@ public class EnemyController : CharacterManager
 
     public string[] GetActionHistory()
     {
-        return _aiActionHistory.ToArray();
+        return _aiActionHistory.Count > 0 ? _aiActionHistory.ToArray() : new string[] { "null" };
     }
     public string GetLatestAction => _aiActionHistory[0] ?? "";
 

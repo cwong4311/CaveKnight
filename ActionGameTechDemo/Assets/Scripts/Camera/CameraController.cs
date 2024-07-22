@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,7 +71,7 @@ public class CameraController : MonoBehaviour
         else
         {
             //_lookAngle += (mouseX * LookSpeed) / delta;
-            _lookAngle = (_lookAngle + (mouseX * LookSpeed)) % 360;
+            _lookAngle = (_lookAngle + (Clamp(mouseX, -60, 60) * LookSpeed)) % 360;
             _pivotAngle -= (mouseY * PivotSpeed) / delta;
             _pivotAngle = Mathf.Clamp(_pivotAngle, MinPivot, MaxPivot);
 
@@ -101,14 +102,31 @@ public class CameraController : MonoBehaviour
 
     public bool HandleLockon()
     {
+        if (TargetTransform == null) return false;
+
         float shortestDistance = Mathf.Infinity;
 
         Collider[] colliders = Physics.OverlapSphere(TargetTransform.position, 30);
+
         for (int i = 0; i < colliders.Length; i++)
         {
+            // Attempt to read a lock on object from this collider
             var lockonObj = colliders[i].GetComponent<ILockOnAbleObject>();
+            if (lockonObj == null)
+            {
+                // If one cannot be found, try to search for a lock on redirect object
+                var lockonRedirect = colliders[i].GetComponent<LockOnRedirectObject>();
+                if (lockonRedirect != null)
+                {
+                    lockonObj = lockonRedirect.LockOnTarget;
+                }
+                // If neither exist, then this object cannot be locked onto
+            }
+
             if (lockonObj != null)
             {
+                if (lockonTargets.Contains(lockonObj)) continue;
+
                 Vector3 lockonDir = lockonObj.LockOnTarget.position - TargetTransform.position;
                 float distFromTarget = Vector3.Distance(TargetTransform.position, lockonObj.LockOnTarget.position);
 
@@ -131,7 +149,9 @@ public class CameraController : MonoBehaviour
                     }
 
                     if (!hasCollision && lockonTargets.Contains(lockonObj) == false)
+                    {
                         lockonTargets.Add(lockonObj);
+                    }
                 }
             }
         }
@@ -181,5 +201,10 @@ public class CameraController : MonoBehaviour
         currentLockonTarget = null;
         closestLockonTarget = null;
         lockonIndex = 0;
+    }
+
+    private float Clamp(float value, float min, float max)
+    {
+        return (value < min) ? min : (value > max) ? max : value;
     }
 }

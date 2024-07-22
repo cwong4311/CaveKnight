@@ -30,7 +30,7 @@ namespace AI.Dragon
             }
             else if (fromAction == "Hurt")
             {
-                MinIdleTime = 0.4f; MaxIdleTime = 0.7f;
+                MinIdleTime = 1f; MaxIdleTime = 1.5f;
             }
 
             _idleTime = UnityEngine.Random.Range(MinIdleTime, MaxIdleTime);

@@ -6,6 +6,7 @@ public class PlayerMagic : MonoBehaviour
     public float HealPotency = 30f;
     public GameObject HealSpellPF;
     private PlayerAnimationHandler _animatorHandler;
+    private PlayerSoundManager _soundManager;
 
     [SerializeField]
     private PlayerStatus _playerStatus;
@@ -13,10 +14,13 @@ public class PlayerMagic : MonoBehaviour
     public void Initialise()
     {
         _animatorHandler = GetComponent<PlayerAnimationHandler>();
+        _soundManager = GetComponent<PlayerSoundManager>();
     }
 
     public void CastHeal()
     {
+        _soundManager.PlayHealSound();
+
         // Generate the heal circle, then let a coroutine handle the heal behaviour
         var healCircle = Instantiate(HealSpellPF, transform.position, Quaternion.identity, transform);
         StartCoroutine(HealCircleFlow(healCircle));
@@ -38,6 +42,9 @@ public class PlayerMagic : MonoBehaviour
         // Over 3 seconds, make the healing circle grow in size, and heal by ticks
         while (timeElapsed < totalDuration)
         {
+            if (GameLogicManager.IsPaused)
+                yield return new WaitUntil(() => !GameLogicManager.IsPaused);
+
             if (healCircle != null)
                 healCircle.transform.localScale = Vector3.Slerp(healCircle.transform.localScale, Vector3.one / 2, Time.deltaTime);
 
