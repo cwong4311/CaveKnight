@@ -57,6 +57,20 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.010799136
+        functionName: ApplyForwardVelocityDuringAnimation
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 2.5
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.13347144
+        functionName: StopApplyingVelocityDuringAnimation
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.19579507
         functionName: PlayWeaponSound
         data: 

@@ -15,6 +15,11 @@ public class PlayerAnimationHandler : MonoBehaviour
     private Vector3 _velocityDuringAnimation;
     private Vector3 _lastMoveDirection;
 
+    /// <summary>
+    /// How strong do these motions track the (locked on) enemy. By default, motions never track enemy.
+    /// </summary>
+    public float? MotionTrackingEnemyStrength = null;
+
     public void Initialise()
     {
         _animator = GetComponent<Animator>();
@@ -81,6 +86,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     private void OnAnimatorMove()
     {
         if (_inputHandler.IsInteracting == false) return;
+        if (Mathf.Approximately(Time.deltaTime, 0f)) return;
 
         float delta = Time.deltaTime;
         _playerController.RB.drag = 0;
@@ -121,5 +127,15 @@ public class PlayerAnimationHandler : MonoBehaviour
     public void UpdateMovementDirection(Vector3 direction)
     {
         _lastMoveDirection = direction;
+    }
+
+    public void StartMotionTrackingEnemy(float strength)
+    {
+        MotionTrackingEnemyStrength = strength;
+    }
+
+    public void StopMotionTrackingEnemy()
+    {
+        MotionTrackingEnemyStrength = null;
     }
 }

@@ -668,8 +668,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c1983883af2a247b03247698256d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 2000
-  CurrentHealth: 2000
+  MaxHealth: 1600
+  CurrentHealth: 1600
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
 --- !u!114 &4130584809128974739
@@ -693,7 +693,7 @@ MonoBehaviour:
   applyGravity: 1
   CharacterGravity: 50
   MaxDistance: 70
-  MinDistance: 5
+  MinDistance: 4
   ChaseSpeed: 6
   TurnSpeed: 4
   LastPerformedAction: 
@@ -706,6 +706,7 @@ MonoBehaviour:
   Tail: {fileID: 1445535533}
   Chest: {fileID: 1745794787017432773}
   Fireball: {fileID: 329284322510630516}
+  HUDBossName: Beast of Gluttony
 --- !u!114 &1187181234361464245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -779,7 +780,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 70
   Pan2D: 0

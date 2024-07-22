@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c90f55be08c411441811487cd7a95812, type: 3}
+  m_Name: PlayerActionBind
+  m_EditorClassIdentifier: 
+  Movement: {fileID: 7879355765184348637, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
+  Camera: {fileID: -2079327169696623007, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
+  Roll: {fileID: 6061825356544018034, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
+  Attack: {fileID: -851883302981534303, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
+  Block: {fileID: -3096179616591390884, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
+  Lockon: {fileID: 5497843377037539277, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
+  Heal: {fileID: -891476330164091184, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
+  Pause: {fileID: 1684560457587533824, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}

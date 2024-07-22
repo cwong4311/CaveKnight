@@ -44,8 +44,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.22760698, y: 0.10007602, z: 1.1552489}
-  m_Center: {x: 0.046925124, y: -0.008105796, z: 0.35958454}
+  m_Size: {x: 0.2886864, y: 0.19364244, z: 1.0365987}
+  m_Center: {x: 0.07746418, y: -0.0074744737, z: 0.45244032}
 --- !u!114 &4915329462744785262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   LightComboStep: 0
   IsCastSpellOne: 0
   LockedOn: 0
+  _inputActions: {fileID: 11400000, guid: 164e6fb9f4677f64bb85593a79e2eff3, type: 2}
 --- !u!114 &2936346402416061500
 MonoBehaviour:
   m_ObjectHideFlags: 0

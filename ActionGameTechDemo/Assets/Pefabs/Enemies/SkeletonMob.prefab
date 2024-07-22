@@ -44,6 +44,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2113457821008886391}
   - component: {fileID: 2113457821008886390}
+  - component: {fileID: 8735266083196529729}
+  - component: {fileID: 8339448159195838958}
   m_Layer: 0
   m_Name: LockOn
   m_TagString: Untagged
@@ -79,6 +81,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FollowTarget: {fileID: 4569030875346863709}
+--- !u!135 &8735266083196529729
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113457821008886388}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.08
+  m_Center: {x: 0, y: 0.05, z: 0}
+--- !u!114 &8339448159195838958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113457821008886388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edce996067d05f449b268e5694cd8f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LockOnAbleObject: {fileID: 4569030876938598326}
 --- !u!1 &4569030875346863710
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,8 +515,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.011083931, y: 0.01, z: 0.07984527}
-  m_Center: {x: -0.0005419328, y: 0.000000001212881, z: 0.045997206}
+  m_Size: {x: 0.019664958, y: 0.010000001, z: 0.08909307}
+  m_Center: {x: 0.0037486008, y: 5.660143e-10, z: 0.05062136}
 --- !u!1 &4569030876938598294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,8 +1028,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c1983883af2a247b03247698256d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 400
-  CurrentHealth: 400
+  MaxHealth: 250
+  CurrentHealth: 250
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
 --- !u!114 &1794256766897712007
@@ -1025,7 +1053,7 @@ MonoBehaviour:
   applyGravity: 1
   CharacterGravity: 50
   MaxDistance: 13
-  MinDistance: 2.5
+  MinDistance: 2.2
   ChaseSpeed: 3.5
   TurnSpeed: 1
   LastPerformedAction: 
@@ -1069,7 +1097,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2.3
+  m_StoppingDistance: 2.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1112,7 +1140,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 15
   Pan2D: 0
@@ -1830,6 +1858,10 @@ PrefabInstance:
       propertyPath: _audioSource
       value: 
       objectReference: {fileID: 6579825117963229279}
+    - target: {fileID: 2131864588613124557, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
+      propertyPath: m_Radius
+      value: 0.08
+      objectReference: {fileID: 0}
     - target: {fileID: 2231971553471841155, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
       propertyPath: FollowTarget
       value: 
@@ -1861,6 +1893,10 @@ PrefabInstance:
     - target: {fileID: 4990196539167508329, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
       propertyPath: m_TagString
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130410973069325277, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
+      propertyPath: m_Radius
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 6112808070553583189, guid: 696432c48582bc14c9ce296fb38c840c, type: 3}
       propertyPath: FollowTarget

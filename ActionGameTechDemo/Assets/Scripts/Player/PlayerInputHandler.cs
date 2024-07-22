@@ -23,7 +23,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public bool LockedOn;
 
-    private PlayerControls _inputActions;
+    [SerializeField]
+    private PlayerInputActionBind _inputActions;
     private CameraController _cameraController;
 
     private Vector2 _movementInput;
@@ -34,63 +35,88 @@ public class PlayerInputHandler : MonoBehaviour
     private float _timeSinceLastAttackFinish;
     private float _timeSinceLastBlock;
 
-    private bool _cursorLocked;
-
     public void Awake()
     {
         if (_inputActions == null)
         {
-            _inputActions = new PlayerControls();
+            throw new MissingComponentException("PlayerInputHandler is missing a PlayerInputActionBind mapping reference");
         }
 
         _cameraController = FindObjectOfType<CameraController>();
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        _cursorLocked = true;
     }
 
     public void Start()
     {
-        _inputActions.Player.Movement.performed += OnPlayerMovement;
+        _inputActions.Movement.action.performed += OnPlayerMovement;
 
-        _inputActions.Player.Camera.performed += OnCameraMovement;
+        _inputActions.Camera.action.performed += OnCameraMovement;
 
-        _inputActions.Player.Roll.started += OnShiftDown;
-        _inputActions.Player.Roll.canceled += OnShiftUp;
+        _inputActions.Roll.action.started += OnShiftDown;
+        _inputActions.Roll.action.canceled += OnShiftUp;
 
-        _inputActions.Player.Attack.started += OnAttackButtonDown;
-        _inputActions.Player.Attack.canceled += OnAttackButtonUp;
+        _inputActions.Attack.action.started += OnAttackButtonDown;
+        _inputActions.Attack.action.canceled += OnAttackButtonUp;
 
-        _inputActions.Player.Block.started += OnBlockButtonDown;
-        _inputActions.Player.Block.canceled += OnBlockButtonUp;
+        _inputActions.Block.action.started += OnBlockButtonDown;
+        _inputActions.Block.action.canceled += OnBlockButtonUp;
 
-        _inputActions.Player.Lockon.performed += OnLockon;
+        _inputActions.Lockon.action.performed += OnLockon;
 
-        _inputActions.Player.ToggleCursor.performed += OnEscapeToggle;
+        _inputActions.Heal.action.performed += OnCastSpellOne;
 
-        _inputActions.Player.Heal.performed += OnCastSpellOne;
+        _inputActions.Pause.action.performed += OnEscapeToggle;
+    }
+
+    public void OnDestroy()
+    {
+        _inputActions.Movement.action.performed -= OnPlayerMovement;
+
+        _inputActions.Camera.action.performed -= OnCameraMovement;
+
+        _inputActions.Roll.action.started -= OnShiftDown;
+        _inputActions.Roll.action.canceled -= OnShiftUp;
+
+        _inputActions.Attack.action.started -= OnAttackButtonDown;
+        _inputActions.Attack.action.canceled -= OnAttackButtonUp;
+
+        _inputActions.Block.action.started -= OnBlockButtonDown;
+        _inputActions.Block.action.canceled -= OnBlockButtonUp;
+
+        _inputActions.Lockon.action.performed -= OnLockon;
+
+        _inputActions.Heal.action.performed -= OnCastSpellOne;
+
+        _inputActions.Pause.action.performed -= OnEscapeToggle;
     }
 
     public void OnEnable()
     {
-        _inputActions.Player.Movement.Enable();
-        _inputActions.Player.Camera.Enable();
-        _inputActions.Player.Roll.Enable();
-        _inputActions.Player.Attack.Enable();
-        _inputActions.Player.Block.Enable();
-        _inputActions.Player.Lockon.Enable();
-        _inputActions.Player.ToggleCursor.Enable();
-        _inputActions.Player.Heal.Enable();
+        _inputActions.Movement.action.Enable();
+        _inputActions.Camera.action.Enable();
+        _inputActions.Roll.action.Enable();
+        _inputActions.Attack.action.Enable();
+        _inputActions.Block.action.Enable();
+        _inputActions.Lockon.action.Enable();
+        _inputActions.Heal.action.Enable();
+        _inputActions.Pause.action.Enable();
     }
 
     public void OnDisable()
     {
-        _inputActions.Disable();
+        _inputActions.Movement.action.Disable();
+        _inputActions.Camera.action.Disable();
+        _inputActions.Roll.action.Disable();
+        _inputActions.Attack.action.Disable();
+        _inputActions.Block.action.Disable();
+        _inputActions.Lockon.action.Disable();
+        _inputActions.Heal.action.Disable();
+        _inputActions.Pause.action.Disable();
     }
 
     public void Update()
     {
+        if (GameLogicManager.IsPaused) return;
+
         if (IsInteracting)
         {
             _timeSinceLastAttackInput = 0f;
@@ -132,6 +158,18 @@ public class PlayerInputHandler : MonoBehaviour
 
         if (_cameraController != null)
         {
+            // If camera is currently locked on, but there's no actual target locked on
+            // Likely target died. Try to swap targets, or stop lockon if no targets
+            if (_cameraController.currentLockonTarget == null && LockedOn)
+            {
+                var canCycle = _cameraController.CycleLockon();
+                if (canCycle == false)
+                {
+                    _cameraController.ClearLockon();
+                    LockedOn = false;
+                }
+            }
+
             _cameraController.FollowTarget(delta);
             _cameraController.HandleCameraRotation(delta, MouseX, MouseY);
         }
@@ -274,20 +312,7 @@ public class PlayerInputHandler : MonoBehaviour
     }
     public void OnEscapeToggle(InputAction.CallbackContext context)
     {
-        if (_cursorLocked)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-
-            _cursorLocked = false;
-        }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
-            _cursorLocked = true;
-        }
+        GameLogicManager.OnPause?.Invoke();
     }
 
     public void OnCastSpellOne(InputAction.CallbackContext context)
