@@ -151,23 +151,36 @@ public class PlayerController : CharacterManager
             // Otherwise, only update character rotation if NOT performing any action
             else if (!IsPerformingAction)
             {
-                Vector3 rotationDir = (CameraController.currentLockonTarget.position - transform.position).normalized;
-                rotationDir.y = 0;
-
-                Quaternion targetRotation = Quaternion.LookRotation(rotationDir);
-                Quaternion rotateVector = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * delta);
-
-                transform.rotation = rotateVector;
+                FaceLockedOnEnemy(delta);
+            }
+            // Otherwise, only when performing an action that isn't a sprint or a roll
+            else
+            {
+                // Finally, if performing an action, and the animator requests a tracking strength,
+                // rotate player according to tracking strength
+                if (IsPerformingAction && _animator.MotionTrackingEnemyStrength != null)
+                {
+                    FaceLockedOnEnemy(_animator.MotionTrackingEnemyStrength);
+                }
             }
         }
         else
         {
-            // If performing any action other than rolling, don't allow character rotation
-            if (IsPerformingAction && !IsRolling) return;
-
-            Vector3 targetDir = ((_cameraGO.forward * _inputHandler.VerticalMove)
+            // If performing any action other than rolling, always face in camera direction
+            Vector3 targetDir = Vector3.one;
+            if (IsPerformingAction && !IsRolling)
+            {
+                // targetDir = _cameraGO.forward.normalized;
+                return;
+            }
+            // Otherwise, when not performing any action OR rolling, face in the direction of the player
+            else
+            {
+                targetDir = ((_cameraGO.forward * _inputHandler.VerticalMove)
                 + (_cameraGO.right * _inputHandler.HorizontalMove))
                 .normalized;
+            }
+
             targetDir.y = 0;
 
             if (targetDir == Vector3.zero)
@@ -222,11 +235,14 @@ public class PlayerController : CharacterManager
             _inputHandler.IsHeavyAttacking = false;
             if (_playerStatus.ConsumeStamina(HeavyAttackStaminaConsumption) == false) return;
 
+            FaceLockedOnEnemy();
             _weapon.HeavyAttack();
         }
         else if (_inputHandler.IsLightAttacking)
         {
             _inputHandler.IsLightAttacking = false;
+
+            FaceLockedOnEnemy();
             _weapon.LightAttack(_inputHandler.LightComboStep);
         }
         else if (_inputHandler.IsParrying)
@@ -234,6 +250,7 @@ public class PlayerController : CharacterManager
             _inputHandler.IsParrying = false;
             if (_playerStatus.ConsumeStamina(ParryStaminaConsumption) == false) return;
 
+            FaceLockedOnEnemy();
             _animator.PlayAnimation("Parry", true);
             _playerStatus.SetParryState(0.3f);
         }
@@ -296,5 +313,19 @@ public class PlayerController : CharacterManager
     public bool GetIsAttacking()
     {
         return _weapon.IsAttacking;
+    }
+
+    public void FaceLockedOnEnemy(float? delta = null)
+    {
+        if (CameraController.currentLockonTarget == null) return;
+
+        Vector3 rotationDir = (CameraController.currentLockonTarget.position - transform.position).normalized;
+        rotationDir.y = 0;
+
+        Quaternion targetRotation = Quaternion.LookRotation(rotationDir);
+        Quaternion rotateVector = (delta != null) ? 
+            Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * delta.Value) : targetRotation;
+
+        transform.rotation = rotateVector;
     }
 }
