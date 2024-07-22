@@ -49,9 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45db5f2d2635928418b4f4fab39b467c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CaveBGM: {fileID: 8300000, guid: 54c95100f70aa124abc797f68c8e50d9, type: 3}
-  TownBGM: {fileID: 8300000, guid: 61a1efc7f8471834b86b6cf6391bd389, type: 3}
-  BossNormalBGM: {fileID: 8300000, guid: c293842ef791127468315180890b0839, type: 3}
+  CaveBGM: {fileID: 8300000, guid: 2e7fd6dd75af10948a21cb57d2a15caa, type: 3}
+  TownBGM: {fileID: 8300000, guid: e236e548f7e7e1040bf436cde98e746b, type: 3}
+  BossNormalBGM: {fileID: 8300000, guid: 398393e2c31d9d14c8b314b197465b65, type: 3}
   BossEnragedBGM: {fileID: 8300000, guid: 816f17cd4deb03b46b918acb44c04dc4, type: 3}
 --- !u!82 &4313141251921232267
 AudioSource:
