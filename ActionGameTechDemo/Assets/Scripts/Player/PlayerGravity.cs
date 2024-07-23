@@ -45,17 +45,13 @@ public class PlayerGravity : MonoBehaviour
             stepUp = FindStep(out stepUpOffset, allCPs, groundCP, velocity);
             gravityRamp = CharacterGravity;
             accelerationRamp = FallAcceleration;
-
-            Debug.Log($"TEST ---- Reset Accel: {accelerationRamp}, {gravityRamp}");
         }
         else
         {
             // Only apply gravity when feet are not touching the ground
-            accelerationRamp *= 1.2f;
+            accelerationRamp *= 1.1f;
             gravityRamp = Mathf.SmoothStep(gravityRamp, TerminalFallSpeed, Time.fixedDeltaTime * accelerationRamp);
             _rb.velocity += (Vector3.down * gravityRamp) * Time.fixedDeltaTime;
-
-            Debug.Log($"TEST ---- is falling: {accelerationRamp}, {gravityRamp}");
         }
   
         //Steps
