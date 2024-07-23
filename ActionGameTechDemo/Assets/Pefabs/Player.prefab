@@ -215,7 +215,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006ac482138f9b849a81234a49ed42f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterGravity: 130
+  CharacterGravity: 60
+  TerminalFallSpeed: 400
+  FallAcceleration: 5
   maxStepHeight: 0.5
   stepSearchOvershoot: 0.01
 --- !u!1001 &180621021152612954
