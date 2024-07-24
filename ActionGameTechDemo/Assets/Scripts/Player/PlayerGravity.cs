@@ -8,6 +8,8 @@ public class PlayerGravity : MonoBehaviour
 {
     [Header("Gravity")]
     public float CharacterGravity;
+    public float TerminalFallSpeed;
+    public float FallAcceleration;
 
     [Header("Steps")]
     public float maxStepHeight = 0.4f;         
@@ -17,10 +19,15 @@ public class PlayerGravity : MonoBehaviour
     private Vector3 lastVelocity;
 
     private Rigidbody _rb;
+    private float gravityRamp = 0f;
+    private float accelerationRamp = 0f;
 
     private void Awake()
     {
         _rb = this.GetComponent<Rigidbody>();
+
+        gravityRamp = CharacterGravity;
+        accelerationRamp = FallAcceleration;
     }
 
     void FixedUpdate()
@@ -36,11 +43,15 @@ public class PlayerGravity : MonoBehaviour
         if (grounded)
         {
             stepUp = FindStep(out stepUpOffset, allCPs, groundCP, velocity);
+            gravityRamp = CharacterGravity;
+            accelerationRamp = FallAcceleration;
         }
         else
         {
             // Only apply gravity when feet are not touching the ground
-            _rb.velocity += (Vector3.down * CharacterGravity) * Time.fixedDeltaTime;
+            accelerationRamp *= 1.1f;
+            gravityRamp = Mathf.SmoothStep(gravityRamp, TerminalFallSpeed, Time.fixedDeltaTime * accelerationRamp);
+            _rb.velocity += (Vector3.down * gravityRamp) * Time.fixedDeltaTime;
         }
   
         //Steps

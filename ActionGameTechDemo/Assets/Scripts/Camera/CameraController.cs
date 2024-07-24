@@ -60,8 +60,9 @@ public class CameraController : MonoBehaviour
         {
             Vector3 dir = (currentLockonTarget.position - transform.position).normalized;
             dir.y = 0;
-
-            transform.rotation = Quaternion.LookRotation(dir);
+            var trackEnemyRotation = Quaternion.LookRotation(dir);
+            _lookAngle = trackEnemyRotation.eulerAngles.y;
+            transform.rotation = trackEnemyRotation;
 
             dir = (currentLockonTarget.position - PivotTransform.position).normalized;
             var eulerAngles = Quaternion.LookRotation(dir).eulerAngles;

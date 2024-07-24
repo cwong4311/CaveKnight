@@ -18,5 +18,6 @@ MonoBehaviour:
   Attack: {fileID: -851883302981534303, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
   Block: {fileID: -3096179616591390884, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
   Lockon: {fileID: 5497843377037539277, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
+  SwapTarget: {fileID: -7733067476166710340, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
   Heal: {fileID: -891476330164091184, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
   Pause: {fileID: 1684560457587533824, guid: 9640e59150a6b094faaef0eba5f70c63, type: 3}
