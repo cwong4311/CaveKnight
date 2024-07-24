@@ -61,6 +61,7 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Block.action.canceled += OnBlockButtonUp;
 
         _inputActions.Lockon.action.performed += OnLockon;
+        _inputActions.SwapTarget.action.performed += OnChangeLockonTarget;
 
         _inputActions.Heal.action.performed += OnCastSpellOne;
 
@@ -83,6 +84,7 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Block.action.canceled -= OnBlockButtonUp;
 
         _inputActions.Lockon.action.performed -= OnLockon;
+        _inputActions.SwapTarget.action.performed -= OnChangeLockonTarget;
 
         _inputActions.Heal.action.performed -= OnCastSpellOne;
 
@@ -97,6 +99,7 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Attack.action.Enable();
         _inputActions.Block.action.Enable();
         _inputActions.Lockon.action.Enable();
+        _inputActions.SwapTarget.action.Enable();
         _inputActions.Heal.action.Enable();
         _inputActions.Pause.action.Enable();
     }
@@ -109,6 +112,7 @@ public class PlayerInputHandler : MonoBehaviour
         _inputActions.Attack.action.Disable();
         _inputActions.Block.action.Disable();
         _inputActions.Lockon.action.Disable();
+        _inputActions.SwapTarget.action.Disable();
         _inputActions.Heal.action.Disable();
         _inputActions.Pause.action.Disable();
     }
@@ -302,14 +306,19 @@ public class PlayerInputHandler : MonoBehaviour
         }
         else
         {
-            var canCycle = _cameraController.CycleLockon();
-            if (canCycle == false)
-            {
-                _cameraController.ClearLockon();
-                LockedOn = false;
-            }
+            _cameraController.ClearLockon();
+            LockedOn = false;
         }
     }
+
+    public void OnChangeLockonTarget(InputAction.CallbackContext context)
+    {
+        if (LockedOn)
+        {
+            _cameraController.CycleLockon();
+        }
+    }
+
     public void OnEscapeToggle(InputAction.CallbackContext context)
     {
         GameLogicManager.OnPause?.Invoke();

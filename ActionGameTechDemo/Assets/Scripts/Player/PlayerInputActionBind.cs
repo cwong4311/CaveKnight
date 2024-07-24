@@ -10,6 +10,7 @@ public class PlayerInputActionBind : ScriptableObject
     public InputActionReference Attack;
     public InputActionReference Block;
     public InputActionReference Lockon;
+    public InputActionReference SwapTarget;
     public InputActionReference Heal;
     public InputActionReference Pause;
 }

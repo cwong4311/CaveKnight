@@ -60,6 +60,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SwapTargets",
+                    "type": "Button",
+                    "id": "d61b07f9-37a4-496b-a3d7-2c230296cd8e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Heal",
                     "type": "Button",
                     "id": "ed1f45e9-b624-49e0-b8d4-a93ae2e0850e",
@@ -203,7 +212,7 @@
                 {
                     "name": "",
                     "id": "0c5a2fdb-0e60-4bbf-bc61-a5f8704c7ee2",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -230,6 +239,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a2608972-1aec-4f6d-9a59-d2df2fc420ac",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwapTargets",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
