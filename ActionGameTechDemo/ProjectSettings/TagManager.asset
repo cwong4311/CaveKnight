@@ -13,12 +13,12 @@ TagManager:
   - Environment
   - Water
   - UI
+  - PostProcessing
   - 
-  - 
-  - 
-  - 
-  - Controller
-  - 
+  - Player
+  - Enemy
+  - Camera
+  - Destructable
   - 
   - 
   - 

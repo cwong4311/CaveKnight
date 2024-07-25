@@ -80,6 +80,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwapTargets"",
+                    ""type"": ""Button"",
+                    ""id"": ""d61b07f9-37a4-496b-a3d7-2c230296cd8e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Heal"",
+                    ""type"": ""Button"",
+                    ""id"": ""ed1f45e9-b624-49e0-b8d4-a93ae2e0850e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""c89918a9-4450-4234-b4c2-4fd51b76f2c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -143,7 +170,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""f882fa6b-c244-4a0c-973b-9002d6e09088"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
+                    ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Camera"",
                     ""isComposite"": false,
@@ -203,6 +230,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Lockon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c5a2fdb-0e60-4bbf-bc61-a5f8704c7ee2"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Heal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d686106-b84c-4ba6-b0fb-fb1d7f92228c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b27f30d-8e74-4dbf-bf26-5e7aded37347"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a2608972-1aec-4f6d-9a59-d2df2fc420ac"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwapTargets"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -217,6 +288,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
         m_Player_Lockon = m_Player.FindAction("Lockon", throwIfNotFound: true);
+        m_Player_SwapTargets = m_Player.FindAction("SwapTargets", throwIfNotFound: true);
+        m_Player_Heal = m_Player.FindAction("Heal", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -284,6 +358,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Block;
     private readonly InputAction m_Player_Lockon;
+    private readonly InputAction m_Player_SwapTargets;
+    private readonly InputAction m_Player_Heal;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -294,6 +371,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputAction @Lockon => m_Wrapper.m_Player_Lockon;
+        public InputAction @SwapTargets => m_Wrapper.m_Player_SwapTargets;
+        public InputAction @Heal => m_Wrapper.m_Player_Heal;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -321,6 +401,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lockon.started += instance.OnLockon;
             @Lockon.performed += instance.OnLockon;
             @Lockon.canceled += instance.OnLockon;
+            @SwapTargets.started += instance.OnSwapTargets;
+            @SwapTargets.performed += instance.OnSwapTargets;
+            @SwapTargets.canceled += instance.OnSwapTargets;
+            @Heal.started += instance.OnHeal;
+            @Heal.performed += instance.OnHeal;
+            @Heal.canceled += instance.OnHeal;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -343,6 +432,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lockon.started -= instance.OnLockon;
             @Lockon.performed -= instance.OnLockon;
             @Lockon.canceled -= instance.OnLockon;
+            @SwapTargets.started -= instance.OnSwapTargets;
+            @SwapTargets.performed -= instance.OnSwapTargets;
+            @SwapTargets.canceled -= instance.OnSwapTargets;
+            @Heal.started -= instance.OnHeal;
+            @Heal.performed -= instance.OnHeal;
+            @Heal.canceled -= instance.OnHeal;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -368,5 +466,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
         void OnLockon(InputAction.CallbackContext context);
+        void OnSwapTargets(InputAction.CallbackContext context);
+        void OnHeal(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

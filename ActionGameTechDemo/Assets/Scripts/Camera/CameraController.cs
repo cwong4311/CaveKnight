@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +30,7 @@ public class CameraController : MonoBehaviour
     public float MinCollisionOffset = 0.2f;
 
     public float maxLockonDistance = 30f;
-    private List<CharacterManager> lockonTargets = new List<CharacterManager>();
+    private List<ILockOnAbleObject> lockonTargets = new List<ILockOnAbleObject>();
     public Transform closestLockonTarget;
     public Transform currentLockonTarget;
     public int lockonIndex;
@@ -37,6 +39,8 @@ public class CameraController : MonoBehaviour
     {
         _defaultPosition = CameraTransform.localPosition.z;
         _ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+
+        _lookAngle = transform.rotation.eulerAngles.y % 360;
     }
 
     public void FollowTarget(float delta)
@@ -54,12 +58,11 @@ public class CameraController : MonoBehaviour
     {
         if (currentLockonTarget != null)
         {
-            float velocity = 0;
-
             Vector3 dir = (currentLockonTarget.position - transform.position).normalized;
             dir.y = 0;
-
-            transform.rotation = Quaternion.LookRotation(dir);
+            var trackEnemyRotation = Quaternion.LookRotation(dir);
+            _lookAngle = trackEnemyRotation.eulerAngles.y;
+            transform.rotation = trackEnemyRotation;
 
             dir = (currentLockonTarget.position - PivotTransform.position).normalized;
             var eulerAngles = Quaternion.LookRotation(dir).eulerAngles;
@@ -68,7 +71,8 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            _lookAngle += (mouseX * LookSpeed) / delta;
+            //_lookAngle += (mouseX * LookSpeed) / delta;
+            _lookAngle = (_lookAngle + (Clamp(mouseX, -60, 60) * LookSpeed)) % 360;
             _pivotAngle -= (mouseY * PivotSpeed) / delta;
             _pivotAngle = Mathf.Clamp(_pivotAngle, MinPivot, MaxPivot);
 
@@ -99,19 +103,36 @@ public class CameraController : MonoBehaviour
 
     public bool HandleLockon()
     {
+        if (TargetTransform == null) return false;
+
         float shortestDistance = Mathf.Infinity;
 
         Collider[] colliders = Physics.OverlapSphere(TargetTransform.position, 30);
+
         for (int i = 0; i < colliders.Length; i++)
         {
-            var character = colliders[i].GetComponent<CharacterManager>();
-            if (character != null)
+            // Attempt to read a lock on object from this collider
+            var lockonObj = colliders[i].GetComponent<ILockOnAbleObject>();
+            if (lockonObj == null)
             {
-                Vector3 lockonDir = character.transform.position - TargetTransform.position;
-                float distFromTarget = Vector3.Distance(TargetTransform.position, character.transform.position);
+                // If one cannot be found, try to search for a lock on redirect object
+                var lockonRedirect = colliders[i].GetComponent<LockOnRedirectObject>();
+                if (lockonRedirect != null)
+                {
+                    lockonObj = lockonRedirect.LockOnTarget;
+                }
+                // If neither exist, then this object cannot be locked onto
+            }
+
+            if (lockonObj != null)
+            {
+                if (lockonTargets.Contains(lockonObj)) continue;
+
+                Vector3 lockonDir = lockonObj.LockOnTarget.position - TargetTransform.position;
+                float distFromTarget = Vector3.Distance(TargetTransform.position, lockonObj.LockOnTarget.position);
 
                 float viewAngle = Vector3.Angle(lockonDir, CameraTransform.forward);
-                if (character.transform.root != TargetTransform.transform.root
+                if (lockonObj.LockOnTarget.root != TargetTransform.transform.root
                     && viewAngle > -50 && viewAngle < 50
                     && distFromTarget <= maxLockonDistance)
                 {
@@ -123,25 +144,27 @@ public class CameraController : MonoBehaviour
                         {
                             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Environment"))
                             {
-                                hasCollision = true;
+                                //hasCollision = true;
                             }
                         }
                     }
 
-                    if (!hasCollision)
-                        lockonTargets.Add(character);
+                    if (!hasCollision && lockonTargets.Contains(lockonObj) == false)
+                    {
+                        lockonTargets.Add(lockonObj);
+                    }
                 }
             }
         }
 
         for (int k = 0; k < lockonTargets.Count; k++)
         {
-            float distFromTarget = Vector3.Distance(TargetTransform.position, lockonTargets[k].transform.position);
+            float distFromTarget = Vector3.Distance(TargetTransform.position, lockonTargets[k].LockOnTarget.position);
 
             if (distFromTarget < shortestDistance)
             {
                 shortestDistance = distFromTarget;
-                closestLockonTarget = lockonTargets[k].transform;
+                closestLockonTarget = lockonTargets[k].LockOnTarget;
                 lockonIndex = k;
             }
         }
@@ -164,7 +187,7 @@ public class CameraController : MonoBehaviour
         if (lockonTargets == null || lockonTargets.Count <= 0) return false;
 
         lockonIndex = (lockonIndex + 1) % lockonTargets.Count;
-        currentLockonTarget = lockonTargets[lockonIndex].transform;
+        currentLockonTarget = lockonTargets[lockonIndex].LockOnTarget;
         if (currentLockonTarget == closestLockonTarget)
         {
             return false;
@@ -179,5 +202,10 @@ public class CameraController : MonoBehaviour
         currentLockonTarget = null;
         closestLockonTarget = null;
         lockonIndex = 0;
+    }
+
+    private float Clamp(float value, float min, float max)
+    {
+        return (value < min) ? min : (value > max) ? max : value;
     }
 }
