@@ -48,14 +48,15 @@ MonoBehaviour:
   TargetTransform: {fileID: 0}
   CameraTransform: {fileID: 4710325273890305565}
   PivotTransform: {fileID: 4710325274272267762}
+  LockOnCameraOffset: {x: 0.5, y: 0, z: -3}
   LookSpeed: 5
   FollowSpeed: 0.1
   PivotSpeed: 0.055
   MinPivot: -35
   MaxPivot: 35
-  CameraSphereRadius: 0.2
-  CameraCollisionOffset: 0.2
-  MinCollisionOffset: 0.2
+  CameraSphereRadius: 0.4
+  CameraCollisionOffset: 0.4
+  MinCollisionOffset: 0.4
   maxLockonDistance: 30
   closestLockonTarget: {fileID: 0}
   currentLockonTarget: {fileID: 0}
