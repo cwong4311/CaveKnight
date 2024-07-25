@@ -119,6 +119,11 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void Update()
     {
+        if (_cameraController != null)
+        {
+            _cameraController.FollowTarget(Time.deltaTime);
+        }
+
         if (GameLogicManager.IsPaused) return;
 
         if (IsInteracting)
@@ -169,7 +174,7 @@ public class PlayerInputHandler : MonoBehaviour
                 var canCycle = _cameraController.CycleLockon();
                 if (canCycle == false)
                 {
-                    _cameraController.ClearLockon();
+                    _cameraController.ClearLockon(forceSmoothUnlock : true);
                     LockedOn = false;
                 }
             }
@@ -300,6 +305,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnLockon(InputAction.CallbackContext context)
     {
+        if (_cameraController.IsLockOnReady == false) return;
+
         if (!LockedOn)
         {
             LockedOn = _cameraController.HandleLockon();
@@ -313,6 +320,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnChangeLockonTarget(InputAction.CallbackContext context)
     {
+        if (_cameraController.IsLockOnReady == false) return;
+
         if (LockedOn)
         {
             _cameraController.CycleLockon();

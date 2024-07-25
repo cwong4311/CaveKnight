@@ -10,6 +10,9 @@ public class CameraController : MonoBehaviour
     public Transform CameraTransform;
     public Transform PivotTransform;
 
+    public Vector3 LockOnCameraOffset;
+    private Vector3 CameraOrigin;
+
     private Vector3 _camPosition;
     private LayerMask _ignoreLayers;
     private Vector3 _camFollowVelocity = Vector3.zero;
@@ -21,7 +24,6 @@ public class CameraController : MonoBehaviour
     public float MaxPivot = 35;
 
     private float _targetPosition;
-    private float _defaultPosition;
     private float _lookAngle;
     private float _pivotAngle;
 
@@ -35,12 +37,18 @@ public class CameraController : MonoBehaviour
     public Transform currentLockonTarget;
     public int lockonIndex;
 
+    private Coroutine _smoothLockMotion;
+
+    public bool IsLockOnReady => _smoothLockMotion == null;
+
     private void Awake()
     {
-        _defaultPosition = CameraTransform.localPosition.z;
+        CameraOrigin = CameraTransform.localPosition;
+
         _ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
 
         _lookAngle = transform.rotation.eulerAngles.y % 360;
+        _smoothLockMotion = null;
     }
 
     public void FollowTarget(float delta)
@@ -56,6 +64,8 @@ public class CameraController : MonoBehaviour
 
     public void HandleCameraRotation(float delta, float mouseX, float mouseY)
     {
+        if (_smoothLockMotion != null) return;
+
         if (currentLockonTarget != null)
         {
             Vector3 dir = (currentLockonTarget.position - transform.position).normalized;
@@ -68,6 +78,7 @@ public class CameraController : MonoBehaviour
             var eulerAngles = Quaternion.LookRotation(dir).eulerAngles;
             eulerAngles.y = 0;
             PivotTransform.localEulerAngles = eulerAngles;
+            _pivotAngle = eulerAngles.x;
         }
         else
         {
@@ -83,7 +94,7 @@ public class CameraController : MonoBehaviour
 
     private void HandleCameraCollision(float delta)
     {
-        _targetPosition = _defaultPosition;
+        _targetPosition = (currentLockonTarget != null) ? LockOnCameraOffset.z : CameraOrigin.z;
 
         Vector3 dir = (CameraTransform.position - PivotTransform.position).normalized;
         if (Physics.SphereCast(PivotTransform.position, CameraSphereRadius, dir, out var hit, Mathf.Abs(_targetPosition), _ignoreLayers))
@@ -172,6 +183,7 @@ public class CameraController : MonoBehaviour
         if (closestLockonTarget != null)
         {
             currentLockonTarget = closestLockonTarget;
+            _smoothLockMotion = StartCoroutine(SmoothLockon());
             return true;
         }
 
@@ -184,20 +196,32 @@ public class CameraController : MonoBehaviour
     /// <returns></returns>
     public bool CycleLockon()
     {
-        if (lockonTargets == null || lockonTargets.Count <= 0) return false;
+        if (lockonTargets == null) return false;
 
+        lockonTargets.RemoveAll(e => e.LockOnTarget == null);
+        if (lockonTargets.Count <= 0) return false;
+
+        var previousLockonTarget = currentLockonTarget;
         lockonIndex = (lockonIndex + 1) % lockonTargets.Count;
         currentLockonTarget = lockonTargets[lockonIndex].LockOnTarget;
-        if (currentLockonTarget == closestLockonTarget)
+
+        if (previousLockonTarget != currentLockonTarget)
         {
-            return false;
+            _smoothLockMotion = StartCoroutine(SmoothLockon());
         }
 
         return true;
     }
 
-    public void ClearLockon()
+    public void ClearLockon(bool forceSmoothUnlock = false)
     {
+        // Only perform smooth unlock if clearing unlock while locked on
+        // OR if force tag is set (ie Only LockOn target has been killed).
+        if (currentLockonTarget != null || forceSmoothUnlock)
+        {
+            _smoothLockMotion = StartCoroutine(SmoothUnlock());
+        }
+
         lockonTargets.Clear();
         currentLockonTarget = null;
         closestLockonTarget = null;
@@ -207,5 +231,84 @@ public class CameraController : MonoBehaviour
     private float Clamp(float value, float min, float max)
     {
         return (value < min) ? min : (value > max) ? max : value;
+    }
+
+    private IEnumerator SmoothLockon()
+    {
+        float elapsedFixedDelta = 0;
+        while (elapsedFixedDelta <= 0.5f)
+        {
+            if (currentLockonTarget == null) break;
+
+            Vector3 dir = (currentLockonTarget.position - transform.position).normalized;
+            dir.y = 0;
+            var enemyRot = Quaternion.LookRotation(dir);
+
+            dir = (currentLockonTarget.position - PivotTransform.position).normalized;
+            var pivotEuler = Quaternion.LookRotation(dir).eulerAngles;
+            pivotEuler.y = 0;
+
+            // Make rotation slerp to lockon target's location
+            transform.rotation = Quaternion.Slerp(transform.rotation, enemyRot, elapsedFixedDelta * 2);
+            PivotTransform.localRotation = Quaternion.Slerp(PivotTransform.localRotation, Quaternion.Euler(pivotEuler), elapsedFixedDelta * 2);
+            _lookAngle = transform.rotation.eulerAngles.y;
+            _pivotAngle = PivotTransform.localRotation.eulerAngles.x;
+            if (_pivotAngle > MaxPivot)
+            {
+                _pivotAngle = _pivotAngle - 360;
+            }
+            else if (_pivotAngle < MinPivot)
+            {
+                _pivotAngle = _pivotAngle + 360;
+            }
+
+            // Move camera smoothly to lockon position
+            CameraTransform.localPosition = Vector3.Slerp(CameraTransform.localPosition, LockOnCameraOffset, elapsedFixedDelta * 2);
+
+            _camPosition.x = CameraTransform.localPosition.x;
+            _camPosition.y = CameraTransform.localPosition.y;
+
+            elapsedFixedDelta += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        _camPosition.x = LockOnCameraOffset.x;
+        _camPosition.y = LockOnCameraOffset.y;
+        _smoothLockMotion = null;
+    }
+
+    private IEnumerator SmoothUnlock()
+    {
+        bool resetPivot = false;
+
+        float elapsedFixedDelta = 0;
+        while (elapsedFixedDelta <= 0.33f)
+        {
+            // Move camera smoothly to origin
+            CameraTransform.localPosition = Vector3.Slerp(CameraTransform.localPosition, CameraOrigin, elapsedFixedDelta * 3);
+            if (_pivotAngle > MaxPivot || _pivotAngle < MinPivot)
+            {
+                resetPivot = true;
+
+                var returnToZeroPivot = PivotTransform.localRotation.eulerAngles;
+                returnToZeroPivot.x = 0;
+                PivotTransform.localRotation = Quaternion.Slerp(PivotTransform.localRotation, Quaternion.Euler(returnToZeroPivot), elapsedFixedDelta * 3);
+            }
+
+            _camPosition.x = CameraTransform.localPosition.x;
+            _camPosition.y = CameraTransform.localPosition.y;
+
+            elapsedFixedDelta += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        if (resetPivot)
+        {
+            _pivotAngle = 0;
+        }
+        
+        _camPosition.x = CameraOrigin.x;
+        _camPosition.y = CameraOrigin.y;
+        _smoothLockMotion = null;
     }
 }
