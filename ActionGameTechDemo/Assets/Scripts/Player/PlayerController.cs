@@ -132,8 +132,14 @@ public class PlayerController : CharacterManager
     {
         if (_inputHandler.LockedOn)
         {
+            // If performing an action, and the animator requests a tracking strength,
+            // rotate player according to tracking strength
+            if (IsPerformingAction && !IsRolling)
+            {
+                FaceLockedOnEnemy();
+            }
             // While locked on, special rotation behaviour while running and rolling
-            if (IsSprinting || IsRolling)
+            else if (IsSprinting || IsRolling)
             {
                 Vector3 targetDir = ((CameraController.CameraTransform.forward * _inputHandler.VerticalMove)
                    + (CameraController.CameraTransform.right * _inputHandler.HorizontalMove))
@@ -152,16 +158,6 @@ public class PlayerController : CharacterManager
             else if (!IsPerformingAction)
             {
                 FaceLockedOnEnemy(delta);
-            }
-            // Otherwise, only when performing an action that isn't a sprint or a roll
-            else
-            {
-                // Finally, if performing an action, and the animator requests a tracking strength,
-                // rotate player according to tracking strength
-                if (IsPerformingAction && _animator.MotionTrackingEnemyStrength != null)
-                {
-                    FaceLockedOnEnemy(_animator.MotionTrackingEnemyStrength);
-                }
             }
         }
         else
