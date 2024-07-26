@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 64324016407306108}
   m_Layer: 0
   m_Name: OreStone
-  m_TagString: Untagged
+  m_TagString: Unclimable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 4344557194693220}
   m_Layer: 0
   m_Name: OreRed
-  m_TagString: Untagged
+  m_TagString: Unclimable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

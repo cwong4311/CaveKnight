@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Destructable
+  - Unclimable
   layers:
   - Default
   - TransparentFX

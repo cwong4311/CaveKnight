@@ -120,8 +120,14 @@ public class PlayerGravity : MonoBehaviour
         stepUpOffset = default(Vector3);
         Collider stepCol = stepTestCP.otherCollider;
 
+        // If the collision point is specifically tagged unclimable or is an enemy, don't even evaluate
+        if (stepCol.gameObject.CompareTag("Unclimable") || stepCol.gameObject.CompareTag("Enemy"))
+        {
+            return false;
+        }
+
         // Check if the contact point normal matches that of a step (y close to 0)
-        if (Mathf.Abs(stepTestCP.normal.y) >= 0.4f)
+        if (Mathf.Abs(stepTestCP.normal.y) >= 0.5f)
         {
             return false;
         }
