@@ -121,7 +121,8 @@ public class PlayerGravity : MonoBehaviour
         Collider stepCol = stepTestCP.otherCollider;
 
         // If the collision point is specifically tagged unclimable or is an enemy, don't even evaluate
-        if (stepCol.gameObject.CompareTag("Unclimable") || stepCol.gameObject.CompareTag("Enemy"))
+        if (stepCol != null && stepCol.gameObject != null && 
+            (stepCol.gameObject.CompareTag("Unclimable") || stepCol.gameObject.CompareTag("Enemy")))
         {
             return false;
         }
