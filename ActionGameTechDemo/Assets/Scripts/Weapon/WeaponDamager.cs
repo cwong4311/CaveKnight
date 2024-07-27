@@ -7,6 +7,8 @@ using UnityEngine;
 /// </summary>
 public class WeaponDamager : MonoBehaviour
 {
+    public GameObject OnHitEffect;
+
     private Collider _damageCollider;
 
     private float _damageDealt = 0f;
@@ -64,6 +66,12 @@ public class WeaponDamager : MonoBehaviour
         {
             _alreadyHitTargets.Add(collision);
             _myCharacter.TriggerHitStop(_damageDealt, true);
+
+            var pointOfCollision = collision.ClosestPoint(transform.position);
+            if (OnHitEffect != null)
+            {
+                Instantiate(OnHitEffect, pointOfCollision, Quaternion.identity);
+            };
         }
     }
 
