@@ -504,6 +504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e5ebc7b708240489d103ca9907ea7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnHitEffect: {fileID: 0}
 --- !u!65 &6420316768750164426
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -818,10 +819,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.021263441
-  m_Height: 0.10183405
+  m_Radius: 0.026901247
+  m_Height: 0.11273645
   m_Direction: 0
-  m_Center: {x: -0.03045562, y: -9.0088353e-10, z: 0.000000008556716}
+  m_Center: {x: -0.03590686, y: -0.0000000010649713, z: 1.5417748e-10}
 --- !u!114 &1684916012097529754
 MonoBehaviour:
   m_ObjectHideFlags: 0
