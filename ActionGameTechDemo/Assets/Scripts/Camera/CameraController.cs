@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour
     {
         CameraOrigin = CameraTransform.localPosition;
 
-        _ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+        _ignoreLayers = ~(1 << 2 | 1 << 8 | 1 << 9 | 1 << 10);
 
         _lookAngle = transform.rotation.eulerAngles.y % 360;
         _smoothLockMotion = null;

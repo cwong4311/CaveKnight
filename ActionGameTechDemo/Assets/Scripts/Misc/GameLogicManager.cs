@@ -21,7 +21,7 @@ public class GameLogicManager : MonoBehaviour
     public AudioMixerSnapshot GameOverMixerSnapshot;
     public AudioMixerSnapshot PausedMixerSnapshot;
 
-    public GameObject SpawnLocation;
+    public CheckpointManager CheckpointManager;
     public GameObject EnemyPool;
 
     public TextMeshProUGUI FinalScore;
@@ -37,6 +37,18 @@ public class GameLogicManager : MonoBehaviour
     private Coroutine _currentGameEndScreen;
     private float _originalTimeScale;
     private int _enemiesAtGameStart;
+
+    public void Awake()
+    {
+        var currentCheckpointManager = FindObjectOfType<CheckpointManager>();
+        if (currentCheckpointManager == null && CheckpointManager != null)
+        {
+            currentCheckpointManager = Instantiate(CheckpointManager);
+        }
+
+        CheckpointManager = currentCheckpointManager;
+        CheckpointManager.CheckpointReachedAnim = Menu;
+    }
 
     public void OnEnable()
     {
@@ -218,6 +230,7 @@ public class GameLogicManager : MonoBehaviour
     {
         UnPause();
 
+        this.CheckpointManager.ResetCheckpoint();
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
@@ -233,9 +246,7 @@ public class GameLogicManager : MonoBehaviour
 
     public void Respawn()
     {
-        Player.transform.position = SpawnLocation.transform.position;
-        PlayerCamera.transform.position = SpawnLocation.transform.position;
-
+        this.CheckpointManager.SpawnAtCheckpoint(Player);
         UnPause();
     }
 }

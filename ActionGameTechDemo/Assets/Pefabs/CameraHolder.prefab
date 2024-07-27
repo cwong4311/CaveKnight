@@ -49,6 +49,9 @@ MonoBehaviour:
   CameraTransform: {fileID: 4710325273890305565}
   PivotTransform: {fileID: 4710325274272267762}
   LockOnCameraOffset: {x: 0.5, y: 0, z: -3}
+  _ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 3963
   LookSpeed: 5
   FollowSpeed: 0.1
   PivotSpeed: 0.055
