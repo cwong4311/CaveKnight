@@ -181,7 +181,7 @@ MonoBehaviour:
   RollStaminaConsumption: 40
   HeavyAttackStaminaConsumption: 30
   ParryStaminaConsumption: 20
-  HealManaCost: 30
+  HealManaCost: 40
 --- !u!114 &6524170927432354695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -864,7 +864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d25ea9555ecf0a4d8989b0ebbe2c58c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealPotency: 50
+  HealPotency: 80
   HealSpellPF: {fileID: 4903317575198938071, guid: 703b20d1b72aafb4597d2faa91d34e98, type: 3}
   _playerStatus: {fileID: 6524170927432354695}
 --- !u!114 &8326519833583385697
