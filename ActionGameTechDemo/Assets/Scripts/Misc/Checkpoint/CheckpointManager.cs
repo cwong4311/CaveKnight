@@ -10,7 +10,7 @@ public class CheckpointManager : MonoBehaviour
     public GameObject[] Checkpoints;
     public Animator CheckpointReachedAnim;
 
-    private int _currentCheckpoint = 1;
+    private int _currentCheckpoint = 0;
     private List<PlayerController> _currentPlayers = new List<PlayerController>();
 
     public virtual void Awake()
