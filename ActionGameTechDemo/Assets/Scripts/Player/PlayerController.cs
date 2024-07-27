@@ -277,6 +277,13 @@ public class PlayerController : CharacterManager
         _hitStunCoroutine = StartCoroutine(HitStunTimer(duration));
     }
 
+    public void TriggerParry(Collider collision)
+    {
+        if (_weapon == null) return;
+
+        _weapon.ActivateParry(collision);
+    }
+
     private IEnumerator HitStunTimer(float duration)
     {
         isInHitStun = true;

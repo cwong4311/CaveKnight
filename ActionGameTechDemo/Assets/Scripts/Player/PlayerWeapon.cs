@@ -10,21 +10,23 @@ public class PlayerWeapon : MonoBehaviour
     public float LightDamage3;
     public float HeavyDamage;
 
-    public WeaponDamager _weaponHolder;
+    public WeaponDamager WeaponHolder;
+    public GameObject ShieldHolder;
     private PlayerAnimationHandler _animatorHandler;
 
     private string _currentAttackName;
     private float _currentAttackDamage;
 
     public bool IsAttacking;
+    public GameObject OnParryFX;
 
     public void Initialise()
     {
         _animatorHandler = GetComponent<PlayerAnimationHandler>();
 
-        if (_weaponHolder != null)
+        if (WeaponHolder != null)
         {
-            _weaponHolder.SetWeaponTarget(true);
+            WeaponHolder.SetWeaponTarget(true);
         }
     }
 
@@ -65,7 +67,7 @@ public class PlayerWeapon : MonoBehaviour
     public void ActivateWeapon()
     {
         IsAttacking = true;
-        _weaponHolder.ActivateWeapon(_currentAttackDamage);
+        WeaponHolder.ActivateWeapon(_currentAttackDamage);
     }
 
     /// <summary>
@@ -74,6 +76,14 @@ public class PlayerWeapon : MonoBehaviour
     public void DeactivateWeapon()
     {
         IsAttacking = false;
-        _weaponHolder.DeactivateWeapon();
+        WeaponHolder.DeactivateWeapon();
+    }
+
+    public void ActivateParry(Collider collider)
+    {
+        if (ShieldHolder == null || OnParryFX == null) return;
+
+        var closestPoint = collider.ClosestPoint(ShieldHolder.transform.position);
+        Instantiate(OnParryFX, closestPoint, Quaternion.identity);
     }
 }

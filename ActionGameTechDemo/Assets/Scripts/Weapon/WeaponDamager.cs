@@ -56,6 +56,7 @@ public class WeaponDamager : MonoBehaviour
             if (player.IsParrying)
             {
                 _myCharacter?.GetComponent<EnemyController>()?.ForceGetHit();
+                player.ProcParryActive(collision);
             }
 
             hasDealtDamage = player.TakeDamage(_damageDealt);

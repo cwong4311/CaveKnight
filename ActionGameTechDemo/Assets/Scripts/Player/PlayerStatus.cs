@@ -145,6 +145,16 @@ public class PlayerStatus : MonoBehaviour
         _tempParryDuration = duration;
     }
 
+    public void ProcParryActive(Collider collision)
+    {
+        if (IsParrying == false) return;
+
+        if (_controller != null)
+        {
+            _controller.TriggerParry(collision);
+        }
+    }
+
     /// <summary>
     /// Restores hp
     /// </summary>

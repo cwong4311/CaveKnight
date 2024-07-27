@@ -834,8 +834,10 @@ MonoBehaviour:
   LightDamage2: 25
   LightDamage3: 30
   HeavyDamage: 80
-  _weaponHolder: {fileID: 4915329462744785262}
+  WeaponHolder: {fileID: 4915329462744785262}
+  ShieldHolder: {fileID: 3239392900109473070}
   IsAttacking: 0
+  OnParryFX: {fileID: 5024009746357069194, guid: c92b0aa92d7febf47bbb39d998680af4, type: 3}
 --- !u!114 &2936346402585720261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -887,6 +889,11 @@ MonoBehaviour:
   OnHurt: {fileID: 8300000, guid: ab0dbeea7eaf42b459aac9946d2f048c, type: 3}
   OnBlock: {fileID: 8300000, guid: ba27b9ee1512f674a8825621e1ce0bbe, type: 3}
   OnParry: {fileID: 8300000, guid: bc277de9a914a7441b49211a98a38d32, type: 3}
+--- !u!1 &3239392900109473070 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8913927875252244678, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}
+  m_PrefabInstance: {fileID: 2936346401532131860}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3401702075844582911 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 79d4e1d2d914dc14eb3ccfd804e0ebe2, type: 3}
