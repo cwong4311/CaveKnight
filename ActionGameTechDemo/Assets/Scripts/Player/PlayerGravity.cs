@@ -119,6 +119,7 @@ public class PlayerGravity : MonoBehaviour
     {
         stepUpOffset = default(Vector3);
         Collider stepCol = stepTestCP.otherCollider;
+        if (stepCol == null) return false;
 
         // If the collision point is specifically tagged unclimable or is an enemy, don't even evaluate
         if (stepCol != null && stepCol.gameObject != null && 
