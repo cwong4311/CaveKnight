@@ -4392,13 +4392,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LockOnTransform: {fileID: 5376955689737524341}
   EnemyName: Minotaur
-  PlayerDetectionRange: 15
+  PlayerDetectionRange: 20
   ActualBodyTransform: {fileID: 1875218067636447156}
   TargetTransform: {fileID: 0}
   RB: {fileID: 3385988664307942142}
   applyGravity: 1
   CharacterGravity: 50
-  MaxDistance: 15
+  MaxDistance: 20
   MinDistance: 2.5
   ChaseSpeed: 5
   TurnSpeed: 4
