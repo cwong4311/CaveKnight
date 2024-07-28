@@ -39,7 +39,7 @@ namespace AI.Minotaur
 
             if (fromAction == "Hurt")
             {
-                MinIdleTime = 0.1f; MaxIdleTime = 0.2f;
+                MinIdleTime = 0.6f; MaxIdleTime = 0.9f;
             }
             if (fromAction == "Kick")
             {
