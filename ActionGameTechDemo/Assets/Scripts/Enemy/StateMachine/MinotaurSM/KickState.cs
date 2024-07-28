@@ -12,7 +12,7 @@ namespace AI.Minotaur
         public float DelayBeforeAttackActive => FramesToTime(_delayInFrames);
         public float AttackActiveUntil => FramesToTime(_untilInFrames);
 
-        public float Damage = 40f;
+        public float Damage = 60f;
 
         private string _animationState = "Attack_3";
         public bool _hasAttacked = false;
