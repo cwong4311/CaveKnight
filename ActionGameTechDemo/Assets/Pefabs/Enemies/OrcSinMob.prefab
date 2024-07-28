@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e5ebc7b708240489d103ca9907ea7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnHitEffect: {fileID: 0}
 --- !u!65 &3812687872604376225
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4577,6 +4578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e5ebc7b708240489d103ca9907ea7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnHitEffect: {fileID: 0}
 --- !u!65 &1674626999869745818
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5462,6 +5464,9 @@ MonoBehaviour:
   CurrentHealth: 350
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
+  _floatingBarPF: {fileID: 503051156153105324, guid: 72d3d5e34d2417946a74f5e338ae1d00, type: 3}
+  isFloatingBar: 1
+  FloatingBarYOffset: 2.3
 --- !u!114 &7276683050021035966
 MonoBehaviour:
   m_ObjectHideFlags: 0

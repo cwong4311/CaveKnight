@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -15,13 +16,44 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private BossHealthBar _healthBar;
 
+    [SerializeField]
+    private BossHealthBar _floatingBarPF;
+
+    public bool isFloatingBar;
+
+    public float FloatingBarYOffset;
+
     public void OnEnable()
     {
         CurrentHealth = MaxHealth;
         _controller = GetComponent<EnemyController>();
 
-        _healthBar?.SetMaxStatus((int)MaxHealth);
-        _healthBar?.HideHealthBar();
+        if (!isFloatingBar)
+        {
+            _healthBar?.SetMaxStatus((int)MaxHealth);
+            _healthBar?.HideHealthBar();
+        }
+        else
+        {
+            var hpCanvas = FindObjectsOfType<Canvas>().FirstOrDefault(e => e.renderMode == RenderMode.WorldSpace);
+            if (hpCanvas == null || _floatingBarPF == null) return;
+
+            _healthBar = Instantiate(_floatingBarPF, hpCanvas.transform);
+            if (_healthBar == null) return;
+
+            _healthBar.FollowTarget = this.transform;
+            _healthBar.YOffset = FloatingBarYOffset;
+            _healthBar.SetMaxStatus((int)MaxHealth);
+            _healthBar?.HideHealthBar();
+        }
+    }
+
+    public void OnDestroy()
+    {
+        if (isFloatingBar && _healthBar != null)
+        {
+            Destroy(_healthBar.gameObject);
+        }
     }
 
     /// <summary>
@@ -41,6 +73,11 @@ public class EnemyHealth : MonoBehaviour
 
         _healthBar?.SetStatus((int)CurrentHealth);
         _controller.GetHit(damage);
+
+        if (isFloatingBar)
+        {
+            _healthBar?.ShowHealthBar();
+        }
 
         return true;
     }

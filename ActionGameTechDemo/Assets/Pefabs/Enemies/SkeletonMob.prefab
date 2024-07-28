@@ -1033,6 +1033,9 @@ MonoBehaviour:
   CurrentHealth: 250
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
+  _floatingBarPF: {fileID: 503051156153105324, guid: 72d3d5e34d2417946a74f5e338ae1d00, type: 3}
+  isFloatingBar: 1
+  FloatingBarYOffset: 2
 --- !u!114 &1794256766897712007
 MonoBehaviour:
   m_ObjectHideFlags: 0

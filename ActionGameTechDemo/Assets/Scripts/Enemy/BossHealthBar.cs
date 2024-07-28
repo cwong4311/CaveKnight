@@ -11,6 +11,19 @@ public class BossHealthBar : StatusBar
 
     private bool isVisible = true;
 
+    public Transform FollowTarget;
+
+    public float YOffset = 0f;
+
+
+    public void Update()
+    {
+        if (FollowTarget != null)
+        {
+            this.transform.position = FollowTarget.position + (Vector3.up * YOffset);
+        }
+    }
+
     public void SetBossName(string name)
     {
         BossName.text = name;
