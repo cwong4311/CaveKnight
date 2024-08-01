@@ -87,6 +87,7 @@ public class PlayerController : CharacterManager
         // Don't allow running while blocking
         IsBlocking = _inputHandler.IsBlocking;
         if (IsBlocking) IsSprinting = false;
+        if (_inputHandler.IsInteracting) IsBlocking = false;
 
         if (_inputHandler.IsInteracting == false && IsRolling)
         {
