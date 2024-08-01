@@ -8,6 +8,8 @@ public class PlayerStatus : MonoBehaviour
     public float MaxStamina = 120;
     public float MaxMana = 50;
     public float StaminaRegainDelay = 2f;
+    public float StaminaRecoveryPerSecond = 10f;
+    public float ManaRecoveryPerSecond = 1f;
 
     private float _currentHealth;
     private float _currentStamina;
@@ -78,7 +80,7 @@ public class PlayerStatus : MonoBehaviour
         if (_lastStaminaConsumptionTime < 0)
         {
             if (_currentStamina < MaxStamina)
-                _currentStamina = Mathf.Min(_currentStamina + (Time.deltaTime * 10), MaxStamina);
+                _currentStamina = Mathf.Min(_currentStamina + (Time.deltaTime * StaminaRecoveryPerSecond), MaxStamina);
         }
         // Otherwise, wait for a delay before allowing stam to regain after last consumption
         else if (Time.time - _lastStaminaConsumptionTime >= StaminaRegainDelay)
@@ -89,7 +91,7 @@ public class PlayerStatus : MonoBehaviour
         // Regain mana at a rate of 1mp every second
         if (_currentMana < MaxMana)
         {
-            _currentMana = Mathf.Min(_currentMana + (Time.deltaTime), MaxMana);
+            _currentMana = Mathf.Min(_currentMana + (Time.deltaTime * ManaRecoveryPerSecond), MaxMana);
         }
 
         IsBlocking = _controller.IsBlocking;
