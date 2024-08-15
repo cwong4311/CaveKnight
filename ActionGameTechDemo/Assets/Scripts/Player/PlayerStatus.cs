@@ -155,6 +155,8 @@ public class PlayerStatus : MonoBehaviour
         {
             _controller.TriggerParry(collision);
         }
+
+        IsParrying = false;
     }
 
     /// <summary>

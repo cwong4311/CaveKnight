@@ -138,4 +138,9 @@ public class PlayerAnimationHandler : MonoBehaviour
     {
         MotionTrackingEnemyStrength = null;
     }
+
+    public void ForceInteractable()
+    {
+        _animator.SetBool("IsInteracting", false);
+    }
 }

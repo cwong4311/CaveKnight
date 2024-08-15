@@ -283,6 +283,7 @@ public class PlayerController : CharacterManager
         if (_weapon == null) return;
 
         _weapon.ActivateParry(collision);
+        _animator.ForceInteractable();
     }
 
     private IEnumerator HitStunTimer(float duration)
