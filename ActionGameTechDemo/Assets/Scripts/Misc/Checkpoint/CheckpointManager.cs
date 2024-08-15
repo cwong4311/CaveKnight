@@ -10,11 +10,16 @@ public class CheckpointManager : MonoBehaviour
     public GameObject[] Checkpoints;
     public Animator CheckpointReachedAnim;
 
+    public float GameTimeElapsed => Time.time - _timeOfCurrentGameStart;
+    private float _timeOfCurrentGameStart;
+
     private int _currentCheckpoint = 0;
     private List<PlayerController> _currentPlayers = new List<PlayerController>();
 
     public virtual void Awake()
     {
+        ResetGameTime();
+
         SceneManager.sceneLoaded += OnSceneLoaded;
         DontDestroyOnLoad(this);
     }
@@ -61,5 +66,18 @@ public class CheckpointManager : MonoBehaviour
     public void ResetCheckpoint()
     {
         _currentCheckpoint = 0;
+    }
+
+    public void ResetGameTime()
+    {
+        _timeOfCurrentGameStart = -1f;
+    }
+
+    public void StartGameTime()
+    {
+        if (_timeOfCurrentGameStart < 0f)
+        {
+            _timeOfCurrentGameStart = Time.time;
+        }
     }
 }

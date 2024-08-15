@@ -48,6 +48,7 @@ public class GameLogicManager : MonoBehaviour
 
         CheckpointManager = currentCheckpointManager;
         CheckpointManager.CheckpointReachedAnim = Menu;
+        CheckpointManager.StartGameTime();
     }
 
     public void OnEnable()
@@ -138,7 +139,7 @@ public class GameLogicManager : MonoBehaviour
 
     protected void SetWinScreenStats()
     {
-        float t = Time.timeSinceLevelLoad;
+        float t = CheckpointManager.GameTimeElapsed;
         float milliseconds = (Mathf.Floor(t * 100) % 100); // calculate the milliseconds for the timer
         int seconds = (int)(t % 60); // return the remainder of the seconds divide by 60 as an int
         t /= 60; // divide current time y 60 to get minutes
@@ -231,6 +232,7 @@ public class GameLogicManager : MonoBehaviour
         UnPause();
 
         this.CheckpointManager.ResetCheckpoint();
+        this.CheckpointManager.ResetGameTime();
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
