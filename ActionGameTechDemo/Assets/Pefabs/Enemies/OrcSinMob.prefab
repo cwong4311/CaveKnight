@@ -5460,8 +5460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c1983883af2a247b03247698256d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 350
-  CurrentHealth: 350
+  MaxHealth: 250
+  CurrentHealth: 250
   IsInvulnerable: 0
   _healthBar: {fileID: 0}
   _floatingBarPF: {fileID: 503051156153105324, guid: 72d3d5e34d2417946a74f5e338ae1d00, type: 3}
