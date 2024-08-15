@@ -19,6 +19,7 @@ public class PlayerController : CharacterManager
     public float BlockingMovementSpeed = 4f;
 
     [Header("Action Cost")]
+    public float SprintStaminaConsumptionPerSecond = 5;
     public float RollStaminaConsumption = 40;
     public float HeavyAttackStaminaConsumption = 30;
     public float ParryStaminaConsumption = 20;
@@ -109,6 +110,14 @@ public class PlayerController : CharacterManager
             + (_cameraGO.right * _inputHandler.HorizontalMove))
             .normalized;
         _moveDirection.y = 0f;
+
+        // If player is sprinting (and actually moving),
+        // Attempt to consume stamina. If no stamina remaining, don't allow sprinting
+        if (IsSprinting && _moveDirection != Vector3.zero 
+            && _playerStatus.ConsumeStamina(SprintStaminaConsumptionPerSecond * delta) == false)
+        {
+            IsSprinting = false;
+        }
         
         float speed = (IsSprinting && _inputHandler.FinalMovementAmount > 0.5f) ? SprintSpeed : MovementSpeed;
         speed = (IsBlocking) ? BlockingMovementSpeed : speed;
@@ -123,7 +132,7 @@ public class PlayerController : CharacterManager
         }
         else
         {
-            _animator.UpdateAnimation(_inputHandler.FinalMovementAmount, 0f, IsSprinting);
+            _animator.UpdateAnimation(_inputHandler.FinalMovementAmount, 0f, IsSprinting); 
         }
 
         _animator.ToggleBlocking(IsBlocking);

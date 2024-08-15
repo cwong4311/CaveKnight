@@ -178,9 +178,10 @@ MonoBehaviour:
   IsPerformingAction: 0
   IsBlocking: 0
   BlockingMovementSpeed: 1.3
+  SprintStaminaConsumptionPerSecond: 10
   RollStaminaConsumption: 20
-  HeavyAttackStaminaConsumption: 30
-  ParryStaminaConsumption: 40
+  HeavyAttackStaminaConsumption: 25
+  ParryStaminaConsumption: 30
   HealManaCost: 50
 --- !u!114 &6524170927432354695
 MonoBehaviour:
@@ -198,7 +199,7 @@ MonoBehaviour:
   MaxStamina: 120
   MaxMana: 60
   StaminaRegainDelay: 2
-  StaminaRecoveryPerSecond: 15
+  StaminaRecoveryPerSecond: 20
   ManaRecoveryPerSecond: 1.5
   IsInvulnerable: 0
   IsBlocking: 0
