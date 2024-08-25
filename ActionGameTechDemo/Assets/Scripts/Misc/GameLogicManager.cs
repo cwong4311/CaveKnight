@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class GameLogicManager : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class GameLogicManager : MonoBehaviour
     public TextMeshProUGUI FinalScore;
     public TextMeshProUGUI TimeTaken;
     public TextMeshProUGUI EnemiesSlain;
+
+    public GameObject PauseScreenFirstButton;
+    public GameObject SettingsScreenFirstButton;
+    public GameObject VictoryScreenFirstButton;
 
     public static Action OnPause;
     public static Action OnGameOver;
@@ -116,6 +121,8 @@ public class GameLogicManager : MonoBehaviour
 
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
+
+                EventSystem.current.SetSelectedGameObject(VictoryScreenFirstButton);
             })
         );
     }
@@ -209,6 +216,8 @@ public class GameLogicManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         PauseScreen.SetActive(true);
 
+        EventSystem.current.SetSelectedGameObject(PauseScreenFirstButton);
+
         PausedMixerSnapshot.TransitionTo(.01f);
     }
 
@@ -223,6 +232,8 @@ public class GameLogicManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         PauseScreen.SetActive(false);
         SettingsScreen.SetActive(false);
+
+        EventSystem.current.SetSelectedGameObject(null);
 
         DefaultMixerSnapshot.TransitionTo(0.5f);
     }
@@ -239,11 +250,13 @@ public class GameLogicManager : MonoBehaviour
     public void ShowSettings()
     {
         SettingsScreen.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(SettingsScreenFirstButton);
     }
 
     public void HideSettings()
     {
         SettingsScreen.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(PauseScreenFirstButton);
     }
 
     public void Respawn()
