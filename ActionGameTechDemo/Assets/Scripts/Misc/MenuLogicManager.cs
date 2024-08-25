@@ -2,6 +2,7 @@ using System.Collections;
 using System.Diagnostics.Contracts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class MenuLogicManager : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class MenuLogicManager : MonoBehaviour
     public GameObject KeybindMenu;
     public GameObject CreditsMenu;
     public GameObject LoadingScreen;
+
+    public GameObject MainMenuFirst;
+    public GameObject KeybindMenuFirst;
+    public GameObject CreditMenuFirst;
 
     private Coroutine _gameLoadCoroutine;
 
@@ -25,6 +30,16 @@ public class MenuLogicManager : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+
+        EventSystem.current.SetSelectedGameObject(MainMenuFirst);
+    }
+
+    public void Update()
+    {
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            EventSystem.current.SetSelectedGameObject(MainMenuFirst);
+        }
     }
 
     public void StartGame()
@@ -53,11 +68,13 @@ public class MenuLogicManager : MonoBehaviour
     public void HideSettings()
     {
         SettingsMenu?.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(MainMenuFirst);
     }
 
     public void ShowKeybinds()
     {
         KeybindMenu?.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(KeybindMenuFirst);
 
         HideCredits();
     }
@@ -70,6 +87,7 @@ public class MenuLogicManager : MonoBehaviour
     public void ShowCredits()
     {
         CreditsMenu?.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(CreditMenuFirst);
 
         HideKeybinds();
     }
