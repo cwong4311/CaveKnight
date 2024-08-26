@@ -20,8 +20,9 @@ public class PlayerInputHandler : MonoBehaviour
     public int LightComboStep = -1;
 
     public bool IsCastSpellOne;
-
     public bool LockedOn;
+
+    public bool IsGamepad;
 
     [SerializeField]
     private PlayerInputActionBind _inputActions;
@@ -186,12 +187,21 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnPlayerMovement(InputAction.CallbackContext context)
     {
+        IsGamepad = context.control.device is Gamepad;
+
         _movementInput = context.ReadValue<Vector2>();
     }
 
     private void OnCameraMovement(InputAction.CallbackContext context)
     {
+        IsGamepad = context.control.device is Gamepad;
+
         _cameraInput = context.ReadValue<Vector2>();
+
+        if (IsGamepad)
+        {
+            _cameraInput *= 12.5f;
+        }
     }
 
     public void ParseInput(float delta)
@@ -217,6 +227,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnShiftDown(InputAction.CallbackContext context)
     {
+        IsGamepad = context.control.device is Gamepad;
+
         if (IsInteracting)
         {
             IsSprinting = true;
@@ -232,6 +244,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnShiftUp(InputAction.CallbackContext context)
     {
+        IsGamepad = context.control.device is Gamepad;
+
         if (Time.time - _timeSinceLastRoll < 0.2f && _timeSinceLastRoll > 0.01f)
         {
             IsRolling = true;
@@ -245,12 +259,16 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (IsInteracting) return;
 
+        IsGamepad = context.control.device is Gamepad;
+
         _timeSinceLastAttackInput = Time.time;
     }
 
     public void OnAttackButtonUp(InputAction.CallbackContext context)
     {
         if (IsInteracting) return;
+
+        IsGamepad = context.control.device is Gamepad;
 
         if (Time.time - _timeSinceLastAttackFinish > 1.5f)
         {
@@ -280,11 +298,15 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (IsInteracting) return;
 
+        IsGamepad = context.control.device is Gamepad;
+
         _timeSinceLastBlock = Time.time;
     }
 
     public void OnBlockButtonUp(InputAction.CallbackContext context)
     {
+        IsGamepad = context.control.device is Gamepad;
+
         if (_timeSinceLastBlock > 0.03f)
         {
             var buttonReleaseDelay = Time.time - _timeSinceLastBlock;
@@ -307,6 +329,8 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (_cameraController.IsLockOnReady == false) return;
 
+        IsGamepad = context.control.device is Gamepad;
+
         if (!LockedOn)
         {
             LockedOn = _cameraController.HandleLockon();
@@ -322,6 +346,8 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (_cameraController.IsLockOnReady == false) return;
 
+        IsGamepad = context.control.device is Gamepad;
+
         if (LockedOn)
         {
             _cameraController.CycleLockon();
@@ -330,12 +356,16 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnEscapeToggle(InputAction.CallbackContext context)
     {
+        IsGamepad = context.control.device is Gamepad;
+
         GameLogicManager.OnPause?.Invoke();
     }
 
     public void OnCastSpellOne(InputAction.CallbackContext context)
     {
         if (IsInteracting) return;
+
+        IsGamepad = context.control.device is Gamepad;
 
         IsCastSpellOne = true;
     }
