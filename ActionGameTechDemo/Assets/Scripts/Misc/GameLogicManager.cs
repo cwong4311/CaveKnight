@@ -13,6 +13,8 @@ public class GameLogicManager : MonoBehaviour
     public Animator Menu;
     public GameObject PauseScreen;
     public GameObject SettingsScreen;
+    public GameObject KeyboardKeybind;
+    public GameObject GamepadKeybind;
     public PlayerController Player;
     public GameObject PlayerCamera;
 
@@ -251,6 +253,8 @@ public class GameLogicManager : MonoBehaviour
     {
         SettingsScreen.SetActive(true);
         EventSystem.current.SetSelectedGameObject(SettingsScreenFirstButton);
+
+        ShowKeyboardKeybind();
     }
 
     public void HideSettings()
@@ -263,5 +267,27 @@ public class GameLogicManager : MonoBehaviour
     {
         this.CheckpointManager.SpawnAtCheckpoint(Player);
         UnPause();
+    }
+
+    public void ShowKeyboardKeybind()
+    {
+        KeyboardKeybind.SetActive(true);
+        HideGamepadKeybind();
+    }
+
+    public void HideKeyboardKeybind()
+    {
+        KeyboardKeybind.SetActive(false);
+    }
+
+    public void ShowGamepadKeybind()
+    {
+        GamepadKeybind.SetActive(true);
+        HideKeyboardKeybind();
+    }
+
+    public void HideGamepadKeybind()
+    {
+        GamepadKeybind.SetActive(false);
     }
 }

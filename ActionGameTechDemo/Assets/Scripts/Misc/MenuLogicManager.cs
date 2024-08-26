@@ -15,6 +15,9 @@ public class MenuLogicManager : MonoBehaviour
     public GameObject KeybindMenuFirst;
     public GameObject CreditMenuFirst;
 
+    public GameObject KeyboardKeybind;
+    public GameObject GamepadKeybind;
+
     private Coroutine _gameLoadCoroutine;
 
     public void OnEnable()
@@ -76,6 +79,7 @@ public class MenuLogicManager : MonoBehaviour
         KeybindMenu?.SetActive(true);
         EventSystem.current.SetSelectedGameObject(KeybindMenuFirst);
 
+        ShowKeyboardKeybind();
         HideCredits();
     }
 
@@ -97,6 +101,27 @@ public class MenuLogicManager : MonoBehaviour
         CreditsMenu?.SetActive(false);
     }
 
+    public void ShowKeyboardKeybind()
+    {
+        KeyboardKeybind.SetActive(true);
+        HideGamepadKeybind();
+    }
+
+    public void HideKeyboardKeybind()
+    {
+        KeyboardKeybind.SetActive(false);
+    }
+
+    public void ShowGamepadKeybind()
+    {
+        GamepadKeybind.SetActive(true);
+        HideKeyboardKeybind();
+    }
+
+    public void HideGamepadKeybind()
+    {
+        GamepadKeybind.SetActive(false);
+    }
 
     private IEnumerator StartGameCoroutine()
     {
