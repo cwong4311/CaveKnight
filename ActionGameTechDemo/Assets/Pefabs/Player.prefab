@@ -154,6 +154,7 @@ MonoBehaviour:
   LightComboStep: 0
   IsCastSpellOne: 0
   LockedOn: 0
+  IsGamepad: 0
   _inputActions: {fileID: 11400000, guid: 164e6fb9f4677f64bb85593a79e2eff3, type: 2}
 --- !u!114 &2936346402416061500
 MonoBehaviour:
@@ -198,8 +199,8 @@ MonoBehaviour:
   MaxHealth: 300
   MaxStamina: 120
   MaxMana: 60
-  StaminaRegainDelay: 2
-  StaminaRecoveryPerSecond: 20
+  StaminaRegainDelay: 1.5
+  StaminaRecoveryPerSecond: 30
   ManaRecoveryPerSecond: 1.5
   IsInvulnerable: 0
   IsBlocking: 0
