@@ -1069,6 +1069,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 97410855}
+    - target: {fileID: 380383482911677079, guid: 0e0d702ca930eeb4a93ba086d3572195, type: 3}
+      propertyPath: m_text
+      value: Cave Knight
+      objectReference: {fileID: 0}
+    - target: {fileID: 380383482911677079, guid: 0e0d702ca930eeb4a93ba086d3572195, type: 3}
+      propertyPath: m_fontSize
+      value: 129.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 380383482911677079, guid: 0e0d702ca930eeb4a93ba086d3572195, type: 3}
+      propertyPath: m_margin.x
+      value: -107.142746
+      objectReference: {fileID: 0}
     - target: {fileID: 380383483026029165, guid: 0e0d702ca930eeb4a93ba086d3572195, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 4
