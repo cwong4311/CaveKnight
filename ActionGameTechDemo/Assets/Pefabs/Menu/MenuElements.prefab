@@ -1342,12 +1342,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 32
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMin: 24
+  m_fontSizeMax: 32
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -4958,10 +4958,22 @@ PrefabInstance:
       propertyPath: m_RebindOverlay
       value: 
       objectReference: {fileID: 1494935765743765869}
+    - target: {fileID: 1222043111877865806, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
+      propertyPath: m_text
+      value: Y
+      objectReference: {fileID: 0}
     - target: {fileID: 1236389566684462962, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
       objectReference: {fileID: 1494935766147278363}
+    - target: {fileID: 1786346555169053788, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
+      propertyPath: m_text
+      value: LT
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177746907179327426, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
+      propertyPath: m_text
+      value: RB
+      objectReference: {fileID: 0}
     - target: {fileID: 2214260880656380851, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
       propertyPath: m_RebindOverlay
       value: 
@@ -5002,6 +5014,10 @@ PrefabInstance:
       propertyPath: m_RebindOverlay
       value: 
       objectReference: {fileID: 1494935765743765869}
+    - target: {fileID: 2517511884131854824, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
+      propertyPath: m_text
+      value: X
+      objectReference: {fileID: 0}
     - target: {fileID: 2975118528435060464, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
@@ -5122,6 +5138,10 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
       objectReference: {fileID: 2222156359366609976}
+    - target: {fileID: 6121783870889932557, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
+      propertyPath: m_text
+      value: RT
+      objectReference: {fileID: 0}
     - target: {fileID: 6183850555061967739, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
       propertyPath: m_RebindOverlay
       value: 
@@ -5138,6 +5158,10 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
       objectReference: {fileID: 1494935766147278363}
+    - target: {fileID: 8420370800241027009, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
+      propertyPath: m_text
+      value: LB
+      objectReference: {fileID: 0}
     - target: {fileID: 8923346737801158953, guid: 9e004cbd275326042bb9ac93bc93db26, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
