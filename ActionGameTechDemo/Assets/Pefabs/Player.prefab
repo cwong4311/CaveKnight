@@ -171,14 +171,14 @@ MonoBehaviour:
   LockOnTransform: {fileID: 0}
   RB: {fileID: 0}
   CameraController: {fileID: 0}
-  MovementSpeed: 2.5
-  SprintSpeed: 4.5
+  MovementSpeed: 3
+  SprintSpeed: 5
   RotationSpeed: 10
   IsSprinting: 0
   IsRolling: 0
   IsPerformingAction: 0
   IsBlocking: 0
-  BlockingMovementSpeed: 1.3
+  BlockingMovementSpeed: 1.5
   SprintStaminaConsumptionPerSecond: 10
   RollStaminaConsumption: 20
   HeavyAttackStaminaConsumption: 25
